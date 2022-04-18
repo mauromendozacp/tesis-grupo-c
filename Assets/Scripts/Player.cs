@@ -1,18 +1,17 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum MOVEMENT
+{
+    LEFT,
+    UP,
+    RIGHT,
+    DOWN
+}
 
 public class Player : MonoBehaviour
 {
-    enum MOVEMENT
-    {
-        LEFT,
-        UP,
-        RIGHT,
-        DOWN
-    }
-
     #region EXPOSED_FIELDS
     [SerializeField] private int lives = 0;
     [SerializeField] private float speed = 0f;
@@ -46,39 +45,37 @@ public class Player : MonoBehaviour
     #region PRIVATE_METHODS
     private void Move()
     {
-        if (TryGetMovement(out MOVEMENT movement))
+        if (!TryGetMovement(out MOVEMENT movement)) return;
+
+        Vector3 pos = Vector3.zero;
+        GridIndex auxIndex = gridIndex;
+
+        switch (movement)
         {
-            Vector3 pos = Vector3.zero;
-            GridIndex auxIndex = gridIndex;
-
-            switch (movement)
-            {
-                case MOVEMENT.LEFT:
-                    pos.x = -unit;
-                    auxIndex.i--;
-                    break;
-                case MOVEMENT.UP:
-                    pos.y = unit;
-                    auxIndex.j++;
-                    break;
-                case MOVEMENT.RIGHT:
-                    pos.x = unit;
-                    auxIndex.i++;
-                    break;
-                case MOVEMENT.DOWN:
-                    pos.y = -unit;
-                    auxIndex.j--;
-                    break;
-                default:
-                    break;
-            }
-
-            if (onCheckGridIndex(gridIndex))
-            {
-                StartCoroutine(MoveLerp(transform.position + pos));
-                gridIndex = auxIndex;
-            }
+            case MOVEMENT.LEFT:
+                pos.x = -unit;
+                auxIndex.i--;
+                break;
+            case MOVEMENT.UP:
+                pos.y = unit;
+                auxIndex.j++;
+                break;
+            case MOVEMENT.RIGHT:
+                pos.x = unit;
+                auxIndex.i++;
+                break;
+            case MOVEMENT.DOWN:
+                pos.y = -unit;
+                auxIndex.j--;
+                break;
+            default:
+                break;
         }
+
+        if (!onCheckGridIndex(gridIndex)) return;
+
+        StartCoroutine(MoveLerp(transform.position + pos));
+        gridIndex = auxIndex;
     }
 
     private bool TryGetMovement(out MOVEMENT movement)
@@ -88,17 +85,20 @@ public class Player : MonoBehaviour
             movement = MOVEMENT.LEFT;
             return true;
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             movement = MOVEMENT.UP;
             return true;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             movement = MOVEMENT.RIGHT;
             return true;
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             movement = MOVEMENT.DOWN;
             return true;

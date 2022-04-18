@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -33,12 +32,7 @@ public class GameplayManager : MonoBehaviour
     #region PRIVATE_FIELDS
     private bool CheckIndex(GridIndex index)
     {
-        if (index.i < 0 || index.j < 0 || index.i >= gridIndex.i || index.j >= gridIndex.j)
-        {
-            return false;
-        }
-
-        return true;
+        return index.i >= 0 && index.j >= 0 && index.i < gridIndex.i && index.j < gridIndex.j;
     }
     #endregion
 }
