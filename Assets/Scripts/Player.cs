@@ -53,31 +53,43 @@ public class Player : MonoBehaviour
         if (movement == MOVEMENT.NONE) return;
 
         Vector3 pos = Vector3.zero;
+        Vector3 direction = Vector3.zero;
         GridIndex auxIndex = gridIndex;
+        RaycastHit hit;
 
         switch (movement)
         {
             case MOVEMENT.LEFT:
                 pos.x = -unit;
                 auxIndex.i--;
+                direction = Vector3.left;
                 break;
             case MOVEMENT.UP:
                 pos.z = unit;
                 auxIndex.j++;
+                direction = Vector3.forward;
                 break;
             case MOVEMENT.RIGHT:
                 pos.x = unit;
                 auxIndex.i++;
+                direction = Vector3.right;
                 break;
             case MOVEMENT.DOWN:
                 pos.z = -unit;
                 auxIndex.j--;
+                direction = Vector3.back;
                 break;
             default:
                 break;
         }
 
         if (!onCheckGridIndex(auxIndex)) return;
+
+        if (Physics.Raycast(transform.position, direction, out hit, 1))
+        {
+            IMovable movable = hit.transform.GetComponent<IMovable>();
+            movable?.TryMove(movement);
+        }
 
         inMovement = true;
         StartCoroutine(MoveLerp(transform.position + pos));
