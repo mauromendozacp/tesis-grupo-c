@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum MOVEMENT
 {
+    NONE,
     LEFT,
     UP,
     RIGHT,
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     #region PRIVATE_FIELDS
     private GridIndex gridIndex = default;
     private float unit = 0f;
+    private bool inMovement = false;
     #endregion
 
     #region ACTIONS
@@ -45,7 +47,10 @@ public class Player : MonoBehaviour
     #region PRIVATE_METHODS
     private void Move()
     {
-        if (!TryGetMovement(out MOVEMENT movement)) return;
+        if (inMovement) return;
+
+        MOVEMENT movement = TryGetMovement();
+        if (movement == MOVEMENT.NONE) return;
 
         Vector3 pos = Vector3.zero;
         GridIndex auxIndex = gridIndex;
@@ -57,7 +62,7 @@ public class Player : MonoBehaviour
                 auxIndex.i--;
                 break;
             case MOVEMENT.UP:
-                pos.y = unit;
+                pos.z = unit;
                 auxIndex.j++;
                 break;
             case MOVEMENT.RIGHT:
@@ -65,47 +70,45 @@ public class Player : MonoBehaviour
                 auxIndex.i++;
                 break;
             case MOVEMENT.DOWN:
-                pos.y = -unit;
+                pos.z = -unit;
                 auxIndex.j--;
                 break;
             default:
                 break;
         }
 
-        if (!onCheckGridIndex(gridIndex)) return;
+        if (!onCheckGridIndex(auxIndex)) return;
 
+        inMovement = true;
         StartCoroutine(MoveLerp(transform.position + pos));
         gridIndex = auxIndex;
     }
 
-    private bool TryGetMovement(out MOVEMENT movement)
+    private MOVEMENT TryGetMovement()
     {
+        MOVEMENT movement = default;
+
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             movement = MOVEMENT.LEFT;
-            return true;
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             movement = MOVEMENT.UP;
-            return true;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             movement = MOVEMENT.RIGHT;
-            return true;
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             movement = MOVEMENT.DOWN;
-            return true;
         }
 
-        movement = default;
-        return false;
+        return movement;
     }
 
     private IEnumerator MoveLerp(Vector3 pos)
@@ -120,7 +123,9 @@ public class Player : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+
         transform.position = pos;
+        inMovement = false;
 
         yield return null;
     }
