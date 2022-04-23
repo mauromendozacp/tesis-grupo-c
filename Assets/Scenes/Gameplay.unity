@@ -345,6 +345,7 @@ MonoBehaviour:
   unit: 1
   player: {fileID: 1742715271}
   box: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}
+  floor: {fileID: 9210681700341581845, guid: f168892d9e4b1144487a56602b40d7b7, type: 3}
 --- !u!4 &2123253450
 Transform:
   m_ObjectHideFlags: 0
