@@ -31,9 +31,9 @@ public class Box : MonoBehaviour, IMovable
             j = (int)transform.position.z
         };
     }
-    public void TryMove(MOVEMENT movement)
+    public bool TryMove(MOVEMENT movement)
     {
-        if (inMovement) return;
+        if (inMovement) return false;
 
         Vector3 pos = Vector3.zero;
         GridIndex auxIndex = gridIndex;
@@ -60,11 +60,12 @@ public class Box : MonoBehaviour, IMovable
                 break;
         }
 
-        if (!onCheckGridIndex(auxIndex)) return;
+        if (!onCheckGridIndex(auxIndex)) return false;
 
         inMovement = true;
         StartCoroutine(MoveLerp(transform.position + pos));
         gridIndex = auxIndex;
+        return true;
     }
     #endregion
 

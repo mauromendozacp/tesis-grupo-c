@@ -88,7 +88,8 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out hit, 1))
         {
             IMovable movable = hit.transform.GetComponent<IMovable>();
-            movable?.TryMove(movement);
+
+            if (!(bool)(movable?.TryMove(movement))) return;
         }
 
         inMovement = true;

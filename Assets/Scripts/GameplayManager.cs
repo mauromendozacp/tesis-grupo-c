@@ -14,7 +14,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GridIndex gridIndex = default;
     [SerializeField] private float unit = 0f;
     [SerializeField] private Player player = null;
-    [SerializeField] private Box box = null; //FOR TESTING
+    [SerializeField] private GameObject box = null;
     #endregion
 
     #region ACTIONS
@@ -27,7 +27,9 @@ public class GameplayManager : MonoBehaviour
         onCheckGridIndex += CheckIndex;
 
         player.Init(onCheckGridIndex, unit);
-        box.Init(onCheckGridIndex, unit);
+
+        GameObject go = Instantiate(box, new Vector3(0, 0, 1), Quaternion.identity);
+        go.GetComponent<Box>().Init(onCheckGridIndex, unit);
     }
     #endregion
 
