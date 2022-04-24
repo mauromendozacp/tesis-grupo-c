@@ -11,15 +11,14 @@ public enum MOVEMENT
     DOWN
 }
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private int lives = 0;
     [SerializeField] private float speed = 0f;
     #endregion
 
     #region PRIVATE_FIELDS
-    private GridIndex gridIndex = default;
+    private PlayerModel model = null;
     private float unit = 0f;
     private bool inMovement = false;
     #endregion
@@ -42,6 +41,19 @@ public class Player : MonoBehaviour
 
         this.unit = unit;
     }
+
+    public void SetData(PlayerModel model)
+    {
+        this.model = model;
+    }
+
+    public void SetPositionUnit(GridIndex index)
+    {
+        Vector3 pos = transform.position;
+        pos.x = index.i * unit;
+        pos.z = index.j * unit;
+        transform.position = pos;
+    }
     #endregion
 
     #region PRIVATE_METHODS
@@ -54,7 +66,7 @@ public class Player : MonoBehaviour
 
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
-        GridIndex auxIndex = gridIndex;
+        GridIndex auxIndex = model.Index;
         RaycastHit hit;
 
         switch (movement)
@@ -88,13 +100,12 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out hit, 1))
         {
             IMovable movable = hit.transform.GetComponent<IMovable>();
-
-            if (!(bool)(movable?.TryMove(movement))) return;
+            movable?.TryMove(movement);
         }
 
         inMovement = true;
         StartCoroutine(MoveLerp(transform.position + pos));
-        gridIndex = auxIndex;
+        model.Index = auxIndex;
     }
 
     private MOVEMENT TryGetMovement()
