@@ -1,3 +1,6 @@
+using System;
+
+[Serializable]
 public class PlayerModel
 {
     #region PRIVATE_FIELDS

@@ -21,22 +21,32 @@ public class PlayerController : MonoBehaviour
     private PlayerModel model = null;
     private float unit = 0f;
     private bool inMovement = false;
+    private bool inputEnabled = true;
+    #endregion
+
+    #region PROPERTIES
+    public bool InputEnabled { get => inputEnabled; set => inputEnabled = value; }
+    public PlayerModel Model { get => model; }
     #endregion
 
     #region ACTIONS
     private Func<GridIndex, bool> onCheckGridIndex = null;
+    private Action<GridIndex> onChechIndexPlayer = null;
     #endregion
 
     #region UNITY_CALLS
     private void Update()
     {
+        if (!inputEnabled) return;
+
         Move();
     }
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Func<GridIndex, bool> onCheckGridIndex, float unit)
+    public void Init(Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
     {
+        this.onChechIndexPlayer = onChechIndexPlayer;
         this.onCheckGridIndex = onCheckGridIndex;
 
         this.unit = unit;
@@ -157,6 +167,7 @@ public class PlayerController : MonoBehaviour
 
         transform.position = pos;
         inMovement = false;
+        onChechIndexPlayer?.Invoke(model.Index);
 
         yield return null;
     }
