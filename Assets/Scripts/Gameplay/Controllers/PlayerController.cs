@@ -64,6 +64,12 @@ public class PlayerController : MonoBehaviour
         MOVEMENT movement = TryGetMovement();
         if (movement == MOVEMENT.NONE) return;
 
+        if (model.Turns <= 0)
+        {
+            Debug.Log("Sin turnos!");
+            return;
+        }
+
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
         GridIndex auxIndex = model.Index;
@@ -104,8 +110,9 @@ public class PlayerController : MonoBehaviour
         }
 
         inMovement = true;
-        StartCoroutine(MoveLerp(transform.position + pos));
         model.Index = auxIndex;
+        model.Turns--;
+        StartCoroutine(MoveLerp(transform.position + pos));
     }
 
     private MOVEMENT TryGetMovement()
