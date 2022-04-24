@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region ACTIONS
+    private GUIActions guiActions = null;
     private Func<GridIndex, bool> onCheckGridIndex = null;
     private Action<GridIndex> onChechIndexPlayer = null;
     #endregion
@@ -44,8 +45,9 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
+    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
     {
+        this.guiActions = guiActions;
         this.onChechIndexPlayer = onChechIndexPlayer;
         this.onCheckGridIndex = onCheckGridIndex;
 
@@ -55,6 +57,8 @@ public class PlayerController : MonoBehaviour
     public void SetData(PlayerModel model)
     {
         this.model = model;
+
+        SetTurns(model.Turns);
     }
 
     public void SetPositionUnit(GridIndex index)
@@ -121,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
         inMovement = true;
         model.Index = auxIndex;
-        model.Turns--;
+        SetTurns(model.Turns - 1);
         StartCoroutine(MoveLerp(transform.position + pos));
     }
 
@@ -170,6 +174,12 @@ public class PlayerController : MonoBehaviour
         onChechIndexPlayer?.Invoke(model.Index);
 
         yield return null;
+    }
+
+    private void SetTurns(int turns)
+    {
+        model.Turns = turns;
+        guiActions.onUpdateTurns?.Invoke(turns);
     }
     #endregion
 }
