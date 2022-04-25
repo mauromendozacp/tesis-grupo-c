@@ -69,40 +69,47 @@ public class GameplayManager : MonoBehaviour
     #region UNITY_CALLS
     private void Start()
     {
-        StartGamepleyUI();
+        StartGameplayUI();
+        SpawnGrid();
         SpawnPlayer();
-
-        GameObject go = Instantiate(box, new Vector3(0, 0, 1), Quaternion.identity);
-        go.GetComponent<Box>().Init(CheckIndex, unit);
-
-        for (int i = 0; i < gridIndex.i; i++)
-        {
-            for (int j = 0; j < gridIndex.j; j++)
-            {
-                Vector3 pos = new Vector3(gridIndex.i - 1 - i, -1, gridIndex.j - 1 - j);
-                Instantiate(floor, pos, Quaternion.identity);
-            }
-        }
     }
     #endregion
 
-    #region PRIVATE_FIELDS
-    private void StartGamepleyUI()
+    #region PRIVATE_METHODS
+    private void StartGameplayUI()
     {
         gameplayUI.Init();
     }
 
     private void SpawnPlayer()
     {
-        PlayerModel playerModel = new PlayerModel();
-        playerModel.Lives = 3;
-        playerModel.Turns = 10;
-        playerModel.Index = new GridIndex(3, 3);
+        PlayerModel playerModel = new PlayerModel
+        {
+            Lives = 3,
+            Turns = 10,
+            Index = new GridIndex(3, 3)
+        };
 
         playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
         playerController.Init(gameplayUI.GUIActions, CheckIndex, CheckIndexPlayer, unit);
         playerController.SetData(playerModel);
         playerController.SetPositionUnit(playerModel.Index);
+    }
+
+    private void SpawnGrid()
+    {
+        GameObject floorParent = new GameObject("Floor");
+        for (int i = 0; i < gridIndex.i; i++)
+        {
+            for (int j = 0; j < gridIndex.j; j++)
+            {
+                Vector3 pos = new Vector3(gridIndex.i - 1 - i, -1, gridIndex.j - 1 - j);
+                Instantiate(floor, pos, Quaternion.identity, floorParent.transform);
+            }
+        }
+
+        GameObject go = Instantiate(box, new Vector3(0, 0, 1), Quaternion.identity);
+        go.GetComponent<Box>().Init(CheckIndex, unit);
     }
 
     private bool CheckIndex(GridIndex index)
@@ -119,11 +126,10 @@ public class GameplayManager : MonoBehaviour
             return;
         }
 
-        if (playerController.Model.Turns <= 0)
-        {
-            playerController.InputEnabled = false;
-            Debug.Log("Lose");
-        }
+        if (playerController.Model.Turns > 0) return;
+
+        playerController.InputEnabled = false;
+        Debug.Log("Lose");
     }
     #endregion
 }
