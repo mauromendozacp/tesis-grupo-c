@@ -99,11 +99,12 @@ public class GameplayManager : MonoBehaviour
     private void SpawnGrid()
     {
         GameObject floorParent = new GameObject("Floor");
-        for (int i = 0; i < gridIndex.i; i++)
+
+        for (int i = gridIndex.i - 1; i >= 0; i--)
         {
-            for (int j = 0; j < gridIndex.j; j++)
+            for (int j = gridIndex.j - 1; j >= 0; j--)
             {
-                Vector3 pos = new Vector3(gridIndex.i - 1 - i, -1, gridIndex.j - 1 - j);
+                Vector3 pos = new Vector3(i, -1, j);
                 Instantiate(floor, pos, Quaternion.identity, floorParent.transform);
             }
         }
