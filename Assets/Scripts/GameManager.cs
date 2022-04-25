@@ -48,7 +48,7 @@ public struct GridIndex
     #endregion
 }
 
-public class GameplayManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private GridIndex gridIndex = default;
