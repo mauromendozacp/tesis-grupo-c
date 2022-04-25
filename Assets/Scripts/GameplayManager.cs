@@ -54,7 +54,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GridIndex gridIndex = default;
     [SerializeField] private GridIndex winIndex = default;
     [SerializeField] private float unit = 0f;
-    [SerializeField] private GameplayUI gameplayUI = null;
+    [SerializeField] private UIGameplay _uiGameplay = null;
 
     [Header("Prefabs Configuration"), Space]
     [SerializeField] private GameObject playerPrefab = null;
@@ -69,16 +69,16 @@ public class GameplayManager : MonoBehaviour
     #region UNITY_CALLS
     private void Start()
     {
-        StartGameplayUI();
+        StartUIGameplay();
         SpawnGrid();
         SpawnPlayer();
     }
     #endregion
 
     #region PRIVATE_METHODS
-    private void StartGameplayUI()
+    private void StartUIGameplay()
     {
-        gameplayUI.Init();
+        _uiGameplay.Init();
     }
 
     private void SpawnPlayer()
@@ -91,7 +91,7 @@ public class GameplayManager : MonoBehaviour
         };
 
         playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        playerController.Init(gameplayUI.GUIActions, CheckIndex, CheckIndexPlayer, unit);
+        playerController.Init(_uiGameplay.GUIActions, CheckIndex, CheckIndexPlayer, unit);
         playerController.SetData(playerModel);
         playerController.SetPositionUnit(playerModel.Index);
     }

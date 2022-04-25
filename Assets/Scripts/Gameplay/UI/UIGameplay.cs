@@ -7,7 +7,7 @@ public class GUIActions
     public Action<int> onUpdateTurns = null;
 }
 
-public class GameplayUI : MonoBehaviour
+public class UIGameplay : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private TextMeshProUGUI turnsText = null;
@@ -29,7 +29,7 @@ public class GameplayUI : MonoBehaviour
     }
     #endregion
 
-    #region PRIVATE_FIELDS
+    #region PRIVATE_METHODS
     private void SetTurnsText(int turns)
     {
         turnsText.text = "Turns: " + turns;

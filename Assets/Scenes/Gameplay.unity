@@ -517,7 +517,7 @@ MonoBehaviour:
     i: 0
     j: 0
   unit: 1
-  gameplayUI: {fileID: 598535457}
+  _uiGameplay: {fileID: 598535457}
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
   box: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}
   floor: {fileID: 9210681700341581845, guid: f168892d9e4b1144487a56602b40d7b7, type: 3}
