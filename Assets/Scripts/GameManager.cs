@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private LevelController levelController = null;
+    [SerializeField] private CameraController cameraController = null;
     [SerializeField] private UIGameplay uiGameplay = null;
     #endregion
 
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
     {
         uiGameplay.Init();
         LevelInit();
+        cameraController.Target = playerController.transform;
     }
 
     private void LevelInit()

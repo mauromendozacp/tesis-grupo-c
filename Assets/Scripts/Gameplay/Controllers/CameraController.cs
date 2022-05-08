@@ -1,11 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private float distance = 0f;
+    [SerializeField] private Vector2 distance = Vector2.zero;
+    #endregion
+
+    #region PROPERTIES
+    public Transform Target { get; set; } = null;
     #endregion
 
     #region UNITY_CALLS
@@ -16,9 +18,12 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 distancePos = Quaternion.AngleAxis(Input.GetAxis("Mouse X") * 2f, Vector3.up) * transform.position;
-        transform.position = distancePos;
-        transform.LookAt(Vector3.zero);
+        if (Target != null)
+        {
+            Vector3 distancePos = Target.position - new Vector3(0, distance.y, distance.x);
+            transform.position = distancePos;
+            transform.LookAt(Target.position);
+        }
     }
     #endregion
 }
