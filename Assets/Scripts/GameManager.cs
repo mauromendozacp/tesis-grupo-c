@@ -51,15 +51,8 @@ public struct GridIndex
 public class GameManager : MonoBehaviour
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private GridIndex gridIndex = default;
-    [SerializeField] private GridIndex winIndex = default;
-    [SerializeField] private float unit = 0f;
+    [SerializeField] private LevelController levelController = null;
     [SerializeField] private UIGameplay uiGameplay = null;
-
-    [Header("Prefabs"), Space]
-    [SerializeField] private GameObject playerPrefab = null;
-    [SerializeField] private GameObject box = null;
-    [SerializeField] private GameObject floor = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -73,61 +66,22 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    #region INIT
+    #region PRIVATE_METHODS
     private void Init()
     {
-        StartUIGameplay();
-        SpawnGrid();
-        SpawnPlayer();
-    }
-    #endregion
-
-    #region PRIVATE_METHODS
-    private void StartUIGameplay()
-    {
         uiGameplay.Init();
+        LevelInit();
     }
 
-    private void SpawnPlayer()
+    private void LevelInit()
     {
-        PlayerModel playerModel = new PlayerModel
-        {
-            Lives = 3,
-            Turns = 10,
-            Index = new GridIndex(3, 3)
-        };
-
-        playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        playerController.Init(uiGameplay.GUIActions, CheckIndex, CheckIndexPlayer, unit);
-        playerController.SetData(playerModel);
-        playerController.SetPositionUnit(playerModel.Index);
-    }
-
-    private void SpawnGrid()
-    {
-        GameObject floorParent = new GameObject("Floor");
-
-        for (int i = gridIndex.i - 1; i >= 0; i--)
-        {
-            for (int j = gridIndex.j - 1; j >= 0; j--)
-            {
-                Vector3 pos = new Vector3(i, -1, j);
-                Instantiate(floor, pos, Quaternion.identity, floorParent.transform);
-            }
-        }
-
-        GameObject go = Instantiate(box, new Vector3(0, 0, 1), Quaternion.identity);
-        go.GetComponent<Box>().Init(CheckIndex, unit);
-    }
-
-    private bool CheckIndex(GridIndex index)
-    {
-        return index.i >= 0 && index.j >= 0 && index.i < gridIndex.i && index.j < gridIndex.j;
+        levelController.Init();
+        playerController = levelController.SpawnPlayer(uiGameplay.GUIActions, CheckIndexPlayer);
     }
 
     private void CheckIndexPlayer(GridIndex index)
     {
-        if (index == winIndex)
+        if (index == levelController.WinIndex)
         {
             playerController.InputEnabled = false;
             Debug.Log("Win");
