@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (playerController.Model.Turns > 0) return;
+        if (playerController.CheckTurns()) return;
 
         playerController.InputEnabled = false;
         Debug.Log("Lose");
