@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelController levelController = null;
     [SerializeField] private CameraController cameraController = null;
     [SerializeField] private UIGameplay uiGameplay = null;
+
+    [Header("Debug Settings")]
+    [SerializeField] private bool playerUnlimitedTurns = false;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -89,6 +92,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("Win");
             return;
         }
+
+        if (playerUnlimitedTurns) return;
 
         if (playerController.CheckTurns()) return;
 

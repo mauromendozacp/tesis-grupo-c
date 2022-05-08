@@ -627,6 +627,7 @@ MonoBehaviour:
   levelController: {fileID: 1854585534}
   cameraController: {fileID: 963194229}
   uiGameplay: {fileID: 598535457}
+  playerUnlimitedTurns: 0
 --- !u!4 &2123253450
 Transform:
   m_ObjectHideFlags: 0

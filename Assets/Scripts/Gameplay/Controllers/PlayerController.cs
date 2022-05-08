@@ -15,9 +15,6 @@ public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
-
-    [Header("Debug Settings")]
-    [SerializeField] private bool turnsUnlimited = false;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -74,8 +71,6 @@ public class PlayerController : MonoBehaviour
 
     public bool CheckTurns()
     {
-        if (turnsUnlimited) return true;
-
         if (model.Turns > 0) return true;
 
         return false;
@@ -89,12 +84,6 @@ public class PlayerController : MonoBehaviour
 
         MOVEMENT movement = TryGetMovement();
         if (movement == MOVEMENT.NONE) return;
-
-        if (model.Turns <= 0)
-        {
-            Debug.Log("Sin turnos!");
-            return;
-        }
 
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
