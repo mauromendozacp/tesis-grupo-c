@@ -116,6 +116,8 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
+        transform.forward = direction;
+
         if (!onCheckGridIndex(auxIndex)) return;
 
         if (Physics.Raycast(transform.position, direction, out hit, 1))
