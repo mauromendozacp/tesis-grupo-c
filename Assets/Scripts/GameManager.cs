@@ -97,7 +97,8 @@ public class GameManager : MonoBehaviour
 
         if (playerController.CheckTurns()) return;
 
-        playerController.InputEnabled = false;
+        //playerController.InputEnabled = false; TODO Re enable when lose screen/popup is added + handle restart logic
+        playerController.Respawn();
         Debug.Log("Lose");
     }
     #endregion

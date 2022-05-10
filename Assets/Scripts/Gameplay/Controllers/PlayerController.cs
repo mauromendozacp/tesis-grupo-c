@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     #region PRIVATE_FIELDS
     private PlayerModel model = null;
+    private GridIndex spawGridIndex = default;
     private float unit = 0f;
     private bool inMovement = false;
     private bool inputEnabled = true;
@@ -59,10 +60,12 @@ public class PlayerController : MonoBehaviour
         this.model = model;
 
         SetTurns(model.Turns);
+        model.TurnsTotal = model.Turns;
     }
 
     public void SetPositionUnit(GridIndex index)
     {
+        spawGridIndex = index;
         Vector3 pos = transform.position;
         pos.x = index.i * unit;
         pos.z = index.j * unit;
@@ -71,9 +74,15 @@ public class PlayerController : MonoBehaviour
 
     public bool CheckTurns()
     {
-        if (model.Turns > 0) return true;
+        return model.Turns > 0;
+    }
 
-        return false;
+    public void Respawn()
+    {
+        transform.forward = Vector3.forward;
+        model.Index = spawGridIndex;
+        SetPositionUnit(spawGridIndex);
+        SetTurns(model.TurnsTotal);
     }
     #endregion
 
