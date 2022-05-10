@@ -581,6 +581,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
   box: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}
   floor: {fileID: 9210681700341581845, guid: f168892d9e4b1144487a56602b40d7b7, type: 3}
+  lives: 3
+  turns: 10
+  spawn:
+    i: 3
+    j: 3
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0
@@ -606,7 +611,7 @@ GameObject:
   - component: {fileID: 2123253450}
   - component: {fileID: 2123253449}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

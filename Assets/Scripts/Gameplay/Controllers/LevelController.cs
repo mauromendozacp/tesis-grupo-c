@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -15,6 +14,11 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private GameObject box = null;
     [SerializeField] private GameObject floor = null;
+
+    [Header("Player"), Space]
+    [SerializeField] private int lives = 0;
+    [SerializeField] private int turns = 0;
+    [SerializeField] private GridIndex spawn = default;
     #endregion
 
     #region PROPERTIES
@@ -31,9 +35,9 @@ public class LevelController : MonoBehaviour
     {
         PlayerModel playerModel = new PlayerModel
         {
-            Lives = 3,
-            Turns = 10,
-            Index = new GridIndex(3, 3)
+            Lives = lives,
+            Turns = turns,
+            Index = spawn
         };
 
         PlayerController playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
