@@ -88,7 +88,8 @@ public class GameManager : MonoBehaviour
     {
         if (index == levelController.WinIndex)
         {
-            playerController.InputEnabled = false;
+            //playerController.InputEnabled = false;
+            playerController.Respawn();
             Debug.Log("Win");
             return;
         }

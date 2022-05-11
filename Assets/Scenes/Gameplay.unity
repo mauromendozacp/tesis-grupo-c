@@ -665,8 +665,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   environmentHolder: {fileID: 1160122720}
   gridIndex:
-    i: 5
-    j: 5
+    i: 10
+    j: 10
   winIndex:
     i: 0
     j: 0
@@ -674,6 +674,11 @@ MonoBehaviour:
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
   box: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}
   floor: {fileID: 9210681700341581845, guid: f168892d9e4b1144487a56602b40d7b7, type: 3}
+  wardrobe: {fileID: 805537844417677292, guid: 45b6674df3d83764d8312dee57b44de1, type: 3}
+  lamp: {fileID: 805537844417677292, guid: 8bf587d79289a5f4184277aef2b959ed, type: 3}
+  debris: {fileID: 805537844417677292, guid: 85c7c8c76ce073f4e8af9e4118e84397, type: 3}
+  brokenScreen: {fileID: 805537844417677292, guid: 3b1d0e55c2afda14586d6d72a750b0eb, type: 3}
+  laptopTable: {fileID: 805537844417677292, guid: 594a242fc08b8c44bbd6bf7e8700e721, type: 3}
   lives: 3
   turns: 10
   spawn:

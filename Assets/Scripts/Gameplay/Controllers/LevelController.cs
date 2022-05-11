@@ -14,6 +14,11 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private GameObject box = null;
     [SerializeField] private GameObject floor = null;
+    [SerializeField] private GameObject wardrobe = null;
+    [SerializeField] private GameObject lamp = null;
+    [SerializeField] private GameObject debris = null;
+    [SerializeField] private GameObject brokenScreen = null;
+    [SerializeField] private GameObject laptopTable = null;
 
     [Header("Player"), Space]
     [SerializeField] private int lives = 0;
@@ -64,8 +69,13 @@ public class LevelController : MonoBehaviour
             }
         }
 
-        GameObject go = Instantiate(box, new Vector3(0, 0, 1), Quaternion.identity, environmentHolder);
+        GameObject go = Instantiate(box, new Vector3(2, 0, 4), Quaternion.identity, environmentHolder);
         go.GetComponent<Box>().Init(CheckIndex, unit);
+
+        Instantiate(wardrobe, new Vector3(5, -0.5f, 4), Quaternion.identity, environmentHolder);
+        Instantiate(lamp, new Vector3(0, -0.5f, 8), Quaternion.identity, environmentHolder);
+        Instantiate(lamp, new Vector3(1, -0.5f, 8), Quaternion.identity, environmentHolder);
+        Instantiate(laptopTable, new Vector3(9, -0.5f, 9), Quaternion.identity, environmentHolder);
     }
 
     private bool CheckIndex(GridIndex index)
