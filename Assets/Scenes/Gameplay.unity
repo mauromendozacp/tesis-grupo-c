@@ -672,18 +672,15 @@ MonoBehaviour:
     j: 0
   unit: 1
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
-  box: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}
-  floor: {fileID: 9210681700341581845, guid: f168892d9e4b1144487a56602b40d7b7, type: 3}
-  wardrobe: {fileID: 805537844417677292, guid: 45b6674df3d83764d8312dee57b44de1, type: 3}
-  lamp: {fileID: 805537844417677292, guid: 8bf587d79289a5f4184277aef2b959ed, type: 3}
-  debris: {fileID: 805537844417677292, guid: 85c7c8c76ce073f4e8af9e4118e84397, type: 3}
-  brokenScreen: {fileID: 805537844417677292, guid: 3b1d0e55c2afda14586d6d72a750b0eb, type: 3}
-  laptopTable: {fileID: 805537844417677292, guid: 594a242fc08b8c44bbd6bf7e8700e721, type: 3}
-  lives: 3
-  turns: 10
-  spawn:
-    i: 3
-    j: 3
+  prefabs:
+  - {fileID: 11400000, guid: 3b35d0ad38869484cb6273da722ad2e7, type: 2}
+  - {fileID: 11400000, guid: 104971b85e8b84745a9fdceb6feb6516, type: 2}
+  - {fileID: 11400000, guid: 7fd938a1cf7944242a60147a5433a088, type: 2}
+  - {fileID: 11400000, guid: b1f14c30dd8f4024c8556f52910a8ccc, type: 2}
+  - {fileID: 11400000, guid: 7e8472af026ba2c4290a213892822a5e, type: 2}
+  - {fileID: 11400000, guid: 77bdfc37931ac4e46a01e61f6e14f09d, type: 2}
+  - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
+  levelJson: {fileID: 4900000, guid: e7d026ef099c5c64bbb03e5b8e3f59ca, type: 3}
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0

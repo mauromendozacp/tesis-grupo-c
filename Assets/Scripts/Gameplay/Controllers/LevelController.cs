@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -6,81 +5,109 @@ public class LevelController : MonoBehaviour
     #region EXPOSED_FIELDS
     [Header("General Info")]
     [SerializeField] private Transform environmentHolder = null;
-    [SerializeField] private GridIndex gridIndex = default;
-    [SerializeField] private GridIndex winIndex = default;
     [SerializeField] private float unit = 0f;
 
-    [Header("Prefabs"), Space]
+    [Header("Data"), Space]
     [SerializeField] private GameObject playerPrefab = null;
-    [SerializeField] private GameObject box = null;
-    [SerializeField] private GameObject floor = null;
-    [SerializeField] private GameObject wardrobe = null;
-    [SerializeField] private GameObject lamp = null;
-    [SerializeField] private GameObject debris = null;
-    [SerializeField] private GameObject brokenScreen = null;
-    [SerializeField] private GameObject laptopTable = null;
+    [SerializeField] private PrefabEntity[] prefabs = null;
+    [SerializeField] private TextAsset levelJson = null;
+    #endregion
 
-    [Header("Player"), Space]
-    [SerializeField] private int lives = 0;
-    [SerializeField] private int turns = 0;
-    [SerializeField] private GridIndex spawn = default;
+    #region PRIVATE_FIELDS
+    private LevelModel levelModel = null;
+    private PlayerController playerController = null;
+    private GridIndex winIndex = default;
+
+    private GUIActions guiActions = null;
     #endregion
 
     #region PROPERTIES
-    public GridIndex WinIndex { get => winIndex; }
+    public PlayerController PlayerController { get => playerController; }
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init()
+    public void Init(GUIActions guiActions)
     {
-        SpawnGrid();
+        this.guiActions = guiActions;
     }
 
-    public PlayerController SpawnPlayer(GUIActions guiActions, Action<GridIndex> onCheckIndexPlayer)
+    public void StartGrid()
     {
-        PlayerModel playerModel = new PlayerModel
-        {
-            Lives = lives,
-            Turns = turns,
-            Index = spawn
-        };
-
-        PlayerController playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        playerController.Init(guiActions, CheckIndex, onCheckIndexPlayer, unit);
-        playerController.SetData(playerModel);
-        playerController.SetPositionUnit(playerModel.Index);
-
-        return playerController;
+        levelModel = JsonUtility.FromJson<LevelModel>(levelJson.text);
+        SpawnGrid();
+        SpawnPlayer();
     }
     #endregion
 
     #region PRIVATE_METHODS
+    private void SpawnPlayer()
+    {
+        playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
+        playerController.Init(guiActions, CheckIndexPlayer, unit);
+        playerController.SetData(levelModel.PlayerModel);
+        playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
+    }
+
     private void SpawnGrid()
     {
-        GameObject floorParent = new GameObject("Floor");
-        floorParent.transform.parent = environmentHolder;
-
-        for (int i = gridIndex.i - 1; i >= 0; i--)
+        winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
+        for (int i = 0; i < levelModel.Layers.Length; i++)
         {
-            for (int j = gridIndex.j - 1; j >= 0; j--)
+            GameObject layer = new GameObject("Layer " + (i + 1));
+            layer.transform.parent = environmentHolder;
+            int posY = levelModel.Layers[i].LayerIndex;
+
+            for (int j = 0; j < levelModel.Layers[i].Models.Length; j++)
             {
-                Vector3 pos = new Vector3(i, -1, j);
-                Instantiate(floor, pos, Quaternion.identity, floorParent.transform);
+                EntityModel entityModel = levelModel.Layers[i].Models[j];
+                Vector3 pos = new Vector3(entityModel.I, posY, entityModel.J) * unit;
+
+                if (entityModel.Id != "floor" && entityModel.Id != "box")
+                {
+                    pos.y -= unit / 2;
+                }
+
+                GameObject go = Instantiate(GetPrefab(entityModel.Id), pos, Quaternion.identity, layer.transform);
+
+                
+                if (entityModel.Id == "box")
+                {
+                    go.GetComponent<Box>().Init(unit);
+                }
+            }
+        }
+    }
+
+    private GameObject GetPrefab(string id)
+    {
+        for (int i = 0; i < prefabs.Length; i++)
+        {
+            if (prefabs[i].Id == id)
+            {
+                return prefabs[i].Prefab;
             }
         }
 
-        GameObject go = Instantiate(box, new Vector3(2, 0, 4), Quaternion.identity, environmentHolder);
-        go.GetComponent<Box>().Init(CheckIndex, unit);
-
-        Instantiate(wardrobe, new Vector3(5, -0.5f, 4), Quaternion.identity, environmentHolder);
-        Instantiate(lamp, new Vector3(0, -0.5f, 8), Quaternion.identity, environmentHolder);
-        Instantiate(lamp, new Vector3(1, -0.5f, 8), Quaternion.identity, environmentHolder);
-        Instantiate(laptopTable, new Vector3(9, -0.5f, 9), Quaternion.identity, environmentHolder);
+        return null;
     }
 
-    private bool CheckIndex(GridIndex index)
+    private void CheckIndexPlayer(GridIndex index)
     {
-        return index.i >= 0 && index.j >= 0 && index.i < gridIndex.i && index.j < gridIndex.j;
+        if (index == winIndex)
+        {
+            playerController.InputEnabled = false;
+            playerController.Respawn();
+            Debug.Log("Win");
+            return;
+        }
+
+        //if (playerUnlimitedTurns) return;
+
+        if (playerController.CheckTurns()) return;
+
+        //playerController.InputEnabled = false; TODO Re enable when lose screen/popup is added + handle restart logic
+        playerController.Respawn();
+        Debug.Log("Lose");
     }
     #endregion
 }

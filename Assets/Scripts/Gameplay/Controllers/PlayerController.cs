@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PRIVATE_FIELDS
-    private PlayerModel model = null;
+    private PlayerData data = null;
     private GridIndex spawGridIndex = default;
     private float unit = 0f;
     private bool inMovement = false;
@@ -27,12 +27,10 @@ public class PlayerController : MonoBehaviour
 
     #region PROPERTIES
     public bool InputEnabled { get => inputEnabled; set => inputEnabled = value; }
-    public PlayerModel Model { get => model; }
     #endregion
 
     #region ACTIONS
     private GUIActions guiActions = null;
-    private Func<GridIndex, bool> onCheckGridIndex = null;
     private Action<GridIndex> onChechIndexPlayer = null;
     #endregion
 
@@ -46,21 +44,23 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
+    public void Init(GUIActions guiActions, Action<GridIndex> onChechIndexPlayer, float unit)
     {
         this.guiActions = guiActions;
         this.onChechIndexPlayer = onChechIndexPlayer;
-        this.onCheckGridIndex = onCheckGridIndex;
 
         this.unit = unit;
+
+        data = new PlayerData();
     }
 
     public void SetData(PlayerModel model)
     {
-        this.model = model;
-
+        data.Lives = model.Lives;
+        data.TotalTurns = model.Turns;
         SetTurns(model.Turns);
-        model.TurnsTotal = model.Turns;
+        data.SpawnIndex = new GridIndex(model.I, model.J);
+        data.CurrentIndex = data.SpawnIndex;
     }
 
     public void SetPositionUnit(GridIndex index)
@@ -74,15 +74,14 @@ public class PlayerController : MonoBehaviour
 
     public bool CheckTurns()
     {
-        return model.Turns > 0;
+        return data.CurrentTurns > 0;
     }
 
     public void Respawn()
     {
         transform.forward = Vector3.forward;
-        model.Index = spawGridIndex;
         SetPositionUnit(spawGridIndex);
-        SetTurns(model.TurnsTotal);
+        SetTurns(data.TotalTurns);
     }
     #endregion
 
@@ -96,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
-        GridIndex auxIndex = model.Index;
+        GridIndex auxIndex = data.CurrentIndex;
         RaycastHit hit;
 
         switch (movement)
@@ -127,8 +126,6 @@ public class PlayerController : MonoBehaviour
 
         transform.forward = direction;
 
-        if (!onCheckGridIndex(auxIndex)) return;
-
         if (Physics.Raycast(transform.position, direction, out hit, 1))
         {
             IMovable movable = hit.transform.GetComponent<IMovable>();
@@ -136,9 +133,11 @@ public class PlayerController : MonoBehaviour
         }
 
         inMovement = true;
-        model.Index = auxIndex;
-        SetTurns(model.Turns - 1);
+        data.CurrentIndex = auxIndex;
+        SetTurns(data.CurrentTurns - 1);
         StartCoroutine(MoveLerp(transform.position + pos));
+
+        Debug.Log("i:" + data.CurrentIndex.i + ", j: " + data.CurrentIndex.j);
     }
 
     private MOVEMENT TryGetMovement()
@@ -183,14 +182,14 @@ public class PlayerController : MonoBehaviour
 
         transform.position = pos;
         inMovement = false;
-        onChechIndexPlayer?.Invoke(model.Index);
+        onChechIndexPlayer?.Invoke(data.CurrentIndex);
 
         yield return null;
     }
 
     private void SetTurns(int turns)
     {
-        model.Turns = turns;
+        data.CurrentTurns = turns;
         guiActions.onUpdateTurns?.Invoke(turns);
     }
     #endregion

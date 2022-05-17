@@ -59,14 +59,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool playerUnlimitedTurns = false;
     #endregion
 
-    #region PRIVATE_FIELDS
-    private PlayerController playerController = null;
-    #endregion
-
     #region UNITY_CALLS
     private void Start()
     {
-       Init();
+        Init();
+        StartGame();
     }
     #endregion
 
@@ -74,33 +71,13 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         uiGameplay.Init();
-        LevelInit();
-        cameraController.Target = playerController.transform;
+        levelController.Init(uiGameplay.GUIActions);
     }
 
-    private void LevelInit()
+    private void StartGame()
     {
-        levelController.Init();
-        playerController = levelController.SpawnPlayer(uiGameplay.GUIActions, CheckIndexPlayer);
-    }
-
-    private void CheckIndexPlayer(GridIndex index)
-    {
-        if (index == levelController.WinIndex)
-        {
-            //playerController.InputEnabled = false;
-            playerController.Respawn();
-            Debug.Log("Win");
-            return;
-        }
-
-        if (playerUnlimitedTurns) return;
-
-        if (playerController.CheckTurns()) return;
-
-        //playerController.InputEnabled = false; TODO Re enable when lose screen/popup is added + handle restart logic
-        playerController.Respawn();
-        Debug.Log("Lose");
+        levelController.StartGrid();
+        cameraController.Target = levelController.PlayerController.transform;
     }
     #endregion
 }
