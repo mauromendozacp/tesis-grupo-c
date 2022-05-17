@@ -30,6 +30,7 @@ public class Box : MonoBehaviour, IMovable
         if (inMovement) return false;
 
         Vector3 pos = Vector3.zero;
+        Vector3 direction = Vector3.zero;
         GridIndex auxIndex = gridIndex;
 
         switch (movement)
@@ -37,22 +38,36 @@ public class Box : MonoBehaviour, IMovable
             case MOVEMENT.LEFT:
                 pos.x = -unit;
                 auxIndex.i--;
+                direction = Vector3.left;
                 break;
             case MOVEMENT.UP:
                 pos.z = unit;
                 auxIndex.j++;
+                direction = Vector3.forward;
                 break;
             case MOVEMENT.RIGHT:
                 pos.x = unit;
                 auxIndex.i++;
+                direction = Vector3.right;
                 break;
             case MOVEMENT.DOWN:
                 pos.z = -unit;
                 auxIndex.j--;
+                direction = Vector3.back;
                 break;
             default:
                 break;
         }
+
+        if (Physics.Raycast(transform.position, direction, out var hit, 1))
+        {
+            IMovable movable = hit.transform.GetComponent<IMovable>();
+
+            if (movable == null) return false;
+
+            if (!movable.TryMove(movement)) return false;
+        }
+
 
         inMovement = true;
         StartCoroutine(MoveLerp(transform.position + pos));

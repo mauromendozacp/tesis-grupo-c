@@ -96,7 +96,6 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
         GridIndex auxIndex = data.CurrentIndex;
-        RaycastHit hit;
 
         switch (movement)
         {
@@ -126,10 +125,13 @@ public class PlayerController : MonoBehaviour
 
         transform.forward = direction;
 
-        if (Physics.Raycast(transform.position, direction, out hit, 1))
+        if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
             IMovable movable = hit.transform.GetComponent<IMovable>();
-            if (!(bool)movable?.TryMove(movement)) return;
+
+            if (movable == null) return;
+
+            if (!movable.TryMove(movement)) return;
         }
 
         inMovement = true;
