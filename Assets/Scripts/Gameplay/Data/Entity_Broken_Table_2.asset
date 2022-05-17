@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ad50ca7eacb7a4686e5c2d4f5d4177, type: 3}
+  m_Name: Entity_Broken_Table_2
+  m_EditorClassIdentifier: 
+  id: broken_table_2
+  prefab: {fileID: 4296941715921910139, guid: 34d4f4c11890d964f88936b63e997f14, type: 3}

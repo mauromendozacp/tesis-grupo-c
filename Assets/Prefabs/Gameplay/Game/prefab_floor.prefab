@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9210681700341581847}
   - component: {fileID: 9210681700341581846}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: prefab_floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
