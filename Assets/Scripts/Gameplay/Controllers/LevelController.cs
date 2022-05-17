@@ -70,7 +70,7 @@ public class LevelController : MonoBehaviour
                 GameObject go = Instantiate(GetPrefab(entityModel.Id), pos, Quaternion.identity, layer.transform);
 
                 
-                if (entityModel.Id == "box")
+                if (entityModel.Id == "chair_1")
                 {
                     go.GetComponent<Box>().Init(unit);
                 }
