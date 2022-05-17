@@ -62,7 +62,7 @@ public class LevelController : MonoBehaviour
                 EntityModel entityModel = levelModel.Layers[i].Models[j];
                 Vector3 pos = new Vector3(entityModel.I, posY, entityModel.J) * unit;
 
-                if (entityModel.Id != "floor" && entityModel.Id != "box")
+                if (entityModel.Id != "floor" && entityModel.Id != "chair_1")
                 {
                     pos.y -= unit / 2;
                 }
