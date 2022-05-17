@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Broken_Screen
   m_EditorClassIdentifier: 
   id: broken_scren
-  prefab: {fileID: 805537844417677292, guid: 3b1d0e55c2afda14586d6d72a750b0eb, type: 3}
+  prefab: {fileID: 1934106982517400656, guid: 99e9eb2a766e420418df683f2631ed6f, type: 3}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Tall_Locker
   m_EditorClassIdentifier: 
   id: tall_locker
-  prefab: {fileID: 2749355675683718100, guid: a64e5e91aba8c7f418f3deb81b4e8c64, type: 3}
+  prefab: {fileID: 764237794167753629, guid: 3d3659a07e1e5be4285f0f9f20473bff, type: 3}

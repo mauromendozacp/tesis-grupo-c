@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Debris
   m_EditorClassIdentifier: 
   id: debris
-  prefab: {fileID: 805537844417677292, guid: 85c7c8c76ce073f4e8af9e4118e84397, type: 3}
+  prefab: {fileID: 7943441126575130569, guid: c6efa1b043be38247aac24cd48bb7628, type: 3}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Table_2
   m_EditorClassIdentifier: 
   id: table_2
-  prefab: {fileID: 677772440467759963, guid: eb3891e9e15f990438c375d26c4783d4, type: 3}
+  prefab: {fileID: 5797428111900852914, guid: 3fa45a460fd738d429183185f622e2e7, type: 3}

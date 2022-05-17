@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Laptop_Table
   m_EditorClassIdentifier: 
   id: laptop_table
-  prefab: {fileID: 805537844417677292, guid: 594a242fc08b8c44bbd6bf7e8700e721, type: 3}
+  prefab: {fileID: 177229425617981948, guid: 06ae173fcfb679f48bd9c86b7ac6f7f1, type: 3}

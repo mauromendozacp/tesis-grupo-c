@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Wardrobe
   m_EditorClassIdentifier: 
   id: wardrobe
-  prefab: {fileID: 805537844417677292, guid: 45b6674df3d83764d8312dee57b44de1, type: 3}
+  prefab: {fileID: 7568943533310386451, guid: dfc25977d5c3fa4498af3709e4f7f896, type: 3}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Chair_2
   m_EditorClassIdentifier: 
   id: chair_2
-  prefab: {fileID: 8301034183816297505, guid: b25a11cca6f19454fa9748fb12920fa4, type: 3}
+  prefab: {fileID: 2172840302981943864, guid: 61aa96ead014f754a8aef5ef00ea64d3, type: 3}

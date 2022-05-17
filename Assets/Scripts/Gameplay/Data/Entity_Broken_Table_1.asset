@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Entity_Broken_Table_1
   m_EditorClassIdentifier: 
   id: broken_table_1
-  prefab: {fileID: 1212979641644125974, guid: c0b187661f513d0489acb23561a7cefd, type: 3}
+  prefab: {fileID: 4128862834446567397, guid: acd280e144bbfc14daa90f897b9908d7, type: 3}
