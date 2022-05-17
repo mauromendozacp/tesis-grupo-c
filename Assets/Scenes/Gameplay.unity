@@ -664,12 +664,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentHolder: {fileID: 1160122720}
-  gridIndex:
-    i: 10
-    j: 10
-  winIndex:
-    i: 0
-    j: 0
   unit: 1
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
   prefabs:

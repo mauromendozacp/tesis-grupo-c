@@ -301,112 +301,117 @@
             "models":
             [
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 0
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 0
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 1
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
+                    "i": 4,
+                    "j": 1
+                },
+                {
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 2
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 2
                 },
                 {
-                    "id": "box",
+                    "id": "chair_1",
                     "i": 3,
                     "j": 2
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 2
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 3
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 3
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 0,
                     "j": 4
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 1,
                     "j": 4
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 4
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 4
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 5,
                     "j": 4
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 0,
                     "j": 5
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 0,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 1,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 2,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 4,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 5,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 6,
                     "j": 6
                 },
                 {
-                    "id": "wardrobe",
+                    "id": "laptop_table",
                     "i": 3,
                     "j": 7
                 }

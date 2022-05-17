@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7ad50ca7eacb7a4686e5c2d4f5d4177, type: 3}
-  m_Name: Entity_Box
+  m_Name: Entity_Chair_1
   m_EditorClassIdentifier: 
-  id: box
+  id: chair_1
   prefab: {fileID: 8749029805330649669, guid: 1ed6ced911cd69e4ba2395d0a17e2b5a, type: 3}

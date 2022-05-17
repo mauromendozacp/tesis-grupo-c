@@ -95,7 +95,7 @@ public class LevelController : MonoBehaviour
     {
         if (index == winIndex)
         {
-            playerController.InputEnabled = false;
+            //playerController.InputEnabled = false;
             playerController.Respawn();
             Debug.Log("Win");
             return;
