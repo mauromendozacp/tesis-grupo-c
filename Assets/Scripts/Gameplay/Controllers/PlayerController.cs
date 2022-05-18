@@ -98,6 +98,7 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
         GridIndex auxIndex = data.CurrentIndex;
+        bool validMove = false;
 
         switch (movement)
         {
@@ -131,10 +132,27 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
             IMovable movable = hit.transform.GetComponent<IMovable>();
+            IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 
-            if (movable == null) return;
+            if (movable != null)
+            {
+                if (movable.TryMove(movement))
+                    validMove = true;
+            }
 
-            if (!movable.TryMove(movement)) return;
+            if (jumpable != null)
+            {
+                if (jumpable.TryJump(movement))
+                {
+                    validMove = true;
+                    pos *= 2;
+                }
+            }
+
+            if (!validMove)
+            {
+                return;
+            }
         }
 
         inMovement = true;

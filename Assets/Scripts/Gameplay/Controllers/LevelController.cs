@@ -81,6 +81,9 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.NO_MOVABLE:
                         break;
+                    case ENTITY_TYPE.JUMPABLE:
+                        go.GetComponent<JumpableController>().Init(CheckIndex);
+                        break;
                     default:
                         break;
                 }

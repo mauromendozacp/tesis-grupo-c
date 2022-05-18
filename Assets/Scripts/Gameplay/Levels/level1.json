@@ -5,7 +5,7 @@
   "limitJ": 15,
   "playerModel": {
     "lives": 3,
-    "turns": 10,
+    "turns": 100,
     "i": 6,
     "j": 0
   },
@@ -888,8 +888,8 @@
           }
         },
         {
-          "id": "laptop_table",
-          "type": 1,
+          "id": "broken_table_2",
+          "type": 2,
           "index": {
             "i": 4,
             "j": 8

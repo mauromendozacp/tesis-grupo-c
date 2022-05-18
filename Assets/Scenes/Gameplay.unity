@@ -675,6 +675,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7e8472af026ba2c4290a213892822a5e, type: 2}
   - {fileID: 11400000, guid: 77bdfc37931ac4e46a01e61f6e14f09d, type: 2}
   - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
+  - {fileID: 11400000, guid: efe9ae59957f5f04e8e553914a77d065, type: 2}
   levelJson: {fileID: 4900000, guid: e7d026ef099c5c64bbb03e5b8e3f59ca, type: 3}
 --- !u!4 &1854585535
 Transform:
