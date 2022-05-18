@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class TrapController : MonoBehaviour
+public class TrapController : PropController
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float activeTrapDelay = 0f;
@@ -35,10 +35,12 @@ public class TrapController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Action onActive, Action onRestart)
+    public void Init(Action onActive, Action onRestart, Vector3 spawnPos)
     {
         this.onActive = onActive;
         this.onRestart = onRestart;
+
+        SetSpawnIndex(spawnPos);
     }
 
     public void ActiveTrap(GameObject obj)
@@ -50,10 +52,12 @@ public class TrapController : MonoBehaviour
         }));
     }
 
-    public void Restart()
+    override public void Restart()
     {
         model.SetActive(true);
         on = false;
+
+        base.Restart();
     }
     #endregion
 
