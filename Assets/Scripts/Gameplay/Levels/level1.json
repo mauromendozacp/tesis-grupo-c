@@ -912,8 +912,8 @@
           }
         },
         {
-          "id": "broken_table_2",
-          "type": 3,
+          "id": "laptop_table",
+          "type": 1,
           "index": {
             "i": 4,
             "j": 8
@@ -1061,6 +1061,14 @@
           "index": {
             "i": 3,
             "j": 14
+          }
+        },
+        {
+          "id": "broken_table_2",
+          "type": 3,
+          "index": {
+            "i": 6,
+            "j": 11
           }
         }
       ]
