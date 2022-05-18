@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -9,6 +10,7 @@ public class LevelController : MonoBehaviour
 
     [Header("Data"), Space]
     [SerializeField] private GameObject playerPrefab = null;
+    [SerializeField] private GameObject winPrefab = null;
     [SerializeField] private PrefabEntity[] prefabs = null;
     [SerializeField] private TextAsset levelJson = null;
     #endregion
@@ -17,8 +19,11 @@ public class LevelController : MonoBehaviour
     private LevelModel levelModel = null;
     private PlayerController playerController = null;
     private GridIndex winIndex = default;
+    #endregion
 
+    #region ACTIONS
     private GUIActions guiActions = null;
+    private Action onSpawnWinConfetti = null;
     #endregion
 
     #region PROPERTIES
@@ -50,6 +55,8 @@ public class LevelController : MonoBehaviour
 
     private void SpawnGrid()
     {
+        SpawnWinZone();
+
         winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
         for (int i = 0; i < levelModel.Layers.Length; i++)
         {
@@ -81,6 +88,15 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    private void SpawnWinZone()
+    {
+        winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
+        Vector3 pos = new Vector3(winIndex.i, 0, winIndex.j) * unit;
+
+        GameObject go = Instantiate(winPrefab, pos, Quaternion.identity, environmentHolder);
+        onSpawnWinConfetti = go.GetComponent<WinController>().StartConfetti;
+    }
+
     private GameObject GetPrefab(string id)
     {
         for (int i = 0; i < prefabs.Length; i++)
@@ -98,8 +114,7 @@ public class LevelController : MonoBehaviour
     {
         if (index == winIndex)
         {
-            //playerController.InputEnabled = false;
-            playerController.Respawn();
+            onSpawnWinConfetti?.Invoke();
             Debug.Log("Win");
             return;
         }
@@ -108,14 +123,19 @@ public class LevelController : MonoBehaviour
 
         if (playerController.CheckTurns()) return;
 
-        //playerController.InputEnabled = false; TODO Re enable when lose screen/popup is added + handle restart logic
-        playerController.Respawn();
+        RestartGrid();
         Debug.Log("Lose");
     }
 
     private bool CheckIndex(GridIndex index)
     {
         return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
+    }
+
+    private void RestartGrid()
+    {
+
+        playerController.Respawn();
     }
     #endregion
 }

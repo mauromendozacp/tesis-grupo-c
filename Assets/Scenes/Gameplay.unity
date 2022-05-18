@@ -666,6 +666,7 @@ MonoBehaviour:
   environmentHolder: {fileID: 1160122720}
   unit: 1
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
+  winPrefab: {fileID: 863923875536434638, guid: 1f18d19a247e28349a5ec82ea015e7d0, type: 3}
   prefabs:
   - {fileID: 11400000, guid: 3b35d0ad38869484cb6273da722ad2e7, type: 2}
   - {fileID: 11400000, guid: 104971b85e8b84745a9fdceb6feb6516, type: 2}

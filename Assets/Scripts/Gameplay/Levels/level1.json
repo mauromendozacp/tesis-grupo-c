@@ -1,6 +1,6 @@
 {
   "winI": 6,
-  "winJ": 5,
+  "winJ": 12,
   "limitI": 7,
   "limitJ": 15,
   "playerModel": {
@@ -17,8 +17,8 @@
           "id": "floor",
           "type": 1,
           "index": {
-            "i": 4,
-            "j": 2
+            "i": 0,
+            "j": 0
           }
         },
         {
