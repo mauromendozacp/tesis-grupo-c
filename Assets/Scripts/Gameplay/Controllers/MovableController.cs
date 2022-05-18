@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Box : MonoBehaviour, IMovable
+public class MovableController : MonoBehaviour, IMovable
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
@@ -14,9 +14,14 @@ public class Box : MonoBehaviour, IMovable
     private bool inMovement = false;
     #endregion
 
+    #region ACTIONS
+    private Func<GridIndex, bool> onCheckGridIndex = null;
+    #endregion
+
     #region PUBLIC_METHODS
-    public void Init(float unit)
+    public void Init(Func<GridIndex, bool> onCheckGridIndex, float unit)
     {
+        this.onCheckGridIndex = onCheckGridIndex;
         this.unit = unit;
 
         gridIndex = new GridIndex()
@@ -58,6 +63,8 @@ public class Box : MonoBehaviour, IMovable
             default:
                 break;
         }
+
+        if (!onCheckGridIndex(auxIndex)) return false;
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {

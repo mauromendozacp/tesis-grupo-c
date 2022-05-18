@@ -43,7 +43,7 @@ public class LevelController : MonoBehaviour
     private void SpawnPlayer()
     {
         playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        playerController.Init(guiActions, CheckIndexPlayer, unit);
+        playerController.Init(guiActions, CheckIndex, CheckIndexPlayer, unit);
         playerController.SetData(levelModel.PlayerModel);
         playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
     }
@@ -62,17 +62,20 @@ public class LevelController : MonoBehaviour
                 EntityModel entityModel = levelModel.Layers[i].Models[j];
                 Vector3 pos = new Vector3(entityModel.I, posY, entityModel.J) * unit;
 
-                if (entityModel.Id != "floor" && entityModel.Id != "chair_1")
-                {
-                    pos.y -= unit / 2;
-                }
+                GameObject prefab = GetPrefab(entityModel.Id);
+                if (prefab == null) return;
 
-                GameObject go = Instantiate(GetPrefab(entityModel.Id), pos, Quaternion.identity, layer.transform);
+                GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
 
-                
-                if (entityModel.Id == "chair_1")
+                switch (entityModel.Type)
                 {
-                    go.GetComponent<Box>().Init(unit);
+                    case ENTITY_TYPE.MOVABLE:
+                        go.GetComponent<MovableController>().Init(CheckIndex, unit);
+                        break;
+                    case ENTITY_TYPE.NO_MOVABLE:
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -108,6 +111,11 @@ public class LevelController : MonoBehaviour
         //playerController.InputEnabled = false; TODO Re enable when lose screen/popup is added + handle restart logic
         playerController.Respawn();
         Debug.Log("Lose");
+    }
+
+    private bool CheckIndex(GridIndex index)
+    {
+        return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
     }
     #endregion
 }

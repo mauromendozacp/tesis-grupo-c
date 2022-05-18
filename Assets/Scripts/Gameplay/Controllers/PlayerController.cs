@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     #region ACTIONS
     private GUIActions guiActions = null;
     private Action<GridIndex> onChechIndexPlayer = null;
+    private Func<GridIndex, bool> onCheckGridIndex = null;
     #endregion
 
     #region UNITY_CALLS
@@ -44,9 +45,10 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, Action<GridIndex> onChechIndexPlayer, float unit)
+    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
     {
         this.guiActions = guiActions;
+        this.onCheckGridIndex = onCheckGridIndex;
         this.onChechIndexPlayer = onChechIndexPlayer;
 
         this.unit = unit;
@@ -124,6 +126,7 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.forward = direction;
+        if (!onCheckGridIndex(auxIndex)) return;
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {

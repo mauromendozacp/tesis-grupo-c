@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 50bfcfc22be761344bca8110c73ed040
+guid: 8ce6ddf82c6572c409c18fb1cc7f9e4a
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pisobienxd
+    second: {fileID: 2100000, guid: cc7b5cc09d7ea36409b92fd7cc62af00, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
