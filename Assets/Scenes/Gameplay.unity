@@ -668,15 +668,21 @@ MonoBehaviour:
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
   winPrefab: {fileID: 863923875536434638, guid: 1f18d19a247e28349a5ec82ea015e7d0, type: 3}
   prefabs:
-  - {fileID: 11400000, guid: 3b35d0ad38869484cb6273da722ad2e7, type: 2}
   - {fileID: 11400000, guid: 104971b85e8b84745a9fdceb6feb6516, type: 2}
+  - {fileID: 11400000, guid: b69ba2a7240368644a28753619eac6ab, type: 2}
+  - {fileID: 11400000, guid: efe9ae59957f5f04e8e553914a77d065, type: 2}
+  - {fileID: 11400000, guid: 3b35d0ad38869484cb6273da722ad2e7, type: 2}
+  - {fileID: 11400000, guid: b73eb674a54a73e4ca814c6523c4ad06, type: 2}
   - {fileID: 11400000, guid: 7fd938a1cf7944242a60147a5433a088, type: 2}
   - {fileID: 11400000, guid: b1f14c30dd8f4024c8556f52910a8ccc, type: 2}
+  - {fileID: 11400000, guid: d9e61ca5475c9604c91bb3fb6875b8e7, type: 2}
   - {fileID: 11400000, guid: 7e8472af026ba2c4290a213892822a5e, type: 2}
   - {fileID: 11400000, guid: 77bdfc37931ac4e46a01e61f6e14f09d, type: 2}
+  - {fileID: 11400000, guid: 6e582978b15fd44439c6345316e30a69, type: 2}
+  - {fileID: 11400000, guid: 4e84a2186a31d5146a15a1852377b2ee, type: 2}
+  - {fileID: 11400000, guid: d776c744cfe28974ea5f6035bdaf885e, type: 2}
   - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
-  - {fileID: 11400000, guid: efe9ae59957f5f04e8e553914a77d065, type: 2}
-  - {fileID: 11400000, guid: d9e61ca5475c9604c91bb3fb6875b8e7, type: 2}
+  - {fileID: 11400000, guid: a3e0f7d754a705847a063881671c3b72, type: 2}
   levelJson: {fileID: 4900000, guid: e7d026ef099c5c64bbb03e5b8e3f59ca, type: 3}
 --- !u!4 &1854585535
 Transform:
@@ -724,7 +730,6 @@ MonoBehaviour:
   levelController: {fileID: 1854585534}
   cameraController: {fileID: 963194229}
   uiGameplay: {fileID: 598535457}
-  playerUnlimitedTurns: 0
 --- !u!4 &2123253450
 Transform:
   m_ObjectHideFlags: 0

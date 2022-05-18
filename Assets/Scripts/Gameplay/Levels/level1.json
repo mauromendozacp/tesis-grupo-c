@@ -883,7 +883,7 @@
           }
         },
         {
-          "id": "laptop_table",
+          "id": "broken_table_1",
           "type": 1,
           "index": {
             "i": 2,
@@ -960,7 +960,7 @@
           }
         },
         {
-          "id": "laptop_table",
+          "id": "tall_locker",
           "type": 1,
           "index": {
             "i": 0,
