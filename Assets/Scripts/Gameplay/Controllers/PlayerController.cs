@@ -137,7 +137,6 @@ public class PlayerController : MonoBehaviour
             if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
 
             IMovable movable = hit.transform.GetComponent<IMovable>();
-<<<<<<< HEAD
             IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 
             if (movable != null)
@@ -158,11 +157,6 @@ public class PlayerController : MonoBehaviour
             if (!validMove)
             {
                 return;
-=======
-            if (movable != null)
-            {
-                if (!movable.TryMove(movement)) return;
->>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
             }
         }
 

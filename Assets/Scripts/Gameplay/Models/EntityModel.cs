@@ -6,11 +6,8 @@ public enum ENTITY_TYPE
 {
     MOVABLE,
     NO_MOVABLE,
-<<<<<<< HEAD
+    TRAP,
     JUMPABLE
-=======
-    TRAP
->>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
 }
 #endregion
 

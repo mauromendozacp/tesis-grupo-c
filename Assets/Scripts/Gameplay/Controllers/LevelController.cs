@@ -85,13 +85,11 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.NO_MOVABLE:
                         break;
-<<<<<<< HEAD
-                    case ENTITY_TYPE.JUMPABLE:
-                        go.GetComponent<JumpableController>().Init(CheckIndex);
-=======
                     case ENTITY_TYPE.TRAP:
                         go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel);
->>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
+                        break;
+                    case ENTITY_TYPE.JUMPABLE:
+                        go.GetComponent<JumpableController>().Init(CheckIndex);
                         break;
                     default:
                         break;
