@@ -8,12 +8,13 @@ public class CameraController : MonoBehaviour
 
     #region PROPERTIES
     public Transform Target { get; set; } = null;
+    public bool Follow { get; set; } = true;
     #endregion
 
     #region UNITY_CALLS
     private void LateUpdate()
     {
-        if (Target != null)
+        if (Target != null && Follow)
         {
             Vector3 distancePos = Target.position - new Vector3(0, distance.y, distance.x);
             transform.position = distancePos;

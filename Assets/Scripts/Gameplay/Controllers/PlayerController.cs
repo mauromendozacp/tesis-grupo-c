@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
-    [SerializeField] private Light light;
+    [SerializeField] private Light focusLight = null;
     [SerializeField] private LayerMask noMovableMask = default;
     #endregion
 
@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private GUIActions guiActions = null;
     private Action<GridIndex> onChechIndexPlayer = null;
     private Func<GridIndex, bool> onCheckGridIndex = null;
+    private Action onCameraFollow = null;
     #endregion
 
     #region UNITY_CALLS
@@ -49,12 +50,12 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, float unit)
+    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, Action onCameraFollow, float unit)
     {
         this.guiActions = guiActions;
         this.onCheckGridIndex = onCheckGridIndex;
         this.onChechIndexPlayer = onChechIndexPlayer;
-
+        this.onCameraFollow = onCameraFollow;
         this.unit = unit;
 
         data = new PlayerData();
@@ -91,11 +92,12 @@ public class PlayerController : MonoBehaviour
         SetPositionUnit(data.SpawnIndex);
         SetTurns(data.TotalTurns);
         inputEnabled = true;
+        onCameraFollow?.Invoke();
     }
 
     public void TurnLight()
     {
-        light.enabled = !light.enabled;
+        focusLight.enabled = !focusLight.enabled;
     }
 
     public void EnableUnlimitedTurns()

@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     private void Init()
     {
         uiGameplay.Init();
-        levelController.Init(uiGameplay.GUIActions);
+        levelController.Init(uiGameplay.GUIActions, PlayerDeath, () => { CameraFollowStatus(true); });
 
         uiGameplay.GUIActions.onExit = ExitGame;
     }
@@ -85,6 +85,17 @@ public class GameManager : MonoBehaviour
     private void ExitGame()
     {
         Application.Quit();
+    }
+
+    private void PlayerDeath()
+    {
+        CameraFollowStatus(false);
+        levelController.PlayerController.InputEnabled = false;
+    }
+
+    private void CameraFollowStatus(bool status)
+    {
+        cameraController.Follow = status;
     }
     #endregion
 }

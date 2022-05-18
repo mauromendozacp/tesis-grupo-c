@@ -26,6 +26,8 @@ public class LevelController : MonoBehaviour
     #region ACTIONS
     private GUIActions guiActions = null;
     private Action onSpawnWinConfetti = null;
+    private Action onPlayerDeath = null;
+    private Action onCameraFollow = null;
     #endregion
 
     #region PROPERTIES
@@ -33,9 +35,11 @@ public class LevelController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions)
+    public void Init(GUIActions guiActions, Action onPlayerDeath, Action onCameraFollow)
     {
         this.guiActions = guiActions;
+        this.onPlayerDeath = onPlayerDeath;
+        this.onCameraFollow = onCameraFollow;
     }
 
     public void StartGrid()
@@ -50,7 +54,7 @@ public class LevelController : MonoBehaviour
     private void SpawnPlayer()
     {
         playerController = Instantiate(playerPrefab).GetComponent<PlayerController>();
-        playerController.Init(guiActions, CheckIndex, CheckIndexPlayer, unit);
+        playerController.Init(guiActions, CheckIndex, CheckIndexPlayer, onCameraFollow, unit);
         playerController.SetData(levelModel.PlayerModel);
         playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
     }
@@ -87,7 +91,7 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.TRAP:
                         props.Add(go);
-                        go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel, pos);
+                        go.GetComponent<TrapController>().Init(onPlayerDeath, RestartLevel, pos);
                         break;
                     case ENTITY_TYPE.JUMPABLE:
                         props.Add(go);
