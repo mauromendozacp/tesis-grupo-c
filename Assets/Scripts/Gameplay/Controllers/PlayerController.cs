@@ -151,6 +151,24 @@ public class PlayerController : MonoBehaviour
                 {
                     validMove = true;
                     pos *= 2;
+
+                    switch (movement)
+                    {
+                        case MOVEMENT.LEFT:
+                            auxIndex.i--;
+                            break;
+                        case MOVEMENT.UP:
+                            auxIndex.j++;
+                            break;
+                        case MOVEMENT.RIGHT:
+                            auxIndex.i++;
+                            break;
+                        case MOVEMENT.DOWN:
+                            auxIndex.j--;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
