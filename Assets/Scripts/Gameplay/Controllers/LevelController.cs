@@ -60,7 +60,7 @@ public class LevelController : MonoBehaviour
             for (int j = 0; j < levelModel.Layers[i].Models.Length; j++)
             {
                 EntityModel entityModel = levelModel.Layers[i].Models[j];
-                Vector3 pos = new Vector3(entityModel.I, posY, entityModel.J) * unit;
+                Vector3 pos = new Vector3(entityModel.Index.i, posY, entityModel.Index.j) * unit;
 
                 GameObject prefab = GetPrefab(entityModel.Id);
                 if (prefab == null) return;

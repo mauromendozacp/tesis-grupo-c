@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using UnityEngine;
 
 #region ENUMS
@@ -17,14 +15,14 @@ public class EntityModel
     #region EXPOSED_FIELDS
     [SerializeField] private string id = string.Empty;
     [SerializeField] private ENTITY_TYPE type = default;
-    [SerializeField] private int i = 0;
-    [SerializeField] private int j = 0;
+    [SerializeField] private GridIndex index = default;
+    [SerializeField] private RotationModel rotation = default;
     #endregion
 
     #region PROPERTIES
     public string Id { get => id; }
     public ENTITY_TYPE Type { get => type; }
-    public int I { get => i; }
-    public int J { get => j; }
+    public GridIndex Index { get => index; }
+    public RotationModel Rotation { get => rotation; }
     #endregion
 }
