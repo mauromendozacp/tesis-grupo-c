@@ -15,11 +15,11 @@ public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
+    [SerializeField] private LayerMask noMovableMask = default;
     #endregion
 
     #region PRIVATE_FIELDS
     private PlayerData data = null;
-    private GridIndex spawGridIndex = default;
     private float unit = 0f;
     private bool inMovement = false;
     private bool inputEnabled = true;
@@ -67,9 +67,11 @@ public class PlayerController : MonoBehaviour
 
     public void SetPositionUnit(GridIndex index)
     {
-        spawGridIndex = index;
+        data.SpawnIndex = index;
+        data.CurrentIndex = index;
         Vector3 pos = transform.position;
         pos.x = index.i * unit;
+        pos.y = 0;
         pos.z = index.j * unit;
         transform.position = pos;
     }
@@ -82,8 +84,9 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         transform.forward = Vector3.forward;
-        SetPositionUnit(spawGridIndex);
+        SetPositionUnit(data.SpawnIndex);
         SetTurns(data.TotalTurns);
+        inputEnabled = true;
     }
     #endregion
 
@@ -131,7 +134,10 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
+            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+
             IMovable movable = hit.transform.GetComponent<IMovable>();
+<<<<<<< HEAD
             IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 
             if (movable != null)
@@ -152,6 +158,11 @@ public class PlayerController : MonoBehaviour
             if (!validMove)
             {
                 return;
+=======
+            if (movable != null)
+            {
+                if (!movable.TryMove(movement)) return;
+>>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
             }
         }
 
@@ -159,8 +170,6 @@ public class PlayerController : MonoBehaviour
         data.CurrentIndex = auxIndex;
         SetTurns(data.CurrentTurns - 1);
         StartCoroutine(MoveLerp(transform.position + pos));
-
-        Debug.Log("i:" + data.CurrentIndex.i + ", j: " + data.CurrentIndex.j);
     }
 
     private MOVEMENT TryGetMovement()

@@ -5,7 +5,11 @@
   "limitJ": 15,
   "playerModel": {
     "lives": 3,
+<<<<<<< HEAD
     "turns": 100,
+=======
+    "turns": 50,
+>>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
     "i": 6,
     "j": 0
   },
@@ -350,12 +354,12 @@
           }
         },
         {
-          "id": "floor",
-          "type": 1,
-          "index": {
-            "i": 2,
-            "j": 12
-          }
+            "id": "debris",
+            "type": 2,
+            "index": {
+                "i": 2,
+                "j": 12
+            }
         },
         {
           "id": "floor",
@@ -654,8 +658,8 @@
           }
         },
         {
-          "id": "floor",
-          "type": 1,
+            "id": "debris",
+            "type": 2,
           "index": {
             "i": 5,
             "j": 5

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -19,6 +20,7 @@ public class LevelController : MonoBehaviour
     private LevelModel levelModel = null;
     private PlayerController playerController = null;
     private GridIndex winIndex = default;
+    private List<GameObject> entities = null;
     #endregion
 
     #region ACTIONS
@@ -57,6 +59,7 @@ public class LevelController : MonoBehaviour
     {
         SpawnWinZone();
 
+        entities = new List<GameObject>();
         winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
         for (int i = 0; i < levelModel.Layers.Length; i++)
         {
@@ -73,6 +76,7 @@ public class LevelController : MonoBehaviour
                 if (prefab == null) return;
 
                 GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
+                entities.Add(go);
 
                 switch (entityModel.Type)
                 {
@@ -81,8 +85,13 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.NO_MOVABLE:
                         break;
+<<<<<<< HEAD
                     case ENTITY_TYPE.JUMPABLE:
                         go.GetComponent<JumpableController>().Init(CheckIndex);
+=======
+                    case ENTITY_TYPE.TRAP:
+                        go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel);
+>>>>>>> 40d2dbca8bd262d0db01d88d8a43434a34bff035
                         break;
                     default:
                         break;
@@ -126,7 +135,7 @@ public class LevelController : MonoBehaviour
 
         if (playerController.CheckTurns()) return;
 
-        RestartGrid();
+        RestartLevel();
         Debug.Log("Lose");
     }
 
@@ -135,10 +144,46 @@ public class LevelController : MonoBehaviour
         return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
     }
 
+    private void RestartLevel()
+    {
+        RestartGrid();
+        playerController.Respawn();
+    }
+
     private void RestartGrid()
     {
+        for (int i = 0; i < levelModel.Layers.Length; i++)
+        {
+            int posY = levelModel.Layers[i].LayerIndex;
+            for (int j = 0; j < levelModel.Layers[i].Models.Length; j++)
+            {
+                EntityModel entityModel = levelModel.Layers[i].Models[j];
+                Vector3 pos = new Vector3(entityModel.Index.i, posY, entityModel.Index.j) * unit;
 
-        playerController.Respawn();
+                GameObject prefab = GetPrefab(entityModel.Id);
+                if (prefab == null) return;
+
+                prefab.transform.position = pos;
+
+                switch (entityModel.Type)
+                {
+                    case ENTITY_TYPE.MOVABLE:
+                        break;
+                    case ENTITY_TYPE.NO_MOVABLE:
+                        break;
+                    case ENTITY_TYPE.TRAP:
+                        prefab.GetComponent<TrapController>().Restart();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    private void PlayerInputStatus(bool status)
+    {
+        playerController.InputEnabled = status;
     }
     #endregion
 }

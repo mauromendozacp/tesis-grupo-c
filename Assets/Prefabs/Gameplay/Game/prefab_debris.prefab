@@ -51,12 +51,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3973941041446605395, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -2829935188501138166, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ede6509fe7284df4da867d297516d619, type: 3}
       propertyPath: m_Name
       value: debris
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3165397094394734603, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6125852149738898354, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689903450516464184, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221968207176980316, guid: ede6509fe7284df4da867d297516d619, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ede6509fe7284df4da867d297516d619, type: 3}
+--- !u!1 &3137561647286169726 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ede6509fe7284df4da867d297516d619, type: 3}
+  m_PrefabInstance: {fileID: 2831552916981845295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5574860287547960484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68,21 +101,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: prefab_debris
       objectReference: {fileID: 0}
+    - target: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -114,8 +151,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+--- !u!1 &7943441126575130569 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+  m_PrefabInstance: {fileID: 5574860287547960484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2283994779692615304 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
   m_PrefabInstance: {fileID: 5574860287547960484}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6502076396659328582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7943441126575130569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1f7bad835fa0c4eaf99defaa364230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeTrapDelay: 1.5
+  fallPlayerDelay: 2
+  fallSpeed: 5
+  model: {fileID: 3137561647286169726}
+  falleableMask:
+    serializedVersion: 2
+    m_Bits: 64
