@@ -12,7 +12,7 @@ public class PropController : MonoBehaviour
         this.spawnPosition = spawnPosition;
     }
 
-    virtual public void Restart()
+    public virtual void Restart()
     {
         transform.position = spawnPosition;
     }

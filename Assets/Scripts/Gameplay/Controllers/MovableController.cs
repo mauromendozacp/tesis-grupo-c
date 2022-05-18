@@ -17,7 +17,7 @@ public class MovableController : PropController, IMovable
     #region ACTIONS
     private Func<GridIndex, bool> onCheckGridIndex = null;
     #endregion
-
+    
     #region PUBLIC_METHODS
     public void Init(Func<GridIndex, bool> onCheckGridIndex, float unit, Vector3 spawnPos)
     {
@@ -86,6 +86,11 @@ public class MovableController : PropController, IMovable
 
     public override void Restart()
     {
+        gridIndex = new GridIndex()
+        {
+            i = (int)spawnPosition.x,
+            j = (int)spawnPosition.z
+        };
         base.Restart();
     }
     #endregion
