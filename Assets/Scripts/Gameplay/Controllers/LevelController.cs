@@ -20,7 +20,7 @@ public class LevelController : MonoBehaviour
     private LevelModel levelModel = null;
     private PlayerController playerController = null;
     private GridIndex winIndex = default;
-    private List<GameObject> entities = null;
+    private List<GameObject> props = null;
     #endregion
 
     #region ACTIONS
@@ -59,7 +59,7 @@ public class LevelController : MonoBehaviour
     {
         SpawnWinZone();
 
-        entities = new List<GameObject>();
+        props = new List<GameObject>();
         winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
         for (int i = 0; i < levelModel.Layers.Length; i++)
         {
@@ -75,21 +75,23 @@ public class LevelController : MonoBehaviour
                 GameObject prefab = GetPrefab(entityModel.Id);
                 if (prefab == null) return;
 
-                GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
-                entities.Add(go);
+                GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);                
 
                 switch (entityModel.Type)
                 {
                     case ENTITY_TYPE.MOVABLE:
-                        go.GetComponent<MovableController>().Init(CheckIndex, unit);
+                        props.Add(go);
+                        go.GetComponent<MovableController>().Init(CheckIndex, unit, pos);
                         break;
                     case ENTITY_TYPE.NO_MOVABLE:
                         break;
                     case ENTITY_TYPE.TRAP:
-                        go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel);
+                        props.Add(go);
+                        go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel, pos);
                         break;
                     case ENTITY_TYPE.JUMPABLE:
-                        go.GetComponent<JumpableController>().Init(CheckIndex);
+                        props.Add(go);
+                        go.GetComponent<JumpableController>().Init(CheckIndex, pos);
                         break;
                     default:
                         break;
@@ -150,32 +152,9 @@ public class LevelController : MonoBehaviour
 
     private void RestartGrid()
     {
-        for (int i = 0; i < levelModel.Layers.Length; i++)
+        for (int i = 0; i < props.Count; i++)
         {
-            int posY = levelModel.Layers[i].LayerIndex;
-            for (int j = 0; j < levelModel.Layers[i].Models.Length; j++)
-            {
-                EntityModel entityModel = levelModel.Layers[i].Models[j];
-                Vector3 pos = new Vector3(entityModel.Index.i, posY, entityModel.Index.j) * unit;
-
-                GameObject prefab = GetPrefab(entityModel.Id);
-                if (prefab == null) return;
-
-                prefab.transform.position = pos;
-
-                switch (entityModel.Type)
-                {
-                    case ENTITY_TYPE.MOVABLE:
-                        break;
-                    case ENTITY_TYPE.NO_MOVABLE:
-                        break;
-                    case ENTITY_TYPE.TRAP:
-                        prefab.GetComponent<TrapController>().Restart();
-                        break;
-                    default:
-                        break;
-                }
-            }
+            props[i].GetComponent<PropController>().Restart();
         }
     }
 

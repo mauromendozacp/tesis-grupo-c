@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MovableController : MonoBehaviour, IMovable
+public class MovableController : PropController, IMovable
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
@@ -19,7 +19,7 @@ public class MovableController : MonoBehaviour, IMovable
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Func<GridIndex, bool> onCheckGridIndex, float unit)
+    public void Init(Func<GridIndex, bool> onCheckGridIndex, float unit, Vector3 spawnPos)
     {
         this.onCheckGridIndex = onCheckGridIndex;
         this.unit = unit;
@@ -29,6 +29,8 @@ public class MovableController : MonoBehaviour, IMovable
             i = (int)transform.position.x,
             j = (int)transform.position.z
         };
+
+        SetSpawnIndex(spawnPos);
     }
     public bool TryMove(MOVEMENT movement)
     {
@@ -80,6 +82,11 @@ public class MovableController : MonoBehaviour, IMovable
         StartCoroutine(MoveLerp(transform.position + pos));
         gridIndex = auxIndex;
         return true;
+    }
+
+    public override void Restart()
+    {
+        base.Restart();
     }
     #endregion
 

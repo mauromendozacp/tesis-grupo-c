@@ -3,11 +3,15 @@ using UnityEngine;
 [System.Serializable]
 public class RotationModel
 {
-    [SerializeField] private int x = 0;
-    [SerializeField] private int y = 0;
-    [SerializeField] private int z = 0;
+    #region EXPOSED_FIELDS
+    [SerializeField] private float x = 0;
+    [SerializeField] private float y = 0;
+    [SerializeField] private float z = 0;
+    #endregion
 
-    public int X { get => x; }
-    public int Y { get => y; }
-    public int Z { get => z; }
+    #region PROPERTIES
+    public float X { get => x; }
+    public float Y { get => y; }
+    public float Z { get => z; }
+    #endregion
 }

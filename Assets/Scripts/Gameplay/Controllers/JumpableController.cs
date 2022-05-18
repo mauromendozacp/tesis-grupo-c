@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class JumpableController : MonoBehaviour, IJumpable
+public class JumpableController : PropController, IJumpable
 {
     #region PRIVATE_FIELDS
     private GridIndex gridIndex = default;
@@ -12,7 +12,7 @@ public class JumpableController : MonoBehaviour, IJumpable
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Func<GridIndex, bool> onCheckGridIndex)
+    public void Init(Func<GridIndex, bool> onCheckGridIndex, Vector3 spawnPos)
     {
         this.onCheckGridIndex = onCheckGridIndex;
 
@@ -21,6 +21,8 @@ public class JumpableController : MonoBehaviour, IJumpable
             i = (int)transform.position.x,
             j = (int)transform.position.z
         };
+
+        SetSpawnIndex(spawnPos);
     }
 
     public bool TryJump(MOVEMENT movement)
@@ -54,6 +56,11 @@ public class JumpableController : MonoBehaviour, IJumpable
         if (!onCheckGridIndex(auxIndex)) return false;
 
         return !Physics.Raycast(transform.position, direction, out var hit, 1);
+    }
+
+    public override void Restart()
+    {
+        base.Restart();
     }
     #endregion
 }
