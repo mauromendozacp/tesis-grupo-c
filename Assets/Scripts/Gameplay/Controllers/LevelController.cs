@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelController : MonoBehaviour
@@ -123,7 +124,7 @@ public class LevelController : MonoBehaviour
 
         if (playerController.CheckTurns()) return;
 
-        RestartGrid();
+        RestartLevel();
         Debug.Log("Lose");
     }
 
@@ -132,10 +133,28 @@ public class LevelController : MonoBehaviour
         return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
     }
 
+    private void RestartLevel()
+    {
+        RestartGrid();
+        playerController.Respawn();
+    }
+
     private void RestartGrid()
     {
+        for (int i = 0; i < levelModel.Layers.Length; i++)
+        {
+            int posY = levelModel.Layers[i].LayerIndex;
+            for (int j = 0; j < levelModel.Layers[i].Models.Length; j++)
+            {
+                EntityModel entityModel = levelModel.Layers[i].Models[j];
+                Vector3 pos = new Vector3(entityModel.Index.i, posY, entityModel.Index.j) * unit;
 
-        playerController.Respawn();
+                GameObject prefab = GetPrefab(entityModel.Id);
+                if (prefab == null) return;
+
+                prefab.transform.position = pos;
+            }
+        }
     }
     #endregion
 }

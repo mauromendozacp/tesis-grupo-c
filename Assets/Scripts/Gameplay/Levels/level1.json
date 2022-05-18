@@ -5,7 +5,7 @@
   "limitJ": 15,
   "playerModel": {
     "lives": 3,
-    "turns": 10,
+    "turns": 50,
     "i": 6,
     "j": 0
   },
