@@ -11,11 +11,6 @@ public class CameraController : MonoBehaviour
     #endregion
 
     #region UNITY_CALLS
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void LateUpdate()
     {
         if (Target != null)

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
+    [SerializeField] private Light light;
     [SerializeField] private LayerMask noMovableMask = default;
     #endregion
 
@@ -23,6 +24,9 @@ public class PlayerController : MonoBehaviour
     private float unit = 0f;
     private bool inMovement = false;
     private bool inputEnabled = true;
+
+    //DEBUG
+    private bool unlimitedTurns = false;
     #endregion
 
     #region PROPERTIES
@@ -87,6 +91,16 @@ public class PlayerController : MonoBehaviour
         SetPositionUnit(data.SpawnIndex);
         SetTurns(data.TotalTurns);
         inputEnabled = true;
+    }
+
+    public void TurnLight()
+    {
+        light.enabled = !light.enabled;
+    }
+
+    public void EnableUnlimitedTurns()
+    {
+        unlimitedTurns = !unlimitedTurns;
     }
     #endregion
 
@@ -180,7 +194,12 @@ public class PlayerController : MonoBehaviour
 
         inMovement = true;
         data.CurrentIndex = auxIndex;
-        SetTurns(data.CurrentTurns - 1);
+
+        if (!unlimitedTurns)
+        {
+            SetTurns(data.CurrentTurns - 1);
+        }
+
         StartCoroutine(MoveLerp(transform.position + pos));
     }
 

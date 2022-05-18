@@ -54,9 +54,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LevelController levelController = null;
     [SerializeField] private CameraController cameraController = null;
     [SerializeField] private UIGameplay uiGameplay = null;
-
-    [Header("Debug Settings")]
-    [SerializeField] private bool playerUnlimitedTurns = false;
     #endregion
 
     #region UNITY_CALLS
@@ -72,12 +69,22 @@ public class GameManager : MonoBehaviour
     {
         uiGameplay.Init();
         levelController.Init(uiGameplay.GUIActions);
+
+        uiGameplay.GUIActions.onExit = ExitGame;
     }
 
     private void StartGame()
     {
         levelController.StartGrid();
         cameraController.Target = levelController.PlayerController.transform;
+
+        uiGameplay.GUIActions.onEnableLight = levelController.PlayerController.TurnLight;
+        uiGameplay.GUIActions.onEnableUnlimitedTurns = levelController.PlayerController.EnableUnlimitedTurns;
+    }
+
+    private void ExitGame()
+    {
+        Application.Quit();
     }
     #endregion
 }

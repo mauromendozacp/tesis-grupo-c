@@ -202,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
+  light: {fileID: 2373405252262715399}
   noMovableMask:
     serializedVersion: 2
     m_Bits: 256

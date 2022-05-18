@@ -11,10 +11,10 @@ TagManager:
   - PostProcessing
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Movable
+  - NoMovable
+  - Trap
   - 
   - 
   - 

@@ -350,7 +350,7 @@
           }
         },
         {
-          "id": "debris",
+          "id": "floor_trap",
           "type": 2,
           "index": {
             "i": 2,
@@ -654,7 +654,7 @@
           }
         },
         {
-          "id": "debris",
+          "id": "floor_trap",
           "type": 2,
           "index": {
             "i": 5,
