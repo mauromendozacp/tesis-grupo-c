@@ -20,6 +20,7 @@ public class LevelController : MonoBehaviour
     private LevelModel levelModel = null;
     private PlayerController playerController = null;
     private GridIndex winIndex = default;
+    private List<GameObject> entities = null;
     #endregion
 
     #region ACTIONS
@@ -58,6 +59,7 @@ public class LevelController : MonoBehaviour
     {
         SpawnWinZone();
 
+        entities = new List<GameObject>();
         winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
         for (int i = 0; i < levelModel.Layers.Length; i++)
         {
@@ -74,6 +76,7 @@ public class LevelController : MonoBehaviour
                 if (prefab == null) return;
 
                 GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
+                entities.Add(go);
 
                 switch (entityModel.Type)
                 {
@@ -81,6 +84,9 @@ public class LevelController : MonoBehaviour
                         go.GetComponent<MovableController>().Init(CheckIndex, unit);
                         break;
                     case ENTITY_TYPE.NO_MOVABLE:
+                        break;
+                    case ENTITY_TYPE.TRAP:
+                        go.GetComponent<TrapController>().Init(() => { PlayerInputStatus(false); }, RestartLevel);
                         break;
                     default:
                         break;
@@ -153,8 +159,26 @@ public class LevelController : MonoBehaviour
                 if (prefab == null) return;
 
                 prefab.transform.position = pos;
+
+                switch (entityModel.Type)
+                {
+                    case ENTITY_TYPE.MOVABLE:
+                        break;
+                    case ENTITY_TYPE.NO_MOVABLE:
+                        break;
+                    case ENTITY_TYPE.TRAP:
+                        prefab.GetComponent<TrapController>().Restart();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+    }
+
+    private void PlayerInputStatus(bool status)
+    {
+        playerController.InputEnabled = status;
     }
     #endregion
 }

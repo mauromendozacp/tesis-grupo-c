@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: prefab_tall_locker
       objectReference: {fileID: 0}
+    - target: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -113,9 +117,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4192043783345333950, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2755939007011145148, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
       propertyPath: m_Name
       value: tall_locker
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4369364616166725827, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5302247106622235732, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19c2529041f95fe4b94662d68d3085e8, type: 3}

@@ -5,7 +5,8 @@ using UnityEngine;
 public enum ENTITY_TYPE
 {
     MOVABLE,
-    NO_MOVABLE
+    NO_MOVABLE,
+    TRAP
 }
 #endregion
 
