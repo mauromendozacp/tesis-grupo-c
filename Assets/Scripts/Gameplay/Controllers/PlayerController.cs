@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
         if (!inputEnabled) return;
 
         Move();
+        Jump();
     }
     #endregion
 
@@ -153,7 +154,6 @@ public class PlayerController : MonoBehaviour
             if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
 
             IMovable movable = hit.transform.GetComponent<IMovable>();
-            IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 
             if (movable != null)
             {
@@ -161,32 +161,6 @@ public class PlayerController : MonoBehaviour
                     validMove = true;
             }
 
-            if (jumpable != null)
-            {
-                if (jumpable.TryJump(movement))
-                {
-                    validMove = true;
-                    pos *= 2;
-
-                    switch (movement)
-                    {
-                        case MOVEMENT.LEFT:
-                            auxIndex.i--;
-                            break;
-                        case MOVEMENT.UP:
-                            auxIndex.j++;
-                            break;
-                        case MOVEMENT.RIGHT:
-                            auxIndex.i++;
-                            break;
-                        case MOVEMENT.DOWN:
-                            auxIndex.j--;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
 
             if (!validMove)
             {
@@ -203,6 +177,62 @@ public class PlayerController : MonoBehaviour
         }
 
         StartCoroutine(MoveLerp(transform.position + pos));
+    }
+
+    private void Jump()
+    {
+        if (inMovement) return;
+
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
+
+        Vector3 direction = transform.forward;
+        Vector3 pos = Vector3.zero;
+        GridIndex auxIndex = data.CurrentIndex;
+
+        if (Physics.Raycast(transform.position, direction, out var hit, 1))
+        {
+            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+
+            IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
+
+            if (jumpable == null) return;
+            if (!jumpable.TryJump(direction)) return;
+
+            if (direction == Vector3.left)
+            {
+                auxIndex.i -= 2;
+                pos.x = -unit * 2;
+            }
+            else if (direction == Vector3.forward)
+            {
+                auxIndex.j += 2;
+                pos.z = unit * 2;
+            }
+            else if (direction == Vector3.right)
+            {
+                auxIndex.i += 2;
+                pos.x = unit * 2;
+            }
+            else if (direction == Vector3.back)
+            {
+                auxIndex.j -= 2;
+                pos.z = -unit * 2;
+            }
+            else
+            {
+                return;
+            }
+
+            inMovement = true;
+            data.CurrentIndex = auxIndex;
+
+            if (!unlimitedTurns)
+            {
+                SetTurns(data.CurrentTurns - 1);
+            }
+
+            StartCoroutine(MoveLerp(transform.position + pos));
+        }
     }
 
     private MOVEMENT TryGetMovement()

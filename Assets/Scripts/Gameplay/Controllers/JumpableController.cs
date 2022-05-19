@@ -58,6 +58,35 @@ public class JumpableController : PropController, IJumpable
         return !Physics.Raycast(transform.position, direction, out var hit, 1);
     }
 
+    public bool TryJump(Vector3 movement)
+    {
+        GridIndex auxIndex = gridIndex;
+
+        if (movement == Vector3.left)
+        {
+            auxIndex.i--;
+        }
+        else if (movement == Vector3.right)
+        {
+            auxIndex.i++;
+        }
+        else if (movement == Vector3.forward)
+        {
+            auxIndex.j++;
+        }
+        else if (movement == Vector3.back)
+        {
+            auxIndex.j--;
+        }
+        else
+        {
+            return false;
+        }
+
+        if (!onCheckGridIndex(auxIndex)) return false;
+        return !Physics.Raycast(transform.position, movement, out var hit, 1);
+    }
+
     public override void Restart()
     {
         base.Restart();
