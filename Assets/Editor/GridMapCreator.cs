@@ -8,12 +8,14 @@ public class GridMapCreator : EditorWindow
     private Vector2 offset;
     private Vector2 drag;
     private List<List<Node>> nodes;
+    private List<List<PartScripts>> parts;
     private GUIStyle empty;
     private Vector2 nodePos;
     private StyleManager styleManager;
     private bool isErasing;
     private Rect menuBar;
     private GUIStyle currentStyle;
+    private GameObject map;
 
     [MenuItem("Window/Grid Map Creator")]
     private static void OpenWindow()
@@ -25,11 +27,52 @@ public class GridMapCreator : EditorWindow
     private void OnEnable()
     {
         SetUpStyles();
-        empty = new GUIStyle();
-        Texture2D icon = Resources.Load("IconTex/Empty") as Texture2D;
-        empty.normal.background = icon;
-        SetUpNodes();
-        currentStyle = styleManager.buttonStyles[1].nodeStyle;
+        SetUpNodesAndParts();
+        SetUpMap();
+    }
+
+    private void SetUpMap()
+    {
+        try
+        {
+            map = GameObject.FindGameObjectWithTag("Map");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        if (map != null)
+        {
+            RestoreTheMap(map);
+        }
+        else
+        {
+            map = new GameObject("Map")
+            {
+                tag = "Map"
+            };
+        }
+    }
+
+    private void RestoreTheMap(GameObject map)
+    {
+        if (map.transform.childCount > 0)
+        {
+            for (int i = 0; i < map.transform.childCount; i++)
+            {
+                int ii = map.transform.GetChild(i).GetComponent<PartScripts>().row;
+                int jj = map.transform.GetChild(i).GetComponent<PartScripts>().column;
+                GUIStyle style = map.transform.GetChild(i).GetComponent<PartScripts>().style;
+                nodes[ii][jj].SetStyle(style);
+                parts[ii][jj] = map.transform.GetChild(i).GetComponent<PartScripts>();
+                parts[ii][jj].part = map.transform.GetChild(i).gameObject;
+                parts[ii][jj].name = map.transform.GetChild(i).name;
+                parts[ii][jj].row = ii;
+                parts[ii][jj].column = jj;
+            }
+        }
     }
 
     private void SetUpStyles()
@@ -48,18 +91,24 @@ public class GridMapCreator : EditorWindow
             Console.WriteLine(e);
             throw;
         }
+
+        empty = styleManager.buttonStyles[0].nodeStyle;
+        currentStyle = styleManager.buttonStyles[1].nodeStyle;
     }
 
-    private void SetUpNodes()
+    private void SetUpNodesAndParts()
     {
         nodes = new List<List<Node>>();
+        parts = new List<List<PartScripts>>();
         for (int i = 0; i < 20; i++)
         {
             nodes.Add(new List<Node>());
+            parts.Add(new List<PartScripts>());
             for (int j = 0; j < 10; j++)
             {
                 nodePos.Set(i * 30, j * 30);
                 nodes[i].Add(new Node(nodePos, 30, 30, empty));
+                parts[i].Add(null);
             }
         }
     }
@@ -131,13 +180,33 @@ public class GridMapCreator : EditorWindow
     {
         if (isErasing)
         {
-            nodes[row][col].SetStyle(empty);
-            GUI.changed = true;
+            if (parts[row][col] != null)
+            {
+                nodes[row][col].SetStyle(empty);
+                DestroyImmediate(parts[row][col].gameObject);
+                GUI.changed = true;
+            }
+            parts[row][col] = null;
         }
         else
         {
-            nodes[row][col].SetStyle(currentStyle);
-            GUI.changed = true;
+            if (parts[row][col] == null)
+            {
+                nodes[row][col].SetStyle(currentStyle);
+                GameObject go = Instantiate(Resources.Load("MapParts/" + currentStyle.normal.background.name)) as GameObject;
+                go.name = currentStyle.normal.background.name;
+                go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
+                go.transform.parent = map.transform;
+
+                parts[row][col] = go.GetComponent<PartScripts>();
+                parts[row][col].part = go;
+                parts[row][col].name = go.name;
+                parts[row][col].row = row;
+                parts[row][col].column = col;
+                parts[row][col].style = currentStyle;
+
+                GUI.changed = true;
+            }
         }
     }
 
