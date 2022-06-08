@@ -58,20 +58,22 @@ public class GridMapCreator : EditorWindow
 
     private void RestoreTheMap(GameObject map)
     {
-        if (map.transform.childCount > 0)
+        if (map.transform.childCount <= 0) return;
+
+        for (int i = 0; i < map.transform.childCount; i++)
         {
-            for (int i = 0; i < map.transform.childCount; i++)
-            {
-                int ii = map.transform.GetChild(i).GetComponent<PartScripts>().row;
-                int jj = map.transform.GetChild(i).GetComponent<PartScripts>().column;
-                GUIStyle style = map.transform.GetChild(i).GetComponent<PartScripts>().style;
-                nodes[ii][jj].SetStyle(style);
-                parts[ii][jj] = map.transform.GetChild(i).GetComponent<PartScripts>();
-                parts[ii][jj].part = map.transform.GetChild(i).gameObject;
-                parts[ii][jj].name = map.transform.GetChild(i).name;
-                parts[ii][jj].row = ii;
-                parts[ii][jj].column = jj;
-            }
+            PartScripts partScripts = map.transform.GetChild(i).GetComponent<PartScripts>();
+            int row = partScripts.row;
+            int col = partScripts.column;
+            parts[row][col] = partScripts;
+
+            GUIStyle style = partScripts.style;
+            nodes[row][col].SetStyle(style);
+
+            parts[row][col].part = map.transform.GetChild(i).gameObject;
+            parts[row][col].name = map.transform.GetChild(i).name;
+            parts[row][col].row = row;
+            parts[row][col].column = col;
         }
     }
 
@@ -100,10 +102,12 @@ public class GridMapCreator : EditorWindow
     {
         nodes = new List<List<Node>>();
         parts = new List<List<PartScripts>>();
+
         for (int i = 0; i < 20; i++)
         {
             nodes.Add(new List<Node>());
             parts.Add(new List<PartScripts>());
+
             for (int j = 0; j < 10; j++)
             {
                 nodePos.Set(i * 30, j * 30);
@@ -147,33 +151,22 @@ public class GridMapCreator : EditorWindow
 
     private void ProcessNodes(Event e)
     {
+        if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > 600 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > 300) return;
+
         int row = (int)(e.mousePosition.x - offset.x) / 30;
         int col = (int)(e.mousePosition.y - offset.y) / 30;
 
-        if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > 600 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > 300)
-        { }
-        else
+        if (e.type == EventType.MouseDown)
         {
-            if (e.type == EventType.MouseDown)
-            {
-                if (nodes[row][col].style.normal.background.name == "Empty")
-                {
-                    isErasing = false;
-                }
-                else
-                {
-                    isErasing = true;
-                }
+            isErasing = nodes[row][col].style.normal.background.name != "Empty";
 
-                PaintNodes(row, col);
-            }
-
-            if (e.type == EventType.MouseDrag)
-            {
-                PaintNodes(row, col);
-                e.Use();
-            }
+            PaintNodes(row, col);
         }
+
+        if (e.type != EventType.MouseDrag) return;
+
+        PaintNodes(row, col);
+        e.Use();
     }
 
     private void PaintNodes(int row, int col)
@@ -224,6 +217,7 @@ public class GridMapCreator : EditorWindow
     private void ProcessGrid(Event e)
     {
         drag = Vector2.zero;
+
         switch (e.type)
         {
             case EventType.MouseDrag:
