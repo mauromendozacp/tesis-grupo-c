@@ -183,23 +183,23 @@ public class GridMapCreator : EditorWindow
         }
         else
         {
-            if (parts[row][col] == null)
-            {
-                nodes[row][col].SetStyle(currentStyle);
-                GameObject go = Instantiate(Resources.Load("MapParts/" + currentStyle.normal.background.name)) as GameObject;
-                go.name = currentStyle.normal.background.name;
-                go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
-                go.transform.parent = map.transform;
+            if (parts[row][col] != null) return;
 
-                parts[row][col] = go.GetComponent<PartScripts>();
-                parts[row][col].part = go;
-                parts[row][col].name = go.name;
-                parts[row][col].row = row;
-                parts[row][col].column = col;
-                parts[row][col].style = currentStyle;
+            nodes[row][col].SetStyle(currentStyle);
 
-                GUI.changed = true;
-            }
+            GameObject go = Instantiate(Resources.Load("MapParts/" + currentStyle.normal.background.name)) as GameObject;
+            go.name = currentStyle.normal.background.name;
+            go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
+            go.transform.parent = map.transform;
+
+            parts[row][col] = go.GetComponent<PartScripts>();
+            parts[row][col].part = go;
+            parts[row][col].name = go.name;
+            parts[row][col].row = row;
+            parts[row][col].column = col;
+            parts[row][col].style = currentStyle;
+
+            GUI.changed = true;
         }
     }
 
