@@ -14,6 +14,7 @@ public class GridMapCreator : EditorWindow
 
     private List<List<Node>> nodes;
     private List<List<PartScripts>> parts;
+    private LevelModel levelModel;
 
     private int rows;
     private int columns;
@@ -230,7 +231,7 @@ public class GridMapCreator : EditorWindow
 
         if (e.type == EventType.MouseDown)
         {
-            isErasing = nodes[row][col].style.normal.background.name != "Empty";
+            isErasing = nodes[row][col].style.normal.background.name != "Erase";
 
             PaintNodes(row, col);
         }
@@ -259,27 +260,35 @@ public class GridMapCreator : EditorWindow
 
             nodes[row][col].SetStyle(currentStyle);
 
-            GameObject go = Instantiate(Resources.Load("MapParts/" + currentStyle.normal.background.name)) as GameObject;
-            go.name = currentStyle.normal.background.name;
 
-            if (go.name != "Floor")
+            for (int i = 0; i < styleManager.buttonStyles.Length; i++)
             {
-                GameObject floor = Instantiate(Resources.Load("MapParts/" + "Floor")) as GameObject;
-                floor.transform.position = new Vector3(col, -0.5f, row) + Vector3.forward + Vector3.right;
-                floor.transform.parent = map.transform;
+                if (currentStyle != styleManager.buttonStyles[i].nodeStyle) continue;
+
+                GameObject go = Instantiate(styleManager.buttonStyles[i].prefab);
+                go.name = styleManager.buttonStyles[i].prefab.name;
+
+                //TODO add proper logic to check if floor is needed
+                if (go.name != "Floor")
+                {
+                    GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
+                    floor.transform.position = new Vector3(col, -1, row) + Vector3.forward + Vector3.right;
+                    floor.transform.parent = map.transform;
+
+                    go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
+                    go.transform.parent = map.transform;
+
+                    parts[row][col] = go.GetComponent<PartScripts>();
+                    parts[row][col].part = go;
+                    parts[row][col].name = go.name;
+                    parts[row][col].row = row;
+                    parts[row][col].column = col;
+                    parts[row][col].style = currentStyle;
+
+                    GUI.changed = true;
+                    break;
+                }
             }
-            
-            go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
-            go.transform.parent = map.transform;
-
-            parts[row][col] = go.GetComponent<PartScripts>();
-            parts[row][col].part = go;
-            parts[row][col].name = go.name;
-            parts[row][col].row = row;
-            parts[row][col].column = col;
-            parts[row][col].style = currentStyle;
-
-            GUI.changed = true;
         }
     }
 
@@ -335,4 +344,9 @@ public class GridMapCreator : EditorWindow
         Handles.EndGUI();
     }
     #endregion
+
+    private bool SpawnFloor()
+    {
+        return true;
+    }
 }
