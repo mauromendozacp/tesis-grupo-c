@@ -14,9 +14,13 @@ public class GridMapCreator : EditorWindow
     private StyleManager styleManager;
     private bool isErasing;
     private Rect menuBar;
+    private Rect configBar;
     private GUIStyle currentStyle;
     private GameObject map;
+    private string rows;
+    private string columns;
 
+    #region UNITY_CALLS
     [MenuItem("Window/Grid Map Creator")]
     private static void OpenWindow()
     {
@@ -29,6 +33,78 @@ public class GridMapCreator : EditorWindow
         SetUpStyles();
         SetUpNodesAndParts();
         SetUpMap();
+    }
+
+    private void OnGUI()
+    {
+        DrawGrid();
+        DrawNodes();
+        DrawMenuBar();
+        DrawConfigBar();
+        ProcessNodes(Event.current);
+        ProcessGrid(Event.current);
+
+        if (GUI.changed)
+        {
+            Repaint();
+        }
+    }
+
+    private void OnMouseDrag(Vector2 delta)
+    {
+        drag = delta;
+
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 10; j++)
+            {
+                nodes[i][j].Drag(delta);
+            }
+        }
+
+        GUI.changed = true;
+    }
+    #endregion
+
+    #region INIT
+    private void SetUpStyles()
+    {
+        try
+        {
+            styleManager = FindObjectOfType<StyleManager>();
+            for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+            {
+                styleManager.buttonStyles[i].nodeStyle = new GUIStyle();
+                styleManager.buttonStyles[i].nodeStyle.normal.background = styleManager.buttonStyles[i].icon;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        empty = styleManager.buttonStyles[0].nodeStyle;
+        currentStyle = styleManager.buttonStyles[1].nodeStyle;
+    }
+
+    private void SetUpNodesAndParts()
+    {
+        nodes = new List<List<Node>>();
+        parts = new List<List<PartScripts>>();
+
+        for (int i = 0; i < 20; i++)
+        {
+            nodes.Add(new List<Node>());
+            parts.Add(new List<PartScripts>());
+
+            for (int j = 0; j < 10; j++)
+            {
+                nodePos.Set(i * 30, j * 30);
+                nodes[i].Add(new Node(nodePos, 30, 30, empty));
+                parts[i].Add(null);
+            }
+        }
     }
 
     private void SetUpMap()
@@ -76,61 +152,9 @@ public class GridMapCreator : EditorWindow
             parts[row][col].column = col;
         }
     }
+    #endregion
 
-    private void SetUpStyles()
-    {
-        try
-        {
-            styleManager = FindObjectOfType<StyleManager>();
-            for (int i = 0; i < styleManager.buttonStyles.Length; i++)
-            {
-                styleManager.buttonStyles[i].nodeStyle = new GUIStyle();
-                styleManager.buttonStyles[i].nodeStyle.normal.background = styleManager.buttonStyles[i].icon;
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        empty = styleManager.buttonStyles[0].nodeStyle;
-        currentStyle = styleManager.buttonStyles[1].nodeStyle;
-    }
-
-    private void SetUpNodesAndParts()
-    {
-        nodes = new List<List<Node>>();
-        parts = new List<List<PartScripts>>();
-
-        for (int i = 0; i < 20; i++)
-        {
-            nodes.Add(new List<Node>());
-            parts.Add(new List<PartScripts>());
-
-            for (int j = 0; j < 10; j++)
-            {
-                nodePos.Set(i * 30, j * 30);
-                nodes[i].Add(new Node(nodePos, 30, 30, empty));
-                parts[i].Add(null);
-            }
-        }
-    }
-
-    private void OnGUI()
-    {
-        DrawGrid();
-        DrawNodes();
-        DrawMenuBar();
-        ProcessNodes(Event.current);
-        ProcessGrid(Event.current);
-
-        if (GUI.changed)
-        {
-            Repaint();
-        }
-    }
-
+    #region DRAW_METHODS
     private void DrawMenuBar()
     {
         menuBar = new Rect(0, 0, position.width, 20);
@@ -149,6 +173,22 @@ public class GridMapCreator : EditorWindow
         GUILayout.EndArea();
     }
 
+    private void DrawConfigBar()
+    {
+        configBar = new Rect(0, 20, position.width, 20);
+        GUILayout.BeginArea(configBar, EditorStyles.textField);
+        GUILayout.BeginHorizontal();
+
+        rows = EditorGUILayout.TextField("Rows: ", rows);
+        columns = EditorGUILayout.TextField("Columns: ", columns);
+
+
+        GUILayout.EndHorizontal();
+        GUILayout.EndArea();
+    }
+    #endregion
+
+    #region NODES_METHODS
     private void ProcessNodes(Event e)
     {
         if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > 600 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > 300) return;
@@ -213,7 +253,9 @@ public class GridMapCreator : EditorWindow
             }
         }
     }
+    #endregion
 
+    #region GRID_METHODS
     private void ProcessGrid(Event e)
     {
         drag = Vector2.zero;
@@ -229,21 +271,6 @@ public class GridMapCreator : EditorWindow
         }
     }
 
-    private void OnMouseDrag(Vector2 delta)
-    {
-        drag = delta;
-
-        for (int i = 0; i < 20; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-                nodes[i][j].Drag(delta);
-            }
-        }
-
-        GUI.changed = true;
-    }
-
     private void DrawGrid()
     {
         int widthDivider = Mathf.CeilToInt(position.width / 20);
@@ -253,18 +280,19 @@ public class GridMapCreator : EditorWindow
         Handles.color = new Color(0.5f, 0.5f, 0.5f, 0.2f);
 
         offset += drag;
-        Vector3 newOffset = new Vector3(offset.x % 20, offset.y % 20, 0);
+        Vector3 newOffset = new Vector3(offset.x % 30, offset.y % 30, 0);
 
         for (int i = 0; i < widthDivider; i++)
         {
-            Handles.DrawLine(new Vector3(20 * i, -20, 0) + newOffset, new Vector3(20 * i, position.height, 0) + newOffset);
+            Handles.DrawLine(new Vector3(30 * i, -30, 0) + newOffset, new Vector3(30 * i, position.height, 0) + newOffset);
         }
         for (int i = 0; i < heightDivider; i++)
         {
-            Handles.DrawLine(new Vector3(-20, 20 * i, 0) + newOffset, new Vector3(position.width, 20 * i, 0) + newOffset);
+            Handles.DrawLine(new Vector3(-30, 30 * i, 0) + newOffset, new Vector3(position.width, 30 * i, 0) + newOffset);
         }
 
         Handles.color = Color.white;
         Handles.EndGUI();
     }
+    #endregion
 }
