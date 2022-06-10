@@ -5,20 +5,32 @@ using UnityEngine;
 
 public class GridMapCreator : EditorWindow
 {
-    private Vector2 offset;
-    private Vector2 drag;
+    #region PRIVATE_FIELDS
+    private StyleManager styleManager;
+
+    private GameObject map;
+
+    private bool isErasing;
+
     private List<List<Node>> nodes;
     private List<List<PartScripts>> parts;
-    private GUIStyle empty;
-    private Vector2 nodePos;
-    private StyleManager styleManager;
-    private bool isErasing;
+
+    private int rows = 0;
+    private int columns= 0;
+
+    private string rowsText;
+    private string columnsText;
+
+    private GUIStyle emptyStyle;
+    private GUIStyle currentStyle;
+
     private Rect menuBar;
     private Rect configBar;
-    private GUIStyle currentStyle;
-    private GameObject map;
-    private string rows;
-    private string columns;
+
+    private Vector2 offset;
+    private Vector2 drag;
+    private Vector2 nodePos;
+    #endregion
 
     #region UNITY_CALLS
     [MenuItem("Window/Grid Map Creator")]
@@ -84,7 +96,7 @@ public class GridMapCreator : EditorWindow
             throw;
         }
 
-        empty = styleManager.buttonStyles[0].nodeStyle;
+        emptyStyle = styleManager.buttonStyles[0].nodeStyle;
         currentStyle = styleManager.buttonStyles[1].nodeStyle;
     }
 
@@ -101,7 +113,7 @@ public class GridMapCreator : EditorWindow
             for (int j = 0; j < 10; j++)
             {
                 nodePos.Set(i * 30, j * 30);
-                nodes[i].Add(new Node(nodePos, 30, 30, empty));
+                nodes[i].Add(new Node(nodePos, 30, 30, emptyStyle));
                 parts[i].Add(null);
             }
         }
@@ -154,7 +166,7 @@ public class GridMapCreator : EditorWindow
     }
     #endregion
 
-    #region DRAW_METHODS
+    #region BAR_METHODS
     private void DrawMenuBar()
     {
         menuBar = new Rect(0, 0, position.width, 20);
@@ -179,9 +191,14 @@ public class GridMapCreator : EditorWindow
         GUILayout.BeginArea(configBar, EditorStyles.textField);
         GUILayout.BeginHorizontal();
 
-        rows = EditorGUILayout.TextField("Rows: ", rows);
-        columns = EditorGUILayout.TextField("Columns: ", columns);
+        rowsText = EditorGUILayout.TextField("Rows: ", rowsText);
+        columnsText = EditorGUILayout.TextField("Columns: ", columnsText);
 
+        if (GUILayout.Button("Create Grid"))
+        {
+            rows = Int32.Parse(rowsText);
+            columns = Int32.Parse(columnsText);
+        }
 
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
@@ -215,7 +232,7 @@ public class GridMapCreator : EditorWindow
         {
             if (parts[row][col] != null)
             {
-                nodes[row][col].SetStyle(empty);
+                nodes[row][col].SetStyle(emptyStyle);
                 DestroyImmediate(parts[row][col].gameObject);
                 GUI.changed = true;
             }
@@ -294,5 +311,9 @@ public class GridMapCreator : EditorWindow
         Handles.color = Color.white;
         Handles.EndGUI();
     }
+    #endregion
+
+    #region HELPER_METHODS
+
     #endregion
 }
