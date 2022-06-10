@@ -15,8 +15,8 @@ public class GridMapCreator : EditorWindow
     private List<List<Node>> nodes;
     private List<List<PartScripts>> parts;
 
-    private int rows = 0;
-    private int columns= 0;
+    private int rows;
+    private int columns;
 
     private string rowsText;
     private string columnsText;
@@ -42,6 +42,9 @@ public class GridMapCreator : EditorWindow
 
     private void OnEnable()
     {
+        rows = EditorPrefs.GetInt("Rows", 0);
+        columns = EditorPrefs.GetInt("Columns", 0);
+
         SetUpStyles();
         SetUpNodesAndParts();
         SetUpMap();
@@ -53,6 +56,7 @@ public class GridMapCreator : EditorWindow
         DrawNodes();
         DrawMenuBar();
         DrawConfigBar();
+
         ProcessNodes(Event.current);
         ProcessGrid(Event.current);
 
@@ -66,9 +70,9 @@ public class GridMapCreator : EditorWindow
     {
         drag = delta;
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < columns; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < rows; j++)
             {
                 nodes[i][j].Drag(delta);
             }
@@ -105,12 +109,12 @@ public class GridMapCreator : EditorWindow
         nodes = new List<List<Node>>();
         parts = new List<List<PartScripts>>();
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < columns; i++)
         {
             nodes.Add(new List<Node>());
             parts.Add(new List<PartScripts>());
 
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < rows; j++)
             {
                 nodePos.Set(i * 30, j * 30);
                 nodes[i].Add(new Node(nodePos, 30, 30, emptyStyle));
@@ -198,6 +202,17 @@ public class GridMapCreator : EditorWindow
         {
             rows = Int32.Parse(rowsText);
             columns = Int32.Parse(columnsText);
+
+            EditorPrefs.SetInt("Rows", rows);
+            EditorPrefs.SetInt("Columns", columns);
+
+            SetUpNodesAndParts();
+            SetUpMap();
+        }
+
+        if (GUILayout.Button("Export Level"))
+        {
+
         }
 
         GUILayout.EndHorizontal();
@@ -208,7 +223,7 @@ public class GridMapCreator : EditorWindow
     #region NODES_METHODS
     private void ProcessNodes(Event e)
     {
-        if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > 600 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > 300) return;
+        if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > columns * 30 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > rows * 30) return;
 
         int row = (int)(e.mousePosition.x - offset.x) / 30;
         int col = (int)(e.mousePosition.y - offset.y) / 30;
@@ -246,6 +261,14 @@ public class GridMapCreator : EditorWindow
 
             GameObject go = Instantiate(Resources.Load("MapParts/" + currentStyle.normal.background.name)) as GameObject;
             go.name = currentStyle.normal.background.name;
+
+            if (go.name != "Floor")
+            {
+                GameObject floor = Instantiate(Resources.Load("MapParts/" + "Floor")) as GameObject;
+                floor.transform.position = new Vector3(col, -0.5f, row) + Vector3.forward + Vector3.right;
+                floor.transform.parent = map.transform;
+            }
+            
             go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
             go.transform.parent = map.transform;
 
@@ -262,9 +285,9 @@ public class GridMapCreator : EditorWindow
 
     private void DrawNodes()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < columns; i++)
         {
-            for (int j = 0; j < 10; j++)
+            for (int j = 0; j < rows; j++)
             {
                 nodes[i][j].Draw();
             }
@@ -311,9 +334,5 @@ public class GridMapCreator : EditorWindow
         Handles.color = Color.white;
         Handles.EndGUI();
     }
-    #endregion
-
-    #region HELPER_METHODS
-
     #endregion
 }
