@@ -248,8 +248,14 @@ public class GridMapCreator : EditorWindow
         {
             if (parts[row][col] != null)
             {
+                if (Physics.Raycast(parts[row][col].gameObject.transform.position, Vector3.down, out var hit, 1))
+                {
+                    DestroyImmediate(hit.transform.gameObject);
+                }
+
                 nodes[row][col].SetStyle(emptyStyle);
                 DestroyImmediate(parts[row][col].gameObject);
+
                 GUI.changed = true;
             }
             parts[row][col] = null;
@@ -268,26 +274,34 @@ public class GridMapCreator : EditorWindow
                 GameObject go = Instantiate(styleManager.buttonStyles[i].prefab);
                 go.name = styleManager.buttonStyles[i].prefab.name;
 
+                if (go.name == "trap" || go.name == "floor")
+                {
+                    go.transform.position = new Vector3(col, -1, row) + Vector3.forward + Vector3.right;
+                }
+                else
+                {
+                    go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
+                }
+
+                go.transform.parent = map.transform;
+
+                parts[row][col] = go.GetComponent<PartScripts>();
+                parts[row][col].part = go;
+                parts[row][col].name = go.name;
+                parts[row][col].row = row;
+                parts[row][col].column = col;
+                parts[row][col].style = currentStyle;
+
                 //TODO add proper logic to check if floor is needed
-                if (go.name != "Floor")
+                if (go.name != "trap" && go.name != "floor")
                 {
                     GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
                     floor.transform.position = new Vector3(col, -1, row) + Vector3.forward + Vector3.right;
                     floor.transform.parent = map.transform;
-
-                    go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
-                    go.transform.parent = map.transform;
-
-                    parts[row][col] = go.GetComponent<PartScripts>();
-                    parts[row][col].part = go;
-                    parts[row][col].name = go.name;
-                    parts[row][col].row = row;
-                    parts[row][col].column = col;
-                    parts[row][col].style = currentStyle;
-
-                    GUI.changed = true;
-                    break;
                 }
+
+                GUI.changed = true;
+                break;
             }
         }
     }
