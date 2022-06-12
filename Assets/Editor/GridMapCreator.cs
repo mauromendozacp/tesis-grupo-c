@@ -262,6 +262,11 @@ public class GridMapCreator : EditorWindow
         }
         else
         {
+            Debug.Log(row);
+            Debug.Log(col);
+
+            if (row > rows - 1 || col > columns - 1) return;
+
             if (parts[row][col] != null) return;
 
             nodes[row][col].SetStyle(currentStyle);
