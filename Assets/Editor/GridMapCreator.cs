@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,10 +12,10 @@ public class GridMapCreator : EditorWindow
     private GameObject map;
 
     private bool isErasing;
+    private bool propSelected;
 
     private List<List<Node>> nodes;
     private List<List<PartScripts>> parts;
-    private LevelModel levelModel;
 
     private int rows;
     private int columns;
@@ -180,6 +181,8 @@ public class GridMapCreator : EditorWindow
 
         for (int i = 0; i < styleManager.buttonStyles.Length; i++)
         {
+            if (styleManager.buttonStyles[i].icon.name == "Obstacle") continue;
+
             if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(80)))
             {
                 currentStyle = styleManager.buttonStyles[i].nodeStyle;
@@ -188,11 +191,29 @@ public class GridMapCreator : EditorWindow
 
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
+
+        menuBar = new Rect(0, 20, position.width, 20);
+        GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
+        GUILayout.BeginHorizontal();
+
+        for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+        {
+            if (styleManager.buttonStyles[i].icon.name != "Obstacle") continue;
+
+            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(80)))
+            {
+                currentStyle = styleManager.buttonStyles[i].nodeStyle;
+            }
+
+        }
+
+        GUILayout.EndHorizontal();
+        GUILayout.EndArea();
     }
 
     private void DrawConfigBar()
     {
-        configBar = new Rect(0, 20, position.width, 20);
+        configBar = new Rect(0, 40, position.width, 20);
         GUILayout.BeginArea(configBar, EditorStyles.textField);
         GUILayout.BeginHorizontal();
 
@@ -246,6 +267,8 @@ public class GridMapCreator : EditorWindow
     {
         if (isErasing)
         {
+            if (row > rows - 1 || col > columns - 1) return;
+
             if (parts[row][col] != null)
             {
                 if (Physics.Raycast(parts[row][col].gameObject.transform.position, Vector3.down, out var hit, 1))
@@ -262,9 +285,6 @@ public class GridMapCreator : EditorWindow
         }
         else
         {
-            Debug.Log(row);
-            Debug.Log(col);
-
             if (row > rows - 1 || col > columns - 1) return;
 
             if (parts[row][col] != null) return;
