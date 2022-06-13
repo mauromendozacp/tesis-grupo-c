@@ -15,6 +15,5 @@ public struct ButtonStyle
     public string buttonTex;
     public GameObject prefab;
 
-    [HideInInspector]
-    public GUIStyle nodeStyle;
+    [HideInInspector] public GUIStyle nodeStyle;
 }
