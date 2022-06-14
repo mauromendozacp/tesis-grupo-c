@@ -43,7 +43,7 @@ public class UIGameplay : MonoBehaviour
     #region PRIVATE_METHODS
     private void SetTurnsText(int turns)
     {
-        turnsText.text = "Turns: " + turns;
+        turnsText.text = turns.ToString();
     }
     #endregion
 }
