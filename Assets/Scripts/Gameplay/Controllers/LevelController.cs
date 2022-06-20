@@ -25,9 +25,9 @@ public class LevelController : MonoBehaviour
 
     #region ACTIONS
     private GUIActions guiActions = null;
+    private PCActions pcActions = null;
     private Action onSpawnWinConfetti = null;
     private Action onPlayerDeath = null;
-    private Action onCameraFollow = null;
     #endregion
 
     #region PROPERTIES
@@ -39,7 +39,12 @@ public class LevelController : MonoBehaviour
     {
         this.guiActions = guiActions;
         this.onPlayerDeath = onPlayerDeath;
-        this.onCameraFollow = onCameraFollow;
+
+        pcActions = new PCActions();
+        pcActions.onChechIndexPlayer = CheckIndexPlayer;
+        pcActions.onCheckGridIndex = CheckIndex;
+        pcActions.onCameraFollow = onCameraFollow;
+        pcActions.onEndDeadAnimation = RestartLevel;
     }
 
     public void StartGrid()
@@ -54,7 +59,7 @@ public class LevelController : MonoBehaviour
     private void SpawnPlayer()
     {
         playerController = Instantiate(playerPrefab, environmentHolder).GetComponent<PlayerController>();
-        playerController.Init(guiActions, CheckIndex, CheckIndexPlayer, onCameraFollow, unit);
+        playerController.Init(guiActions, pcActions, unit);
         playerController.SetData(levelModel.PlayerModel);
         playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
     }
@@ -139,7 +144,7 @@ public class LevelController : MonoBehaviour
 
         if (playerController.CheckTurns()) return;
 
-        RestartLevel();
+        playerController.PlayDeadAnimation();
         Debug.Log("Lose");
     }
 

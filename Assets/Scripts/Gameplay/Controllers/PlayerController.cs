@@ -11,11 +11,20 @@ public enum MOVEMENT
     DOWN
 }
 
+public class PCActions
+{
+    public Action<GridIndex> onChechIndexPlayer = null;
+    public Func<GridIndex, bool> onCheckGridIndex = null;
+    public Action onCameraFollow = null;
+    public Action onEndDeadAnimation = null;
+}
+
 public class PlayerController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
     [SerializeField] private Light focusLight = null;
+    [SerializeField] private Animator animator = null;
     [SerializeField] private LayerMask noMovableMask = default;
     #endregion
 
@@ -29,15 +38,18 @@ public class PlayerController : MonoBehaviour
     private bool unlimitedTurns = false;
     #endregion
 
+    #region CONSTANT_FIELDS
+    private const string speedKey = "speed";
+    private const string deadKey = "dead";
+    #endregion
+
     #region PROPERTIES
     public bool InputEnabled { get => inputEnabled; set => inputEnabled = value; }
     #endregion
 
     #region ACTIONS
     private GUIActions guiActions = null;
-    private Action<GridIndex> onChechIndexPlayer = null;
-    private Func<GridIndex, bool> onCheckGridIndex = null;
-    private Action onCameraFollow = null;
+    private PCActions pcActions = null;
     #endregion
 
     #region UNITY_CALLS
@@ -51,12 +63,10 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, Func<GridIndex, bool> onCheckGridIndex, Action<GridIndex> onChechIndexPlayer, Action onCameraFollow, float unit)
+    public void Init(GUIActions guiActions, PCActions pcActions, float unit)
     {
         this.guiActions = guiActions;
-        this.onCheckGridIndex = onCheckGridIndex;
-        this.onChechIndexPlayer = onChechIndexPlayer;
-        this.onCameraFollow = onCameraFollow;
+        this.pcActions = pcActions;
         this.unit = unit;
 
         data = new PlayerData();
@@ -89,11 +99,14 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
+        inputEnabled = true;
         transform.forward = Vector3.forward;
+        animator.SetBool(deadKey, false);
+
         SetPositionUnit(data.SpawnIndex);
         SetTurns(data.TotalTurns);
-        inputEnabled = true;
-        onCameraFollow?.Invoke();
+
+        pcActions.onCameraFollow?.Invoke();
     }
 
     public void TurnLight()
@@ -104,6 +117,18 @@ public class PlayerController : MonoBehaviour
     public void EnableUnlimitedTurns()
     {
         unlimitedTurns = !unlimitedTurns;
+    }
+
+    public void PlayDeadAnimation()
+    {
+        inputEnabled = false;
+        //animator.SetBool(deadKey, true);
+        EndDeadAnimation();
+    }
+
+    public void EndDeadAnimation()
+    {
+        pcActions.onEndDeadAnimation?.Invoke();
     }
     #endregion
 
@@ -147,7 +172,7 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.forward = direction;
-        if (!onCheckGridIndex(auxIndex)) return;
+        if (!pcActions.onCheckGridIndex(auxIndex)) return;
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
@@ -267,17 +292,31 @@ public class PlayerController : MonoBehaviour
         float timer = 0f;
         Vector3 initialPos = transform.position;
 
+        while (timer < speed / 2)
+        {
+            timer += Time.deltaTime;
+            transform.position = Vector3.Lerp(initialPos, pos, timer / speed);
+
+            animator.SetFloat(speedKey, timer / (speed / 2));
+
+            yield return new WaitForEndOfFrame();
+        }
+        animator.SetFloat(speedKey, 1f);
+
         while (timer < speed)
         {
             timer += Time.deltaTime;
             transform.position = Vector3.Lerp(initialPos, pos, timer / speed);
 
+            animator.SetFloat(speedKey, 2f - ((timer * 2f) / speed));
+
             yield return new WaitForEndOfFrame();
         }
+        animator.SetFloat(speedKey, 0f);
 
         transform.position = pos;
         inMovement = false;
-        onChechIndexPlayer?.Invoke(data.CurrentIndex);
+        pcActions.onChechIndexPlayer?.Invoke(data.CurrentIndex);
 
         yield return null;
     }
