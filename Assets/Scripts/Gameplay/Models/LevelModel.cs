@@ -13,11 +13,11 @@ public class LevelModel
     #endregion
 
     #region PROPERTIES
-    public PlayerModel PlayerModel { get => playerModel; }
-    public LayerModel[] Layers { get => layers; }
-    public int WinI { get => winI; }
-    public int WinJ { get => winJ; }
-    public int LimitI { get => limitI; }
-    public int LimitJ { get => limitJ; }
+    public PlayerModel PlayerModel { get => playerModel; set => playerModel = value; }
+    public LayerModel[] Layers { get => layers; set => layers = value; }
+    public int WinI { get => winI; set => winI = value; }
+    public int WinJ { get => winJ; set => winJ = value; }
+    public int LimitI { get => limitI; set => limitI = value; }
+    public int LimitJ { get => limitJ; set => limitJ = value; }
     #endregion
 }

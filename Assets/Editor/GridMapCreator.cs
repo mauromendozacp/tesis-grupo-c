@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
+using Codice.Client.BaseCommands;
 using UnityEditor;
 using UnityEngine;
 
@@ -192,7 +194,7 @@ public class GridMapCreator : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
 
-        menuBar = new Rect(0, 20, position.width, 20);
+        menuBar = new Rect(0, 21, position.width, 20);
         GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
         GUILayout.BeginHorizontal();
 
@@ -209,11 +211,23 @@ public class GridMapCreator : EditorWindow
 
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
+
+        menuBar = new Rect(0, 40, position.width, 20);
+        GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
+        GUILayout.BeginHorizontal();
+
+        for (int i = 0; i < 4; i++)
+        {
+
+        }
+
+        GUILayout.EndHorizontal();
+        GUILayout.EndArea();
     }
 
     private void DrawConfigBar()
     {
-        configBar = new Rect(0, 40, position.width, 20);
+        configBar = new Rect(0, 41, position.width, 20);
         GUILayout.BeginArea(configBar, EditorStyles.textField);
         GUILayout.BeginHorizontal();
 
@@ -234,7 +248,7 @@ public class GridMapCreator : EditorWindow
 
         if (GUILayout.Button("Export Level"))
         {
-
+            ExportLevel();
         }
 
         GUILayout.EndHorizontal();
@@ -247,9 +261,9 @@ public class GridMapCreator : EditorWindow
     {
         if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > columns * 30 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > rows * 30) return;
 
-        int row = (int)(e.mousePosition.x - offset.x) / 30;
-        int col = (int)(e.mousePosition.y - offset.y) / 30;
-
+        int row = (int)((e.mousePosition.x - offset.x) / 30);
+        int col = (int)((e.mousePosition.y - offset.y) / 30);
+        ;
         if (e.type == EventType.MouseDown)
         {
             isErasing = nodes[row][col].style.normal.background.name != "Erase";
@@ -384,8 +398,100 @@ public class GridMapCreator : EditorWindow
     }
     #endregion
 
-    private bool SpawnFloor()
+    #region EXPORT
+    private void ExportLevel()
     {
-        return true;
+        LevelModel level = new LevelModel
+        {
+            Layers = new LayerModel[2],
+            PlayerModel = new PlayerModel(),
+            LimitI = parts[0].Count,
+            LimitJ = parts.Count
+        };
+        level.Layers[0] = new LayerModel
+        {
+            LayerIndex = -1
+        };
+        level.Layers[1] = new LayerModel
+        {
+            LayerIndex = 0
+        };
+
+        List<EntityModel> floorLayer = new List<EntityModel>();
+        List<EntityModel> topLayer = new List<EntityModel>();
+
+        for (int i = 0; i < parts.Count; i++)
+        {
+            for (int j = 0; j < parts[i].Count; j++)
+            {
+                if (parts[i][j].partName == "floor" || parts[i][j].partName == "floor_trap")
+                {
+                    EntityModel model = new EntityModel
+                    {
+                        Id = parts[i][j].partName,
+                        Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                        Type = parts[i][j].partType
+                    };
+
+                    floorLayer.Add(model);
+                }
+                else
+                {
+                    EntityModel floor = new EntityModel
+                    {
+                        Id = "floor",
+                        Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                        Type = ENTITY_TYPE.NO_MOVABLE
+                    };
+                    floorLayer.Add(floor);
+
+                    if (parts[i][j].partName != "player" && parts[i][j].partName != "win")
+                    {
+                        EntityModel model = new EntityModel
+                        {
+                            Id = parts[i][j].partName,
+                            Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                            Type = parts[i][j].partType
+                        };
+
+                        topLayer.Add(model);
+                    }
+                }
+
+                if (parts[i][j].partName == "player")
+                {
+                    level.PlayerModel.I = parts[i][j].column;
+                    level.PlayerModel.J = parts[i][j].row;
+                }
+
+                if (parts[i][j].partName == "win")
+                {
+                    level.WinI = parts[i][j].column;
+                    level.WinJ = parts[i][j].row;
+                }
+            }
+        }
+
+        level.Layers[0].Models = new EntityModel[floorLayer.Count];
+        level.Layers[1].Models = new EntityModel[topLayer.Count];
+
+        for (int i = 0; i < floorLayer.Count; i++)
+        {
+            level.Layers[0].Models[i] = floorLayer[i];
+        }
+
+        for (int i = 0; i < topLayer.Count; i++)
+        {
+            level.Layers[1].Models[i] = topLayer[i];
+        }
+
+        string json = JsonUtility.ToJson(level);
+
+        string path = EditorUtility.OpenFilePanel("Select json", "", "json");
+        if (path.Length != 0)
+        {
+            File.WriteAllText(path, json);
+        }
     }
+    #endregion
 }

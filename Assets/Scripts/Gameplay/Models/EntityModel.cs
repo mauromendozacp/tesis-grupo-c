@@ -22,9 +22,9 @@ public class EntityModel
     #endregion
 
     #region PROPERTIES
-    public string Id { get => id; }
-    public ENTITY_TYPE Type { get => type; }
-    public GridIndex Index { get => index; }
-    public RotationModel Rotation { get => rotation; }
+    public string Id { get => id; set => id = value; }
+    public ENTITY_TYPE Type { get => type; set => type = value; }
+    public GridIndex Index { get => index; set => index = value; }
+    public RotationModel Rotation { get => rotation; set => rotation = value; }
     #endregion
 }

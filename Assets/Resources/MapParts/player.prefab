@@ -204,6 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.5
   focusLight: {fileID: 2373405252262715399}
+  animator: {fileID: 0}
   noMovableMask:
     serializedVersion: 2
     m_Bits: 256
@@ -221,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 0
-  partName: Empty
+  partName: player
   part: {fileID: 0}
   style:
     m_Name: 

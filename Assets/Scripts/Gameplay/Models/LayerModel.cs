@@ -9,7 +9,7 @@ public class LayerModel
     #endregion
 
     #region PROPERTIES
-    public int LayerIndex { get => layerIndex; }
-    public EntityModel[] Models { get => models; }
+    public int LayerIndex { get => layerIndex; set => layerIndex = value; }
+    public EntityModel[] Models { get => models; set => models = value; }
     #endregion
 }

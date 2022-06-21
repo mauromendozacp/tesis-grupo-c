@@ -11,9 +11,9 @@ public class PlayerModel
     #endregion
 
     #region PROPERTIES
-    public int Lives { get => lives; }
-    public int Turns { get => turns; }
-    public int I { get => i; }
-    public int J { get => j; }
+    public int Lives { get => lives; set => lives = value; }
+    public int Turns { get => turns; set => turns = value; }
+    public int I { get => i; set => i = value; }
+    public int J { get => j; set => j = value; }
     #endregion
 }

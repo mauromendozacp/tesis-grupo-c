@@ -61,7 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 0
-  partName: Empty
+  partName: win
+  partType: 1
   part: {fileID: 0}
   style:
     m_Name: 

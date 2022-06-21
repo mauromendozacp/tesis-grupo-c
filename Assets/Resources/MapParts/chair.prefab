@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_Name
-      value: prefab_chair_1 1
+      value: chair
       objectReference: {fileID: 0}
     - target: {fileID: 5976136808500996652, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_RootOrder
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   row: 0
   column: 0
-  partName: Empty
+  partName: chair_1
   part: {fileID: 0}
   style:
     m_Name: 
