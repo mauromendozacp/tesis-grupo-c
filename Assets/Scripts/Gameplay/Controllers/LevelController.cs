@@ -84,7 +84,8 @@ public class LevelController : MonoBehaviour
                 GameObject prefab = GetPrefab(entityModel.Id);
                 if (prefab == null) return;
 
-                GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);                
+                GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
+                go.transform.forward = new Vector3(entityModel.Rotation.X,entityModel.Rotation.Y,entityModel.Rotation.Z);
 
                 switch (entityModel.Type)
                 {

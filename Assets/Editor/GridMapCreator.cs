@@ -31,6 +31,8 @@ public class GridMapCreator : EditorWindow
     private Rect menuBar;
     private Rect configBar;
 
+    private Vector3 rotation;
+
     private Vector2 offset;
     private Vector2 drag;
     private Vector2 nodePos;
@@ -206,19 +208,30 @@ public class GridMapCreator : EditorWindow
             {
                 currentStyle = styleManager.buttonStyles[i].nodeStyle;
             }
-
         }
 
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
 
-        menuBar = new Rect(0, 40, position.width, 20);
+        menuBar = new Rect(0, 41, position.width, 20);
         GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
         GUILayout.BeginHorizontal();
 
-        for (int i = 0; i < 4; i++)
+        if (GUILayout.Button("Forward"))
         {
-
+            rotation = Vector3.left;
+        }
+        if (GUILayout.Button("Back"))
+        {
+            rotation = Vector3.right;
+        }
+        if (GUILayout.Button("Left"))
+        {
+            rotation = Vector3.forward;
+        }
+        if (GUILayout.Button("Right"))
+        {
+            rotation = Vector3.back;
         }
 
         GUILayout.EndHorizontal();
@@ -227,7 +240,7 @@ public class GridMapCreator : EditorWindow
 
     private void DrawConfigBar()
     {
-        configBar = new Rect(0, 41, position.width, 20);
+        configBar = new Rect(0, 61, position.width, 20);
         GUILayout.BeginArea(configBar, EditorStyles.textField);
         GUILayout.BeginHorizontal();
 
@@ -322,6 +335,7 @@ public class GridMapCreator : EditorWindow
                     go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
                 }
 
+                go.transform.forward = rotation;
                 go.transform.parent = map.transform;
 
                 parts[row][col] = go.GetComponent<PartScripts>();
@@ -430,8 +444,13 @@ public class GridMapCreator : EditorWindow
                     {
                         Id = parts[i][j].partName,
                         Index = new GridIndex(parts[i][j].column, parts[i][j].row),
-                        Type = parts[i][j].partType
+                        Type = parts[i][j].partType,
+                        Rotation = new RotationModel()
                     };
+
+                    model.Rotation.X = rotation.x;
+                    model.Rotation.Y = rotation.y;
+                    model.Rotation.Z = rotation.z;
 
                     floorLayer.Add(model);
                 }
@@ -443,6 +462,7 @@ public class GridMapCreator : EditorWindow
                         Index = new GridIndex(parts[i][j].column, parts[i][j].row),
                         Type = ENTITY_TYPE.NO_MOVABLE
                     };
+
                     floorLayer.Add(floor);
 
                     if (parts[i][j].partName != "player" && parts[i][j].partName != "win")
@@ -451,8 +471,13 @@ public class GridMapCreator : EditorWindow
                         {
                             Id = parts[i][j].partName,
                             Index = new GridIndex(parts[i][j].column, parts[i][j].row),
-                            Type = parts[i][j].partType
+                            Type = parts[i][j].partType,
+                            Rotation = new RotationModel()
                         };
+
+                        model.Rotation.X = rotation.x;
+                        model.Rotation.Y = rotation.y;
+                        model.Rotation.Z = rotation.z;
 
                         topLayer.Add(model);
                     }
