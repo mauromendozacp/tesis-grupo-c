@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private GameObject winPrefab = null;
     [SerializeField] private PrefabEntity[] prefabs = null;
-    [SerializeField] private TextAsset levelJson = null;
+    [SerializeField] private TextAsset[] jsonLevels = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -21,13 +22,16 @@ public class LevelController : MonoBehaviour
     private PlayerController playerController = null;
     private GridIndex winIndex = default;
     private List<GameObject> props = null;
+    private int levelIndex = 0;
     #endregion
 
     #region ACTIONS
-    private GUIActions guiActions = null;
+    private HUDActions hudActions = null;
     private PCActions pcActions = null;
+    private GUIActions guiActions = null;
     private Action onSpawnWinConfetti = null;
     private Action onPlayerDeath = null;
+    private Action onPlayerSpawned = null;
     #endregion
 
     #region PROPERTIES
@@ -35,23 +39,42 @@ public class LevelController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, Action onPlayerDeath, Action onCameraFollow)
+    public void Init(HUDActions hudActions, GUIActions guiActions, Action onPlayerSpawned, Action onPlayerDeath, Action onCameraFollow)
     {
+        this.hudActions = hudActions;
         this.guiActions = guiActions;
         this.onPlayerDeath = onPlayerDeath;
+        this.onPlayerSpawned = onPlayerSpawned;
 
         pcActions = new PCActions();
         pcActions.onChechIndexPlayer = CheckIndexPlayer;
         pcActions.onCheckGridIndex = CheckIndex;
         pcActions.onCameraFollow = onCameraFollow;
-        pcActions.onEndDeadAnimation = RestartLevel;
+        pcActions.onEndDeadAnimation = DeathPlayer;
     }
 
     public void StartGrid()
     {
-        levelModel = JsonUtility.FromJson<LevelModel>(levelJson.text);
-        SpawnGrid();
-        SpawnPlayer();
+        if (jsonLevels.Length > 0)
+        {
+            levelModel = JsonUtility.FromJson<LevelModel>(jsonLevels[levelIndex].text);
+
+            for (int i = 0; i < environmentHolder.childCount; i++)
+            {
+                Destroy(environmentHolder.GetChild(i).gameObject);
+            }
+
+            SpawnGrid();
+            SpawnPlayer();
+
+            onPlayerSpawned?.Invoke();
+        }
+    }
+
+    public void RestartGame()
+    {
+        levelIndex = 0;
+        StartGrid();
     }
     #endregion
 
@@ -59,7 +82,7 @@ public class LevelController : MonoBehaviour
     private void SpawnPlayer()
     {
         playerController = Instantiate(playerPrefab, environmentHolder).GetComponent<PlayerController>();
-        playerController.Init(guiActions, pcActions, unit);
+        playerController.Init(hudActions, pcActions, unit);
         playerController.SetData(levelModel.PlayerModel);
         playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
     }
@@ -97,7 +120,7 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.TRAP:
                         props.Add(go);
-                        go.GetComponent<TrapController>().Init(onPlayerDeath, RestartLevel, pos);
+                        go.GetComponent<TrapController>().Init(onPlayerDeath, PlayerDeath, pos);
                         break;
                     case ENTITY_TYPE.JUMPABLE:
                         props.Add(go);
@@ -137,7 +160,10 @@ public class LevelController : MonoBehaviour
         if (index == winIndex)
         {
             onSpawnWinConfetti?.Invoke();
+            PlayerInputStatus(false);            
+            NextLevel();
             Debug.Log("Win");
+
             return;
         }
 
@@ -154,23 +180,56 @@ public class LevelController : MonoBehaviour
         return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
     }
 
-    private void RestartLevel()
+    private void DeathPlayer(bool end)
     {
-        RestartGrid();
-        playerController.Respawn();
+        if (end)
+        {
+            guiActions.onOpenGameoverPanel?.Invoke();
+        }
+        else
+        {
+            RestartLevel();
+        }
     }
 
-    private void RestartGrid()
+    private void RestartLevel()
     {
         for (int i = 0; i < props.Count; i++)
         {
             props[i].GetComponent<PropController>().Restart();
         }
+
+        playerController.Respawn();
+    }
+
+    private void NextLevel()
+    {
+        StartCoroutine(NextLevelDelay());
+    }
+
+    private void PlayerDeath()
+    {
+        playerController.EndDeadAnimation();
     }
 
     private void PlayerInputStatus(bool status)
     {
         playerController.InputEnabled = status;
+    }
+
+    private IEnumerator NextLevelDelay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        levelIndex++;
+        if (levelIndex >= jsonLevels.Length)
+        {
+            guiActions.onOpenWinPanel?.Invoke();
+        }
+        else
+        {
+            StartGrid();
+        }
     }
     #endregion
 }

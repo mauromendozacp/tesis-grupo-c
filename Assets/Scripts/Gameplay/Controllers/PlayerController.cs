@@ -16,7 +16,7 @@ public class PCActions
     public Action<GridIndex> onChechIndexPlayer = null;
     public Func<GridIndex, bool> onCheckGridIndex = null;
     public Action onCameraFollow = null;
-    public Action onEndDeadAnimation = null;
+    public Action<bool> onEndDeadAnimation = null;
 }
 
 public class PlayerController : MonoBehaviour
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region ACTIONS
-    private GUIActions guiActions = null;
+    private HUDActions guiActions = null;
     private PCActions pcActions = null;
     #endregion
 
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(GUIActions guiActions, PCActions pcActions, float unit)
+    public void Init(HUDActions guiActions, PCActions pcActions, float unit)
     {
         this.guiActions = guiActions;
         this.pcActions = pcActions;
@@ -128,7 +128,8 @@ public class PlayerController : MonoBehaviour
 
     public void EndDeadAnimation()
     {
-        pcActions.onEndDeadAnimation?.Invoke();
+        data.Lives--;
+        pcActions.onEndDeadAnimation?.Invoke(data.Lives <= 0);
     }
     #endregion
 

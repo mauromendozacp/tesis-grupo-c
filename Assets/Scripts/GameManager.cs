@@ -53,7 +53,8 @@ public class GameManager : MonoBehaviour
     #region EXPOSED_FIELDS
     [SerializeField] private LevelController levelController = null;
     [SerializeField] private CameraController cameraController = null;
-    [SerializeField] private UIGameplay uiGameplay = null;
+    [SerializeField] private HUD hud = null;
+    [SerializeField] private GameplayUI gameplayUI = null;
     #endregion
 
     #region UNITY_CALLS
@@ -67,24 +68,31 @@ public class GameManager : MonoBehaviour
     #region PRIVATE_METHODS
     private void Init()
     {
-        uiGameplay.Init();
-        levelController.Init(uiGameplay.GUIActions, PlayerDeath, () => { CameraFollowStatus(true); });
+        hud.Init();
+        gameplayUI.Init();
+        levelController.Init(hud.HUDActions, gameplayUI.GUIActions, SetPlayerActions, PlayerDeath, () => { CameraFollowStatus(true); });
 
-        uiGameplay.GUIActions.onExit = ExitGame;
+        hud.HUDActions.onExit = ExitGame;
+        gameplayUI.GUIActions.onRestart += levelController.RestartGame;
+        gameplayUI.GUIActions.onRestart += () => { cameraController.Follow = true; };
     }
 
     private void StartGame()
     {
         levelController.StartGrid();
-        cameraController.Target = levelController.PlayerController.transform;
-
-        uiGameplay.GUIActions.onEnableLight = levelController.PlayerController.TurnLight;
-        uiGameplay.GUIActions.onEnableUnlimitedTurns = levelController.PlayerController.EnableUnlimitedTurns;
     }
 
     private void ExitGame()
     {
         Application.Quit();
+    }
+
+    private void SetPlayerActions()
+    {
+        cameraController.Target = levelController.PlayerController.transform;
+
+        hud.HUDActions.onEnableLight = levelController.PlayerController.TurnLight;
+        hud.HUDActions.onEnableUnlimitedTurns = levelController.PlayerController.EnableUnlimitedTurns;
     }
 
     private void PlayerDeath()

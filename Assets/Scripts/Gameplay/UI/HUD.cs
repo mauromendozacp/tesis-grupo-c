@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class GUIActions
+public class HUDActions
 {
     public Action onExit = null;
     public Action onEnableLight = null;
@@ -11,7 +11,7 @@ public class GUIActions
     public Action<int> onUpdateTurns = null;
 }
 
-public class UIGameplay : MonoBehaviour
+public class HUD : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private Button exitBtn = null;
@@ -21,22 +21,22 @@ public class UIGameplay : MonoBehaviour
     #endregion
 
     #region PRIVATE_FIELDS
-    private GUIActions guiActions = null;
+    private HUDActions hudActions = null;
     #endregion
 
     #region PROPERTIES
-    public GUIActions GUIActions { get => guiActions; }
+    public HUDActions HUDActions { get => hudActions; }
     #endregion
 
     #region PUBLIC_METHODS
     public void Init()
     {
-        guiActions = new GUIActions();
-        guiActions.onUpdateTurns += SetTurnsText;
+        hudActions = new HUDActions();
+        hudActions.onUpdateTurns += SetTurnsText;
 
-        exitBtn.onClick.AddListener(() => { guiActions.onExit?.Invoke(); });
-        lightBtn.onClick.AddListener(() => { guiActions.onEnableLight?.Invoke(); });
-        turnsBtn.onClick.AddListener(() => { guiActions.onEnableUnlimitedTurns?.Invoke(); });
+        exitBtn.onClick.AddListener(() => { hudActions.onExit?.Invoke(); });
+        lightBtn.onClick.AddListener(() => { hudActions.onEnableLight?.Invoke(); });
+        turnsBtn.onClick.AddListener(() => { hudActions.onEnableUnlimitedTurns?.Invoke(); });
     }
     #endregion
 
