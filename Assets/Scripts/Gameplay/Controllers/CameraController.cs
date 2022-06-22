@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     {
         if (Target != null && Follow)
         {
-            Vector3 distancePos = Target.position - new Vector3(-distance.x, distance.y, 0);
+            Vector3 distancePos = Target.position - new Vector3(0, distance.y, distance.x);
             transform.position = distancePos;
             transform.LookAt(Target.position);
         }

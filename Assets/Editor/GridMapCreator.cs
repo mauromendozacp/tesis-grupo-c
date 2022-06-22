@@ -76,9 +76,9 @@ public class GridMapCreator : EditorWindow
     {
         drag = delta;
 
-        for (int i = 0; i < columns; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < columns; j++)
             {
                 nodes[i][j].Drag(delta);
             }
@@ -115,18 +115,32 @@ public class GridMapCreator : EditorWindow
         nodes = new List<List<Node>>();
         parts = new List<List<PartScripts>>();
 
-        for (int i = 0; i < columns; i++)
+        for (int i = 0; i < rows; i++)
         {
             nodes.Add(new List<Node>());
             parts.Add(new List<PartScripts>());
 
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < columns; j++)
             {
-                nodePos.Set(i * 30, j * 30);
+                nodePos.Set(j * 30, i * 30);
                 nodes[i].Add(new Node(nodePos, 30, 30, emptyStyle));
                 parts[i].Add(null);
             }
         }
+
+        //for (int i = rows - 1; i >= 0; i--) 
+        //{
+        //    nodes.Add(new List<Node>());
+        //    parts.Add(new List<PartScripts>());
+
+        //    for (int j = columns - 1; j >= 0; j--) 
+        //    {
+        //        nodePos.Set(j * 30, i * 30);
+        //        nodes[rows-i-1].Add(new Node(nodePos, 30, 30, emptyStyle));
+        //        parts[rows - i - 1].Add(null);
+        //        Debug.Log(i - rows + 1);
+        //    }
+        //}
     }
 
     private void SetUpMap()
@@ -187,7 +201,7 @@ public class GridMapCreator : EditorWindow
         {
             if (styleManager.buttonStyles[i].icon.name == "Obstacle") continue;
 
-            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(80)))
+            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(90)))
             {
                 currentStyle = styleManager.buttonStyles[i].nodeStyle;
             }
@@ -204,7 +218,7 @@ public class GridMapCreator : EditorWindow
         {
             if (styleManager.buttonStyles[i].icon.name != "Obstacle") continue;
 
-            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(80)))
+            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(90)))
             {
                 currentStyle = styleManager.buttonStyles[i].nodeStyle;
             }
@@ -219,19 +233,19 @@ public class GridMapCreator : EditorWindow
 
         if (GUILayout.Button("Forward"))
         {
-            rotation = Vector3.left;
+            rotation = Vector3.forward;
         }
         if (GUILayout.Button("Back"))
         {
-            rotation = Vector3.right;
+            rotation = Vector3.back;
         }
         if (GUILayout.Button("Left"))
         {
-            rotation = Vector3.forward;
+            rotation = Vector3.left;
         }
         if (GUILayout.Button("Right"))
         {
-            rotation = Vector3.back;
+            rotation = Vector3.right;
         }
 
         GUILayout.EndHorizontal();
@@ -274,9 +288,9 @@ public class GridMapCreator : EditorWindow
     {
         if (e.mousePosition.x - offset.x < 0 || e.mousePosition.x - offset.x > columns * 30 || e.mousePosition.y - offset.y < 0 || e.mousePosition.y - offset.y > rows * 30) return;
 
-        int row = (int)((e.mousePosition.x - offset.x) / 30);
-        int col = (int)((e.mousePosition.y - offset.y) / 30);
-        ;
+        int row = (int)((e.mousePosition.y - offset.y) / 30);
+        int col = (int)((e.mousePosition.x - offset.x) / 30);
+
         if (e.type == EventType.MouseDown)
         {
             isErasing = nodes[row][col].style.normal.background.name != "Erase";
@@ -328,11 +342,11 @@ public class GridMapCreator : EditorWindow
 
                 if (go.name == "trap" || go.name == "floor")
                 {
-                    go.transform.position = new Vector3(col, -1, row) + Vector3.forward + Vector3.right;
+                    go.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
                 }
                 else
                 {
-                    go.transform.position = new Vector3(col, 0, row) + Vector3.forward + Vector3.right;
+                    go.transform.position = new Vector3(col - 1, 0, rows - row - 1) + Vector3.right;
                 }
 
                 go.transform.forward = rotation;
@@ -349,7 +363,7 @@ public class GridMapCreator : EditorWindow
                 if (go.name != "trap" && go.name != "floor")
                 {
                     GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
-                    floor.transform.position = new Vector3(col, -1, row) + Vector3.forward + Vector3.right;
+                    floor.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
                     floor.transform.parent = map.transform;
                 }
 
@@ -361,9 +375,9 @@ public class GridMapCreator : EditorWindow
 
     private void DrawNodes()
     {
-        for (int i = 0; i < columns; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < columns; j++)
             {
                 nodes[i][j].Draw();
             }
@@ -443,14 +457,15 @@ public class GridMapCreator : EditorWindow
                     EntityModel model = new EntityModel
                     {
                         Id = parts[i][j].partName,
-                        Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                        Index = new GridIndex((int)parts[i][j].gameObject.transform.position.x, (int)parts[i][j].gameObject.transform.position.z),
                         Type = parts[i][j].partType,
-                        Rotation = new RotationModel()
+                        Rotation = new RotationModel
+                        {
+                            X = parts[i][j].gameObject.transform.forward.x,
+                            Y = parts[i][j].gameObject.transform.forward.y,
+                            Z = parts[i][j].gameObject.transform.forward.z
+                        }
                     };
-
-                    model.Rotation.X = rotation.x;
-                    model.Rotation.Y = rotation.y;
-                    model.Rotation.Z = rotation.z;
 
                     floorLayer.Add(model);
                 }
@@ -459,7 +474,7 @@ public class GridMapCreator : EditorWindow
                     EntityModel floor = new EntityModel
                     {
                         Id = "floor",
-                        Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                        Index = new GridIndex((int)parts[i][j].gameObject.transform.position.x, (int)parts[i][j].gameObject.transform.position.z),
                         Type = ENTITY_TYPE.NO_MOVABLE
                     };
 
@@ -470,14 +485,15 @@ public class GridMapCreator : EditorWindow
                         EntityModel model = new EntityModel
                         {
                             Id = parts[i][j].partName,
-                            Index = new GridIndex(parts[i][j].column, parts[i][j].row),
+                            Index = new GridIndex((int)parts[i][j].gameObject.transform.position.x, (int)parts[i][j].gameObject.transform.position.z),
                             Type = parts[i][j].partType,
-                            Rotation = new RotationModel()
+                            Rotation = new RotationModel
+                            {
+                                X = parts[i][j].gameObject.transform.forward.x,
+                                Y = parts[i][j].gameObject.transform.forward.y,
+                                Z = parts[i][j].gameObject.transform.forward.z
+                            }
                         };
-
-                        model.Rotation.X = rotation.x;
-                        model.Rotation.Y = rotation.y;
-                        model.Rotation.Z = rotation.z;
 
                         topLayer.Add(model);
                     }
@@ -485,14 +501,15 @@ public class GridMapCreator : EditorWindow
 
                 if (parts[i][j].partName == "player")
                 {
-                    level.PlayerModel.I = parts[i][j].column;
-                    level.PlayerModel.J = parts[i][j].row;
+                    level.PlayerModel.I = (int)parts[i][j].gameObject.transform.position.x;
+                    level.PlayerModel.J = (int)parts[i][j].gameObject.transform.position.z;
+                    level.PlayerModel.Rotation = parts[i][j].gameObject.transform.forward;
                 }
 
                 if (parts[i][j].partName == "win")
                 {
-                    level.WinI = parts[i][j].column;
-                    level.WinJ = parts[i][j].row;
+                    level.WinI = (int)parts[i][j].gameObject.transform.position.x;
+                    level.WinJ = (int)parts[i][j].gameObject.transform.position.z;
                 }
             }
         }

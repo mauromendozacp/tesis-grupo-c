@@ -81,7 +81,9 @@ public class LevelController : MonoBehaviour
     #region PRIVATE_METHODS
     private void SpawnPlayer()
     {
-        playerController = Instantiate(playerPrefab, environmentHolder).GetComponent<PlayerController>();
+        GameObject go = Instantiate(playerPrefab, environmentHolder);
+        go.transform.forward = levelModel.PlayerModel.Rotation;
+        playerController = go.GetComponent<PlayerController>();
         playerController.Init(hudActions, pcActions, unit);
         playerController.SetData(levelModel.PlayerModel);
         playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
