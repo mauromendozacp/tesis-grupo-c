@@ -504,6 +504,9 @@ public class GridMapCreator : EditorWindow
                     level.PlayerModel.I = (int)parts[i][j].gameObject.transform.position.x;
                     level.PlayerModel.J = (int)parts[i][j].gameObject.transform.position.z;
                     level.PlayerModel.Rotation = parts[i][j].gameObject.transform.forward;
+
+                    level.PlayerModel.Lives = 3;
+                    level.PlayerModel.Turns = 50;
                 }
 
                 if (parts[i][j].partName == "win")
