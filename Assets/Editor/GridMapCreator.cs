@@ -340,7 +340,7 @@ public class GridMapCreator : EditorWindow
                 GameObject go = Instantiate(styleManager.buttonStyles[i].prefab);
                 go.name = styleManager.buttonStyles[i].prefab.name;
 
-                if (go.name == "trap" || go.name == "floor")
+                if (go.name == "floor_trap" || go.name == "floor")
                 {
                     go.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
                 }
@@ -360,7 +360,7 @@ public class GridMapCreator : EditorWindow
                 parts[row][col].style = currentStyle;
 
                 //TODO add proper logic to check if floor is needed
-                if (go.name != "trap" && go.name != "floor")
+                if (go.name != "floor_trap" && go.name != "floor")
                 {
                     GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
                     floor.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
