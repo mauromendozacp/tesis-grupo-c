@@ -17,7 +17,7 @@ public class TransitionManager : MonoBehaviourSingleton<TransitionManager>
         switch (scene)
         {
             case SceneGame.MainMenu:
-                sceneName = "MainMenu";
+                sceneName = "Mainmenu";
                 break;
             case SceneGame.GamePlay:
                 sceneName = "Gameplay";

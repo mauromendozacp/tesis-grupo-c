@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_Name
-      value: table
+      value: table_1
       objectReference: {fileID: 0}
     - target: {fileID: 2549358976177744749, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
       propertyPath: m_Layer
@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e235f8e73f1ae2f4aaa28967505188f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e235f8e73f1ae2f4aaa28967505188f7, type: 3}
       propertyPath: m_LocalPosition.z
