@@ -51,6 +51,8 @@ public class GridMapCreator : EditorWindow
         rows = EditorPrefs.GetInt("Rows", 0);
         columns = EditorPrefs.GetInt("Columns", 0);
 
+        if (!FindObjectOfType<StyleManager>()) return;
+
         SetUpStyles();
         SetUpNodesAndParts();
         SetUpMap();
@@ -127,20 +129,6 @@ public class GridMapCreator : EditorWindow
                 parts[i].Add(null);
             }
         }
-
-        //for (int i = rows - 1; i >= 0; i--) 
-        //{
-        //    nodes.Add(new List<Node>());
-        //    parts.Add(new List<PartScripts>());
-
-        //    for (int j = columns - 1; j >= 0; j--) 
-        //    {
-        //        nodePos.Set(j * 30, i * 30);
-        //        nodes[rows-i-1].Add(new Node(nodePos, 30, 30, emptyStyle));
-        //        parts[rows - i - 1].Add(null);
-        //        Debug.Log(i - rows + 1);
-        //    }
-        //}
     }
 
     private void SetUpMap()
@@ -270,6 +258,8 @@ public class GridMapCreator : EditorWindow
             EditorPrefs.SetInt("Columns", columns);
 
             SetUpNodesAndParts();
+            DestroyImmediate(GameObject.FindGameObjectWithTag("Map"));
+            offset = Vector2.zero;
             SetUpMap();
         }
 
@@ -340,7 +330,7 @@ public class GridMapCreator : EditorWindow
                 GameObject go = Instantiate(styleManager.buttonStyles[i].prefab);
                 go.name = styleManager.buttonStyles[i].prefab.name;
 
-                if (go.name == "trap" || go.name == "floor")
+                if (go.name == "floor_trap" || go.name == "floor")
                 {
                     go.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
                 }
@@ -360,7 +350,7 @@ public class GridMapCreator : EditorWindow
                 parts[row][col].style = currentStyle;
 
                 //TODO add proper logic to check if floor is needed
-                if (go.name != "trap" && go.name != "floor")
+                if (go.name != "floor_trap" && go.name != "floor")
                 {
                     GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
                     floor.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
@@ -504,6 +494,9 @@ public class GridMapCreator : EditorWindow
                     level.PlayerModel.I = (int)parts[i][j].gameObject.transform.position.x;
                     level.PlayerModel.J = (int)parts[i][j].gameObject.transform.position.z;
                     level.PlayerModel.Rotation = parts[i][j].gameObject.transform.forward;
+
+                    level.PlayerModel.Lives = 3;
+                    level.PlayerModel.Turns = 50;
                 }
 
                 if (parts[i][j].partName == "win")
