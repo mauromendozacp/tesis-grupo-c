@@ -19,6 +19,7 @@ public class EntityModel
     [SerializeField] private ENTITY_TYPE type = default;
     [SerializeField] private GridIndex index = default;
     [SerializeField] private RotationModel rotation = default;
+    [SerializeField] private OffsetModel offset = null;
     #endregion
 
     #region PROPERTIES
@@ -26,5 +27,6 @@ public class EntityModel
     public ENTITY_TYPE Type { get => type; set => type = value; }
     public GridIndex Index { get => index; set => index = value; }
     public RotationModel Rotation { get => rotation; set => rotation = value; }
+    public OffsetModel Offset { get => offset; set => offset = value; }
     #endregion
 }

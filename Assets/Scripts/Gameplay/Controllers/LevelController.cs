@@ -110,7 +110,16 @@ public class LevelController : MonoBehaviour
                 if (prefab == null) return;
 
                 GameObject go = Instantiate(prefab, pos, Quaternion.identity, layer.transform);
-                go.transform.forward = new Vector3(entityModel.Rotation.X,entityModel.Rotation.Y,entityModel.Rotation.Z);
+
+                if (go.transform.childCount > 0)
+                {
+                    go.transform.GetChild(0).rotation = Quaternion.Euler(entityModel.Rotation.X, entityModel.Rotation.Y, entityModel.Rotation.Z);
+
+                    if (entityModel.Offset.X != 0 || entityModel.Offset.Z != 0) 
+                    {
+                        go.transform.GetChild(0).position = new Vector3(entityModel.Offset.X, go.transform.GetChild(0).position.y, entityModel.Offset.Z);
+                    }
+                }
 
                 switch (entityModel.Type)
                 {

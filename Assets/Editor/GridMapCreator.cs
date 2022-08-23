@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
-using Codice.Client.BaseCommands;
+using System.Collections.Generic;
+
 using UnityEditor;
+
 using UnityEngine;
 
 public class GridMapCreator : EditorWindow
@@ -20,10 +20,10 @@ public class GridMapCreator : EditorWindow
     private List<List<PartScripts>> parts;
 
     private int rows;
-    private int columns;
-
-    private string rowsText;
-    private string columnsText;
+    private int columns; 
+    
+    private int rowsInput;
+    private int columnsInput;
 
     private GUIStyle emptyStyle;
     private GUIStyle currentStyle;
@@ -31,8 +31,10 @@ public class GridMapCreator : EditorWindow
     private Rect menuBar;
     private Rect configBar;
 
-    private Vector3 rotation;
-
+    private float rotation;
+    private float xOffset;
+    private float zOffset;
+    
     private Vector2 offset;
     private Vector2 drag;
     private Vector2 nodePos;
@@ -218,24 +220,11 @@ public class GridMapCreator : EditorWindow
         menuBar = new Rect(0, 41, position.width, 20);
         GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
         GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Forward"))
-        {
-            rotation = Vector3.forward;
-        }
-        if (GUILayout.Button("Back"))
-        {
-            rotation = Vector3.back;
-        }
-        if (GUILayout.Button("Left"))
-        {
-            rotation = Vector3.left;
-        }
-        if (GUILayout.Button("Right"))
-        {
-            rotation = Vector3.right;
-        }
-
+        
+        rotation = EditorGUILayout.FloatField("Rotation: ", rotation);
+        xOffset = EditorGUILayout.FloatField("X Offset: ", xOffset);
+        zOffset = EditorGUILayout.FloatField("Z Offset: ", zOffset);
+        
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
     }
@@ -246,16 +235,16 @@ public class GridMapCreator : EditorWindow
         GUILayout.BeginArea(configBar, EditorStyles.textField);
         GUILayout.BeginHorizontal();
 
-        rowsText = EditorGUILayout.TextField("Rows: ", rowsText);
-        columnsText = EditorGUILayout.TextField("Columns: ", columnsText);
+        rowsInput = EditorGUILayout.IntField("Rows: ", rowsInput);
+        columnsInput = EditorGUILayout.IntField("Columns: ", columnsInput);
 
         if (GUILayout.Button("Create Grid"))
         {
-            rows = Int32.Parse(rowsText);
-            columns = Int32.Parse(columnsText);
-
-            EditorPrefs.SetInt("Rows", rows);
-            EditorPrefs.SetInt("Columns", columns);
+            rows = rowsInput;
+            columns = columnsInput;
+            
+            EditorPrefs.SetInt("Rows", rowsInput);
+            EditorPrefs.SetInt("Columns", columnsInput);
 
             SetUpNodesAndParts();
             DestroyImmediate(GameObject.FindGameObjectWithTag("Map"));
@@ -312,6 +301,7 @@ public class GridMapCreator : EditorWindow
 
                 GUI.changed = true;
             }
+
             parts[row][col] = null;
         }
         else
@@ -339,7 +329,12 @@ public class GridMapCreator : EditorWindow
                     go.transform.position = new Vector3(col - 1, 0, rows - row - 1) + Vector3.right;
                 }
 
-                go.transform.forward = rotation;
+                if (go.name != "floor")
+                {
+                    go.transform.GetChild(0).rotation = Quaternion.Euler(new Vector3(0, rotation, 0));
+                    go.transform.GetChild(0).position += new Vector3(xOffset, 0, zOffset);
+                }
+                
                 go.transform.parent = map.transform;
 
                 parts[row][col] = go.GetComponent<PartScripts>();
@@ -387,6 +382,7 @@ public class GridMapCreator : EditorWindow
                 {
                     OnMouseDrag(e.delta);
                 }
+
                 break;
         }
     }
@@ -406,6 +402,7 @@ public class GridMapCreator : EditorWindow
         {
             Handles.DrawLine(new Vector3(30 * i, -30, 0) + newOffset, new Vector3(30 * i, position.height, 0) + newOffset);
         }
+
         for (int i = 0; i < heightDivider; i++)
         {
             Handles.DrawLine(new Vector3(-30, 30 * i, 0) + newOffset, new Vector3(position.width, 30 * i, 0) + newOffset);
@@ -479,9 +476,14 @@ public class GridMapCreator : EditorWindow
                             Type = parts[i][j].partType,
                             Rotation = new RotationModel
                             {
-                                X = parts[i][j].gameObject.transform.forward.x,
-                                Y = parts[i][j].gameObject.transform.forward.y,
-                                Z = parts[i][j].gameObject.transform.forward.z
+                                X = parts[i][j].transform.GetChild(0).eulerAngles.x,
+                                Y = parts[i][j].transform.GetChild(0).eulerAngles.y,
+                                Z = parts[i][j].transform.GetChild(0).eulerAngles.z
+                            },
+                            Offset = new OffsetModel
+                            {
+                                X = parts[i][j].transform.GetChild(0).position.x,
+                                Z = parts[i][j].transform.GetChild(0).position.z
                             }
                         };
 
