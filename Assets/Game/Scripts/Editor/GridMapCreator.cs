@@ -420,8 +420,7 @@ public class GridMapCreator : EditorWindow
         {
             Layers = new LayerModel[2],
             PlayerModel = new PlayerModel(),
-            LimitI = parts[0].Count,
-            LimitJ = parts.Count
+            LimitIndex = new GridIndex(parts[0].Count, parts.Count)
         };
         level.Layers[0] = new LayerModel
         {
@@ -446,12 +445,7 @@ public class GridMapCreator : EditorWindow
                         Id = parts[i][j].partName,
                         Index = new GridIndex((int)parts[i][j].gameObject.transform.position.x, (int)parts[i][j].gameObject.transform.position.z),
                         Type = parts[i][j].partType,
-                        Rotation = new RotationModel
-                        {
-                            X = parts[i][j].gameObject.transform.forward.x,
-                            Y = parts[i][j].gameObject.transform.forward.y,
-                            Z = parts[i][j].gameObject.transform.forward.z
-                        }
+                        Rotation = new RotationModel(parts[i][j].gameObject.transform.eulerAngles)
                     };
 
                     floorLayer.Add(model);
@@ -474,17 +468,9 @@ public class GridMapCreator : EditorWindow
                             Id = parts[i][j].partName,
                             Index = new GridIndex((int)parts[i][j].gameObject.transform.position.x, (int)parts[i][j].gameObject.transform.position.z),
                             Type = parts[i][j].partType,
-                            Rotation = new RotationModel
-                            {
-                                X = parts[i][j].transform.GetChild(0).eulerAngles.x,
-                                Y = parts[i][j].transform.GetChild(0).eulerAngles.y,
-                                Z = parts[i][j].transform.GetChild(0).eulerAngles.z
-                            },
-                            Offset = new OffsetModel
-                            {
-                                X = parts[i][j].transform.GetChild(0).position.x,
-                                Z = parts[i][j].transform.GetChild(0).position.z
-                            }
+
+                            Rotation = new RotationModel(parts[i][j].transform.GetChild(0).eulerAngles),
+                            Offset = new OffsetModel(parts[i][j].transform.GetChild(0).position.x, parts[i][j].transform.GetChild(0).position.z)
                         };
 
                         topLayer.Add(model);
@@ -493,18 +479,17 @@ public class GridMapCreator : EditorWindow
 
                 if (parts[i][j].partName == "player")
                 {
-                    level.PlayerModel.I = (int)parts[i][j].gameObject.transform.position.x;
-                    level.PlayerModel.J = (int)parts[i][j].gameObject.transform.position.z;
-                    level.PlayerModel.Rotation = parts[i][j].gameObject.transform.forward;
+                    Vector3 playerPos = parts[i][j].gameObject.transform.position;
 
-                    level.PlayerModel.Lives = 3;
-                    level.PlayerModel.Turns = 50;
+                    level.PlayerModel.Index = new GridIndex((int)playerPos.x, (int)playerPos.z);
+                    level.PlayerModel.Rotation = new RotationModel(parts[i][j].gameObject.transform.eulerAngles);
                 }
 
                 if (parts[i][j].partName == "win")
                 {
-                    level.WinI = (int)parts[i][j].gameObject.transform.position.x;
-                    level.WinJ = (int)parts[i][j].gameObject.transform.position.z;
+                    Vector3 winPos = parts[i][j].gameObject.transform.position;
+
+                    level.WinIndex = new GridIndex((int)winPos.x, (int)winPos.z);
                 }
             }
         }

@@ -10,8 +10,24 @@ public class RotationModel
     #endregion
 
     #region PROPERTIES
-    public float X { get => x;set=>x=value; }
-    public float Y { get => y; set=>y=value;}
-    public float Z { get => z;set=>z=value; }
+    public float X { get => x; }
+    public float Y { get => y; }
+    public float Z { get => z; }
+    #endregion
+
+    #region CONSTRUCTS
+    public RotationModel(float x, float y, float z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public RotationModel(Vector3 rot)
+    {
+        x = rot.x;
+        y = rot.y;
+        z = rot.z;
+    }
     #endregion
 }

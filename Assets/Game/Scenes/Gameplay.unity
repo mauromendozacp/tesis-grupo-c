@@ -2891,9 +2891,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d776c744cfe28974ea5f6035bdaf885e, type: 2}
   - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
   - {fileID: 11400000, guid: a3e0f7d754a705847a063881671c3b72, type: 2}
-  jsonLevels:
-  - {fileID: 4900000, guid: df7a55cdb44b8a94db90cb56a7095a24, type: 3}
-  - {fileID: 4900000, guid: 40a450096a29d7544a8a77734028f526, type: 3}
+  levels:
+  - {fileID: 11400000, guid: 28cafcbd17db1bf4aae5f582af651bf2, type: 2}
+  - {fileID: 11400000, guid: 8a5075a3479a50446bb4fd3e2852b5ca, type: 2}
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0

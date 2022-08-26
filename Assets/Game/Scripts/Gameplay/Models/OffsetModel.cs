@@ -9,7 +9,15 @@ public class OffsetModel
     #endregion
 
     #region PROPERTIES
-    public float X { get => x;set=>x=value; }
-    public float Z { get => z;set=>z=value; }
+    public float X { get => x; }
+    public float Z { get => z; }
+    #endregion
+
+    #region CONSTRUCTS
+    public OffsetModel(float x, float z)
+    {
+        this.x = x;
+        this.z = z;
+    }
     #endregion
 }

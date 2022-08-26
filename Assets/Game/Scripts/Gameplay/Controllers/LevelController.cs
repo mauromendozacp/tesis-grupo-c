@@ -14,15 +14,17 @@ public class LevelController : MonoBehaviour
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private GameObject winPrefab = null;
     [SerializeField] private PrefabEntity[] prefabs = null;
-    [SerializeField] private TextAsset[] jsonLevels = null;
+    [SerializeField] private LevelData[] levels = null;
     #endregion
 
     #region PRIVATE_FIELDS
-    private LevelModel levelModel = null;
     private PlayerController playerController = null;
+
+    private LevelData levelData = null;
+    private int levelIndex = 0;
+
     private GridIndex winIndex = default;
     private List<GameObject> props = null;
-    private int levelIndex = 0;
     #endregion
 
     #region ACTIONS
@@ -55,9 +57,10 @@ public class LevelController : MonoBehaviour
 
     public void StartGrid()
     {
-        if (jsonLevels.Length > 0)
+        if (levels.Length > 0)
         {
-            levelModel = JsonUtility.FromJson<LevelModel>(jsonLevels[levelIndex].text);
+            levelData = levels[levelIndex];
+            levelData.LoadLevel();
 
             for (int i = 0; i < environmentHolder.childCount; i++)
             {
@@ -82,19 +85,21 @@ public class LevelController : MonoBehaviour
     private void SpawnPlayer()
     {
         GameObject go = Instantiate(playerPrefab, environmentHolder);
-        go.transform.forward = levelModel.PlayerModel.Rotation;
+
         playerController = go.GetComponent<PlayerController>();
         playerController.Init(hudActions, pcActions, unit);
-        playerController.SetData(levelModel.PlayerModel);
-        playerController.SetPositionUnit(new GridIndex(levelModel.PlayerModel.I, levelModel.PlayerModel.J));
+        playerController.SetData(levelData.Lives, levelData.Turns, levelData.LevelModel.PlayerModel.Rotation, levelData.LevelModel.PlayerModel.Index);
     }
 
     private void SpawnGrid()
     {
+        LevelModel levelModel = levelData.LevelModel;
+
         SpawnWinZone();
 
         props = new List<GameObject>();
-        winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
+        winIndex = new GridIndex(levelModel.WinIndex.i, levelModel.WinIndex.j);
+
         for (int i = 0; i < levelModel.Layers.Length; i++)
         {
             GameObject layer = new GameObject("Layer " + (i + 1));
@@ -146,7 +151,7 @@ public class LevelController : MonoBehaviour
 
     private void SpawnWinZone()
     {
-        winIndex = new GridIndex(levelModel.WinI, levelModel.WinJ);
+        winIndex = new GridIndex(levelData.LevelModel.WinIndex.i, levelData.LevelModel.WinIndex.j);
         Vector3 pos = new Vector3(winIndex.i, 0, winIndex.j) * unit;
 
         GameObject go = Instantiate(winPrefab, pos, Quaternion.identity, environmentHolder);
@@ -188,7 +193,7 @@ public class LevelController : MonoBehaviour
 
     private bool CheckIndex(GridIndex index)
     {
-        return index.i >= 0 && index.j >= 0 && index.i < levelModel.LimitI && index.j < levelModel.LimitJ;
+        return index.i >= 0 && index.j >= 0 && index.i < levelData.LevelModel.LimitIndex.i && index.j < levelData.LevelModel.LimitIndex.j;
     }
 
     private void DeathPlayer(bool end)
@@ -233,7 +238,7 @@ public class LevelController : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         levelIndex++;
-        if (levelIndex >= jsonLevels.Length)
+        if (levelIndex >= levels.Length)
         {
             guiActions.onOpenWinPanel?.Invoke();
         }

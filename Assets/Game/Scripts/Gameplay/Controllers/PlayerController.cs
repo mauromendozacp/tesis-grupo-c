@@ -72,18 +72,19 @@ public class PlayerController : MonoBehaviour
         data = new PlayerData();
     }
 
-    public void SetData(PlayerModel model)
+    public void SetData(int lives, int turns, RotationModel rotation, GridIndex spawnIndex)
     {
-        data.Lives = model.Lives;
-        data.TotalTurns = model.Turns;
-        SetTurns(model.Turns);
-        data.SpawnIndex = new GridIndex(model.I, model.J);
-        data.CurrentIndex = data.SpawnIndex;
+        data.Lives = lives;
+        data.TotalTurns = turns;
+        data.SpawnIndex = spawnIndex;
+
+        SetTurns(turns);
+        SetPositionUnit(spawnIndex);
+        SetRotation(rotation);
     }
 
     public void SetPositionUnit(GridIndex index)
     {
-        data.SpawnIndex = index;
         data.CurrentIndex = index;
         Vector3 pos = transform.position;
         pos.x = index.i * unit;
@@ -326,6 +327,11 @@ public class PlayerController : MonoBehaviour
     {
         data.CurrentTurns = turns;
         guiActions.onUpdateTurns?.Invoke(turns);
+    }
+
+    private void SetRotation(RotationModel rotation)
+    {
+        transform.eulerAngles = new Vector3(rotation.X, rotation.Y, rotation.Z);
     }
     #endregion
 }
