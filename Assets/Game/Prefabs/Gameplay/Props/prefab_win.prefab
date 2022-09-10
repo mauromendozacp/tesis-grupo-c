@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 853d7807b9231ee4e8853afc49da9da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confettiSystem: {fileID: 2099532304848848969, guid: 1f18d19a247e28349a5ec82ea015e7d0, type: 3}
+  confettiSystem: {fileID: 4505140835424792728, guid: dd533886446e22b4e83802895209af48, type: 3}
 --- !u!1001 &4126839587580748207
 PrefabInstance:
   m_ObjectHideFlags: 0

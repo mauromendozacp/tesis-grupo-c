@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     private void PlayerDeath()
     {
         CameraFollowStatus(false);
-        levelController.PlayerController.InputEnabled = false;
+        levelController.PlayerController.PlayerDeath();
     }
 
     private void CameraFollowStatus(bool status)
