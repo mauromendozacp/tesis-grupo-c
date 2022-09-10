@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 0f;
     [SerializeField] private Light focusLight = null;
     [SerializeField] private Animator animator = null;
-    [SerializeField] private LayerMask noMovableMask = default;
+    [SerializeField] private LayerMask noMovementMask = default;
+    [SerializeField] private LayerMask noJumpeableMask = default;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -145,7 +146,6 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
         GridIndex auxIndex = data.CurrentIndex;
-        bool validMove = false;
 
         switch (movement)
         {
@@ -178,16 +178,15 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
-            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+            if (Utils.CheckLayerInMask(noMovementMask, hit.transform.gameObject.layer)) return;
 
             IMovable movable = hit.transform.GetComponent<IMovable>();
 
+            bool validMove = true;
             if (movable != null)
             {
-                if (movable.TryMove(movement))
-                    validMove = true;
+                validMove = movable.TryMove(movement);
             }
-
 
             if (!validMove)
             {
@@ -218,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
-            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+            if (Utils.CheckLayerInMask(noJumpeableMask, hit.transform.gameObject.layer)) return;
 
             IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 

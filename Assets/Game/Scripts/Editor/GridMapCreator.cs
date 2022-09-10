@@ -98,10 +98,10 @@ public class GridMapCreator : EditorWindow
         try
         {
             styleManager = FindObjectOfType<StyleManager>();
-            for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+            for (int i = 0; i < styleManager.entities.Length; i++)
             {
-                styleManager.buttonStyles[i].nodeStyle = new GUIStyle();
-                styleManager.buttonStyles[i].nodeStyle.normal.background = styleManager.buttonStyles[i].icon;
+                styleManager.entities[i].nodeStyle = new GUIStyle();
+                styleManager.entities[i].nodeStyle.normal.background = styleManager.entities[i].Icon;
             }
         }
         catch (Exception e)
@@ -110,8 +110,8 @@ public class GridMapCreator : EditorWindow
             throw;
         }
 
-        emptyStyle = styleManager.buttonStyles[0].nodeStyle;
-        currentStyle = styleManager.buttonStyles[1].nodeStyle;
+        emptyStyle = styleManager.entities[0].nodeStyle;
+        currentStyle = styleManager.entities[1].nodeStyle;
     }
 
     private void SetUpNodesAndParts()
@@ -187,13 +187,13 @@ public class GridMapCreator : EditorWindow
         GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
         GUILayout.BeginHorizontal();
 
-        for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+        for (int i = 0; i < styleManager.entities.Length; i++)
         {
-            if (styleManager.buttonStyles[i].icon.name == "Obstacle") continue;
+            if (styleManager.entities[i].Icon.name == "Obstacle") continue;
 
-            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(90)))
+            if (GUILayout.Toggle(currentStyle == styleManager.entities[i].nodeStyle, new GUIContent(styleManager.entities[i].Id), EditorStyles.toolbarButton, GUILayout.Width(90)))
             {
-                currentStyle = styleManager.buttonStyles[i].nodeStyle;
+                currentStyle = styleManager.entities[i].nodeStyle;
             }
         }
 
@@ -204,13 +204,13 @@ public class GridMapCreator : EditorWindow
         GUILayout.BeginArea(menuBar, EditorStyles.toolbar);
         GUILayout.BeginHorizontal();
 
-        for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+        for (int i = 0; i < styleManager.entities.Length; i++)
         {
-            if (styleManager.buttonStyles[i].icon.name != "Obstacle") continue;
+            if (styleManager.entities[i].Icon.name != "Obstacle") continue;
 
-            if (GUILayout.Toggle(currentStyle == styleManager.buttonStyles[i].nodeStyle, new GUIContent(styleManager.buttonStyles[i].buttonTex), EditorStyles.toolbarButton, GUILayout.Width(90)))
+            if (GUILayout.Toggle(currentStyle == styleManager.entities[i].nodeStyle, new GUIContent(styleManager.entities[i].Id), EditorStyles.toolbarButton, GUILayout.Width(90)))
             {
-                currentStyle = styleManager.buttonStyles[i].nodeStyle;
+                currentStyle = styleManager.entities[i].nodeStyle;
             }
         }
 
@@ -313,12 +313,12 @@ public class GridMapCreator : EditorWindow
             nodes[row][col].SetStyle(currentStyle);
 
 
-            for (int i = 0; i < styleManager.buttonStyles.Length; i++)
+            for (int i = 0; i < styleManager.entities.Length; i++)
             {
-                if (currentStyle != styleManager.buttonStyles[i].nodeStyle) continue;
+                if (currentStyle != styleManager.entities[i].nodeStyle) continue;
 
-                GameObject go = Instantiate(styleManager.buttonStyles[i].prefab);
-                go.name = styleManager.buttonStyles[i].prefab.name;
+                GameObject go = Instantiate(styleManager.entities[i].Prefab);
+                go.name = styleManager.entities[i].Id;
 
                 if (go.name == "floor_trap" || go.name == "floor")
                 {

@@ -59,6 +59,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7822170893908293157, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+      propertyPath: partName
+      value: wardrobe
+      objectReference: {fileID: 0}
+    - target: {fileID: 7822170893908293157, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
+      propertyPath: partType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f717cce66ee56d442891be37b8b9076d, type: 3}
 --- !u!4 &1766799403586494546 stripped
