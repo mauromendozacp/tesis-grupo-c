@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 0f;
     [SerializeField] private Light focusLight = null;
     [SerializeField] private Animator animator = null;
-    [SerializeField] private LayerMask noMovableMask = default;
+    [SerializeField] private LayerMask noMovementMask = default;
+    [SerializeField] private LayerMask noJumpeableMask = default;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private float unit = 0f;
     private bool inMovement = false;
     private bool inputEnabled = true;
+    private bool movementPressed = false;
+    private bool death = false;
 
     //DEBUG
     private bool unlimitedTurns = false;
@@ -101,8 +104,11 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         inputEnabled = true;
+        death = false;
+
         transform.forward = Vector3.forward;
         animator.SetBool(deadKey, false);
+        animator.SetFloat(speedKey, 0f);
 
         SetPositionUnit(data.SpawnIndex);
         SetTurns(data.TotalTurns);
@@ -118,6 +124,12 @@ public class PlayerController : MonoBehaviour
     public void EnableUnlimitedTurns()
     {
         unlimitedTurns = !unlimitedTurns;
+    }
+
+    public void PlayerDeath()
+    {
+        inputEnabled = false;
+        death = true;
     }
 
     public void PlayDeadAnimation()
@@ -137,15 +149,15 @@ public class PlayerController : MonoBehaviour
     #region PRIVATE_METHODS
     private void Move()
     {
+        MOVEMENT movement = TryGetMovement();
+
         if (inMovement) return;
 
-        MOVEMENT movement = TryGetMovement();
         if (movement == MOVEMENT.NONE) return;
 
         Vector3 pos = Vector3.zero;
         Vector3 direction = Vector3.zero;
         GridIndex auxIndex = data.CurrentIndex;
-        bool validMove = false;
 
         switch (movement)
         {
@@ -178,19 +190,23 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
-            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+            bool validMove = true;
+
+            if (Utils.CheckLayerInMask(noMovementMask, hit.transform.gameObject.layer))
+            {
+                validMove = false;
+            }
 
             IMovable movable = hit.transform.GetComponent<IMovable>();
 
             if (movable != null)
             {
-                if (movable.TryMove(movement))
-                    validMove = true;
+                validMove = movable.TryMove(movement);
             }
-
 
             if (!validMove)
             {
+                animator.SetFloat(speedKey, 0f);
                 return;
             }
         }
@@ -218,7 +234,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
-            if (Utils.CheckLayerInMask(noMovableMask, hit.transform.gameObject.layer)) return;
+            if (Utils.CheckLayerInMask(noJumpeableMask, hit.transform.gameObject.layer)) return;
 
             IJumpable jumpable = hit.transform.GetComponent<IJumpable>();
 
@@ -266,24 +282,36 @@ public class PlayerController : MonoBehaviour
     {
         MOVEMENT movement = default;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             movement = MOVEMENT.LEFT;
+            movementPressed = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             movement = MOVEMENT.UP;
+            movementPressed = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             movement = MOVEMENT.RIGHT;
+            movementPressed = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
         {
             movement = MOVEMENT.DOWN;
+            movementPressed = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A) ||
+            Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W) ||
+            Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D) ||
+            Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S))
+        {
+            movementPressed = false;
         }
 
         return movement;
@@ -292,6 +320,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator MoveLerp(Vector3 pos)
     {
         float timer = 0f;
+        float speedLerp = 0f;
         Vector3 initialPos = transform.position;
 
         while (timer < speed / 2)
@@ -299,7 +328,8 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime;
             transform.position = Vector3.Lerp(initialPos, pos, timer / speed);
 
-            animator.SetFloat(speedKey, timer / (speed / 2));
+            speedLerp = timer / (speed / 2);
+            animator.SetFloat(speedKey, movementPressed ? 1f : speedLerp);
 
             yield return new WaitForEndOfFrame();
         }
@@ -310,11 +340,12 @@ public class PlayerController : MonoBehaviour
             timer += Time.deltaTime;
             transform.position = Vector3.Lerp(initialPos, pos, timer / speed);
 
-            animator.SetFloat(speedKey, 2f - ((timer * 2f) / speed));
+            speedLerp = 2f - ((timer * 2f) / speed);
+            animator.SetFloat(speedKey, movementPressed ? 1f : speedLerp);
 
             yield return new WaitForEndOfFrame();
         }
-        animator.SetFloat(speedKey, 0f);
+        animator.SetFloat(speedKey, movementPressed && !death ? 1f : 0f);
 
         transform.position = pos;
         inMovement = false;

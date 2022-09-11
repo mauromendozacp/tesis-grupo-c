@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.1853, g: 324.85815, b: 429.9668, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3162,7 +3162,7 @@ MonoBehaviour:
   environmentHolder: {fileID: 1160122720}
   unit: 1
   playerPrefab: {fileID: 4709521992691401433, guid: 0008b939ebf1e6d47aa275714e7c07a9, type: 3}
-  winPrefab: {fileID: 863923875536434638, guid: 1f18d19a247e28349a5ec82ea015e7d0, type: 3}
+  winPrefab: {fileID: 1438908090020763626, guid: 20610b54c96d3104f9dd16f27dc31e82, type: 3}
   prefabs:
   - {fileID: 11400000, guid: 104971b85e8b84745a9fdceb6feb6516, type: 2}
   - {fileID: 11400000, guid: b69ba2a7240368644a28753619eac6ab, type: 2}
@@ -3170,6 +3170,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b35d0ad38869484cb6273da722ad2e7, type: 2}
   - {fileID: 11400000, guid: b73eb674a54a73e4ca814c6523c4ad06, type: 2}
   - {fileID: 11400000, guid: 7fd938a1cf7944242a60147a5433a088, type: 2}
+  - {fileID: 11400000, guid: b192282879ea2a54b9a9d4fc57f144ee, type: 2}
   - {fileID: 11400000, guid: b1f14c30dd8f4024c8556f52910a8ccc, type: 2}
   - {fileID: 11400000, guid: d9e61ca5475c9604c91bb3fb6875b8e7, type: 2}
   - {fileID: 11400000, guid: 7e8472af026ba2c4290a213892822a5e, type: 2}
@@ -3177,11 +3178,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6e582978b15fd44439c6345316e30a69, type: 2}
   - {fileID: 11400000, guid: 4e84a2186a31d5146a15a1852377b2ee, type: 2}
   - {fileID: 11400000, guid: d776c744cfe28974ea5f6035bdaf885e, type: 2}
+  - {fileID: 11400000, guid: e0c6a61829f284647b95cc1f3630e136, type: 2}
+  - {fileID: 11400000, guid: 9622ccc91cb601149b13370f0229d13d, type: 2}
+  - {fileID: 11400000, guid: c5b324c53058d8d46b779166a00c6056, type: 2}
+  - {fileID: 11400000, guid: 3a3c2149268961f4cbf60fbdbd2822a2, type: 2}
   - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
   - {fileID: 11400000, guid: a3e0f7d754a705847a063881671c3b72, type: 2}
   levels:
-  - {fileID: 11400000, guid: 28cafcbd17db1bf4aae5f582af651bf2, type: 2}
-  - {fileID: 11400000, guid: 8a5075a3479a50446bb4fd3e2852b5ca, type: 2}
+  - {fileID: 11400000, guid: 65e4cb09344aac743a92e180d56f98a4, type: 2}
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0

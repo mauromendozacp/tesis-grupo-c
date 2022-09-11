@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PartScripts : MonoBehaviour
 {
-    public int row;
-    public int column;
+    [HideInInspector] public int row;
+    [HideInInspector] public int column;
     public string partName = "Empty";
     public ENTITY_TYPE partType;
-    public GameObject part;
-    public GUIStyle style;
+    [HideInInspector] public GameObject part;
+    [HideInInspector] public GUIStyle style;
 }
