@@ -61,7 +61,7 @@ public class GameplayUI : MonoBehaviour
     public void BackToMenu()
     {
         Time.timeScale = 1f;
-        TransitionManager.Get().ChangeScene(SceneGame.MainMenu);
+        SceneController.Get().ChangeScene(SceneGame.MainMenu);
     }
     #endregion
 }

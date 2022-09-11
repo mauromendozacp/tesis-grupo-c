@@ -7,7 +7,7 @@ public enum SceneGame
     GamePlay
 }
 
-public class TransitionManager : MonoBehaviourSingleton<TransitionManager>
+public class SceneController : MonoBehaviourSingleton<SceneController>
 {
     #region PUBLIC_METHODS
     public void ChangeScene(SceneGame scene)

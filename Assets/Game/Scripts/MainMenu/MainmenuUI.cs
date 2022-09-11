@@ -13,7 +13,7 @@ public class MainmenuUI : MonoBehaviour
     #region PUBLIC_FIELDS
     public void PlayGame()
     {
-        TransitionManager.Get().ChangeScene(SceneGame.GamePlay);
+        SceneController.Get().ChangeScene(SceneGame.GamePlay);
     }
 
     public void OpenMainmenuPanel()

@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TransitionHandler : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region EXPOSED_FIELDS
+    [SerializeField] private Animation cutOffAnimation = null;
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #region PRIVATE_FIELDS
+
+    #endregion
+
+    #region PUBLIC_METHODS
+    
+    #endregion
+
+    #region PRIVATE_METHODS
+
+    #endregion
 }
