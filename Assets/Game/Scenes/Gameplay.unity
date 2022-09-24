@@ -1632,7 +1632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440b4c53bec93794fac62d4d3e8168a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: {x: 2, y: -4.5}
+  distance: {x: 1.25, y: -4.5}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2898,6 +2898,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a3e0f7d754a705847a063881671c3b72, type: 2}
   levels:
   - {fileID: 11400000, guid: 28cafcbd17db1bf4aae5f582af651bf2, type: 2}
+  - {fileID: 11400000, guid: 8a5075a3479a50446bb4fd3e2852b5ca, type: 2}
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0
