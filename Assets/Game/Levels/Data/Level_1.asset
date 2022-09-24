@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lives: 3
   turns: 50
-  jsonLevel: {fileID: 4900000, guid: 01e6e9d628e59644eb07b0f322f037c9, type: 3}
+  jsonLevel: {fileID: 4900000, guid: 58bf8b5cf4fc7ab44b61f3f14267434d, type: 3}
