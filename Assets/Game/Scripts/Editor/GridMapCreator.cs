@@ -347,7 +347,7 @@ public class GridMapCreator : EditorWindow
                 //TODO add proper logic to check if floor is needed
                 if (go.name != "floor_trap" && go.name != "floor")
                 {
-                    GameObject floor = Instantiate(Resources.Load("MapParts/" + "floor")) as GameObject;
+                    GameObject floor = Instantiate(Resources.Load("floor")) as GameObject;
                     floor.transform.position = new Vector3(col - 1, -1, rows - row - 1) + Vector3.right;
                     floor.transform.parent = map.transform;
                 }
