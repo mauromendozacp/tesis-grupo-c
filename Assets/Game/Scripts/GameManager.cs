@@ -72,7 +72,6 @@ public class GameManager : MonoBehaviour
         gameplayUI.Init();
         levelController.Init(hud.HUDActions, gameplayUI.GUIActions, SetPlayerActions, PlayerDeath, () => { CameraFollowStatus(true); });
 
-        hud.HUDActions.onExit = ExitGame;
         gameplayUI.GUIActions.onRestart += levelController.RestartGame;
         gameplayUI.GUIActions.onRestart += () => { cameraController.Follow = true; };
     }
@@ -80,11 +79,6 @@ public class GameManager : MonoBehaviour
     private void StartGame()
     {
         levelController.StartGrid();
-    }
-
-    private void ExitGame()
-    {
-        Application.Quit();
     }
 
     private void SetPlayerActions()
