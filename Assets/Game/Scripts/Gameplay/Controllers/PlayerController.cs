@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     #region CONSTANT_FIELDS
     private const string speedKey = "speed";
     private const string deadKey = "dead";
+    private const string jumpKey = "jump";
     #endregion
 
     #region PROPERTIES
@@ -274,6 +275,7 @@ public class PlayerController : MonoBehaviour
                 SetTurns(data.CurrentTurns - 1);
             }
 
+            animator.SetTrigger(jumpKey);
             StartCoroutine(MoveLerp(transform.position + pos));
         }
     }
