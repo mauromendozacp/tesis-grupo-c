@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class LevelController : MonoBehaviour
 {
@@ -12,11 +13,17 @@ public class LevelController : MonoBehaviour
     [SerializeField] private Transform levelPersistentHolder = null;
     [SerializeField] private float unit = 0f;
 
-    [Header("Data"), Space]
+    [Header("Data")]
     [SerializeField] private GameObject playerPrefab = null;
     [SerializeField] private GameObject winPrefab = null;
     [SerializeField] private PrefabEntity[] prefabs = null;
     [SerializeField] private LevelData[] levels = null;
+
+    [Header("Audio")]
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioEvent music;
+    [SerializeField] private AudioEvent testSfx;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -57,6 +64,9 @@ public class LevelController : MonoBehaviour
             onCameraFollow = onCameraFollow,
             onEndDeadAnimation = DeathPlayer
         };
+
+        AudioHandler.Get().Setup(audioMixer, audioSource, audioSource);
+        AudioHandler.Get().PlayAudio(music);
     }
 
     public void StartGrid()
