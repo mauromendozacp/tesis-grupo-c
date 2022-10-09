@@ -7,7 +7,9 @@ public class LevelController : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [Header("General Info")]
+    [SerializeField] private TransitionHandler transitionHandler = null;
     [SerializeField] private Transform environmentHolder = null;
+    [SerializeField] private Transform levelPersistentHolder = null;
     [SerializeField] private float unit = 0f;
 
     [Header("Data"), Space]
@@ -48,11 +50,13 @@ public class LevelController : MonoBehaviour
         this.onPlayerDeath = onPlayerDeath;
         this.onPlayerSpawned = onPlayerSpawned;
 
-        pcActions = new PCActions();
-        pcActions.onChechIndexPlayer = CheckIndexPlayer;
-        pcActions.onCheckGridIndex = CheckIndex;
-        pcActions.onCameraFollow = onCameraFollow;
-        pcActions.onEndDeadAnimation = DeathPlayer;
+        pcActions = new PCActions
+        {
+            onChechIndexPlayer = CheckIndexPlayer,
+            onCheckGridIndex = CheckIndex,
+            onCameraFollow = onCameraFollow,
+            onEndDeadAnimation = DeathPlayer
+        };
     }
 
     public void StartGrid()
@@ -61,16 +65,20 @@ public class LevelController : MonoBehaviour
         {
             levelData = levels[levelIndex];
             levelData.LoadLevel();
-
-            for (int i = 0; i < environmentHolder.childCount; i++)
+            
+            transitionHandler.StartLevelTransition(fadeInFinished: () =>
             {
-                Destroy(environmentHolder.GetChild(i).gameObject);
-            }
-
-            SpawnGrid();
-            SpawnPlayer();
-
-            onPlayerSpawned?.Invoke();
+                for (int i = 0; i < environmentHolder.childCount; i++)
+                {
+                    Destroy(environmentHolder.GetChild(i).gameObject);
+                }
+                SpawnGrid();
+                SpawnPlayer();
+                onPlayerSpawned?.Invoke();
+            }, fadeOutFinished: (() =>
+            {
+                PlayerInputStatus(true);
+            }));
         }
     }
 
@@ -84,10 +92,14 @@ public class LevelController : MonoBehaviour
     #region PRIVATE_METHODS
     private void SpawnPlayer()
     {
-        GameObject go = Instantiate(playerPrefab, environmentHolder);
-
-        playerController = go.GetComponent<PlayerController>();
-        playerController.Init(hudActions, pcActions, unit);
+        if (FindObjectOfType<PlayerController>() == null) 
+        {
+            GameObject go = Instantiate(playerPrefab, levelPersistentHolder);
+            playerController = go.GetComponent<PlayerController>();
+            playerController.Init(hudActions, pcActions, unit);
+            transitionHandler.Init(playerController);
+        }
+        
         playerController.SetData(levelData.Lives, levelData.Turns, levelData.LevelModel.PlayerModel.Rotation, levelData.LevelModel.PlayerModel.Index);
     }
 

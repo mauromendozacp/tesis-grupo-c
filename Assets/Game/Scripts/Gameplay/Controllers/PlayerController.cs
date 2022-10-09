@@ -86,16 +86,6 @@ public class PlayerController : MonoBehaviour
         SetRotation(rotation);
     }
 
-    public void SetPositionUnit(GridIndex index)
-    {
-        data.CurrentIndex = index;
-        Vector3 pos = transform.position;
-        pos.x = index.i * unit;
-        pos.y = 0;
-        pos.z = index.j * unit;
-        transform.position = pos;
-    }
-
     public bool CheckTurns()
     {
         return data.CurrentTurns > 0;
@@ -147,6 +137,16 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PRIVATE_METHODS
+    private void SetPositionUnit(GridIndex index)
+    {
+        data.CurrentIndex = index;
+        Vector3 pos = transform.position;
+        pos.x = index.i * unit;
+        pos.y = 0;
+        pos.z = index.j * unit;
+        transform.position = pos;
+    }
+    
     private void Move()
     {
         MOVEMENT movement = TryGetMovement();
@@ -190,12 +190,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out var hit, 1))
         {
-            bool validMove = true;
-
-            if (Utils.CheckLayerInMask(noMovementMask, hit.transform.gameObject.layer))
-            {
-                validMove = false;
-            }
+            bool validMove = !Utils.CheckLayerInMask(noMovementMask, hit.transform.gameObject.layer);
 
             IMovable movable = hit.transform.GetComponent<IMovable>();
 
