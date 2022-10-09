@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HUDActions
 {
-    public Action onExit = null;
     public Action onEnableLight = null;
     public Action onEnableUnlimitedTurns = null;
     public Action<int> onUpdateTurns = null;
@@ -14,7 +13,6 @@ public class HUDActions
 public class HUD : MonoBehaviour
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private Button exitBtn = null;
     [SerializeField] private Button lightBtn = null;
     [SerializeField] private Button turnsBtn = null;
     [SerializeField] private TextMeshProUGUI turnsText = null;
@@ -34,7 +32,6 @@ public class HUD : MonoBehaviour
         hudActions = new HUDActions();
         hudActions.onUpdateTurns += SetTurnsText;
 
-        exitBtn.onClick.AddListener(() => { hudActions.onExit?.Invoke(); });
         lightBtn.onClick.AddListener(() => { hudActions.onEnableLight?.Invoke(); });
         turnsBtn.onClick.AddListener(() => { hudActions.onEnableUnlimitedTurns?.Invoke(); });
     }
