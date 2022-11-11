@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private const string speedKey = "speed";
     private const string deadKey = "dead";
     private const string jumpKey = "jump";
+    private const string openKey = "open";
     #endregion
 
     #region PROPERTIES
@@ -134,6 +135,12 @@ public class PlayerController : MonoBehaviour
     {
         data.Lives--;
         pcActions.onEndDeadAnimation?.Invoke(data.Lives <= 0);
+    }
+
+    public void Win()
+    {
+        animator.SetTrigger(openKey);
+        inputEnabled = false;
     }
     #endregion
 

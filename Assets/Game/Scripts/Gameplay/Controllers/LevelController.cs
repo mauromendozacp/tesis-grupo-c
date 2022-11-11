@@ -34,6 +34,7 @@ public class LevelController : MonoBehaviour
 
     private GridIndex winIndex = default;
     private List<GameObject> props = null;
+    private DoorController door = null;
     #endregion
 
     #region ACTIONS
@@ -167,6 +168,12 @@ public class LevelController : MonoBehaviour
                     default:
                         break;
                 }
+
+                DoorController d = go.GetComponent<DoorController>();
+                if (d != null && Utils.IsIndexAdjacent(winIndex, entityModel.Index))
+                {
+                    door = d;
+                }
             }
         }
     }
@@ -198,7 +205,9 @@ public class LevelController : MonoBehaviour
         if (index == winIndex)
         {
             onSpawnWinConfetti?.Invoke();
-            PlayerInputStatus(false);            
+            playerController.Win();
+            door?.Open();
+            
             NextLevel();
             Debug.Log("Win");
 
