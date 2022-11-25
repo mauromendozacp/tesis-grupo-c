@@ -12,17 +12,11 @@ public class TransitionHandler : MonoBehaviour
     #endregion 
 
     #region PRIVATE_FIELDS
-    private PlayerController playerController = null;
     private const string fadeInAnimation = "fadeIn";
     private const string fadeOutAnimation = "fadeOut";
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(PlayerController playerController)
-    {
-        this.playerController = playerController;
-    }
-
     public void StartLevelTransition(Action fadeInFinished, Action fadeOutFinished)
     {
         cutOffAnimation.gameObject.SetActive(true);

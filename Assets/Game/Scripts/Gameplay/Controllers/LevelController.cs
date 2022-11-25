@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Audio;
 
 public class LevelController : MonoBehaviour
@@ -12,6 +14,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] private Transform environmentHolder = null;
     [SerializeField] private Transform levelPersistentHolder = null;
     [SerializeField] private float unit = 0f;
+    [SerializeField] private Image tutorialImg = null;
 
     [Header("Data")]
     [SerializeField] private GameObject playerPrefab = null;
@@ -76,20 +79,15 @@ public class LevelController : MonoBehaviour
         {
             levelData = levels[levelIndex];
             levelData.LoadLevel();
-            
-            transitionHandler.StartLevelTransition(fadeInFinished: () =>
+
+            if (levelIndex == 0)
             {
-                for (int i = 0; i < environmentHolder.childCount; i++)
-                {
-                    Destroy(environmentHolder.GetChild(i).gameObject);
-                }
-                SpawnGrid();
-                SpawnPlayer();
-                onPlayerSpawned?.Invoke();
-            }, fadeOutFinished: (() =>
+                StartCoroutine(ShowTutorial(onFinish: LoadLevel));
+            }
+            else
             {
-                PlayerInputStatus(true);
-            }));
+               LoadLevel();
+            }
         }
     }
 
@@ -101,6 +99,23 @@ public class LevelController : MonoBehaviour
     #endregion
 
     #region PRIVATE_METHODS
+    private void LoadLevel()
+    {
+        transitionHandler.StartLevelTransition(fadeInFinished: () =>
+        {
+            for (int i = 0; i < environmentHolder.childCount; i++)
+            {
+                Destroy(environmentHolder.GetChild(i).gameObject);
+            }
+            SpawnGrid();
+            SpawnPlayer();
+            onPlayerSpawned?.Invoke();
+        }, fadeOutFinished: (() =>
+        {
+            PlayerInputStatus(true);
+        }));
+    }
+    
     private void SpawnPlayer()
     {
         if (FindObjectOfType<PlayerController>() == null) 
@@ -108,7 +123,6 @@ public class LevelController : MonoBehaviour
             GameObject go = Instantiate(playerPrefab, levelPersistentHolder);
             playerController = go.GetComponent<PlayerController>();
             playerController.Init(hudActions, pcActions, unit);
-            transitionHandler.Init(playerController);
         }
         
         playerController.SetData(levelData.Lives, levelData.Turns, levelData.LevelModel.PlayerModel.Rotation, levelData.LevelModel.PlayerModel.Index);
@@ -277,6 +291,17 @@ public class LevelController : MonoBehaviour
         {
             StartGrid();
         }
+    }
+
+    private IEnumerator ShowTutorial(Action onFinish)
+    {
+        tutorialImg.enabled = true;
+        
+        yield return new WaitForSeconds(4f);
+        
+        tutorialImg.enabled = false;
+        
+        onFinish?.Invoke();
     }
     #endregion
 }
