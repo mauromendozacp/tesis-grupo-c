@@ -16,18 +16,23 @@ public class AudioHandler: MonoBehaviourSingleton<AudioHandler>
         musicAudioSource.loop = true;
     }
     
-    public void PlayAudio(AudioEvent audioEvent)
+    public void PlayAudio(AudioEvent audioEvent, int index = -1)
     {
         switch (audioEvent.AudioType)
         {
             case AudioEvent.AUDIO_TYPE.SFX:
-                sfxAudioSource.PlayOneShot(audioEvent.Clip);
+                sfxAudioSource.PlayOneShot(audioEvent.GetClip(index));
                 break;
             case AudioEvent.AUDIO_TYPE.MUSIC:
-                musicAudioSource.clip = audioEvent.Clip;
+                musicAudioSource.clip = audioEvent.GetClip(index);
                 musicAudioSource.Play();
                 break;
         }
+    }
+
+    public void PauseMusic()
+    {
+        musicAudioSource.Pause();
     }
 
     public void StopMusic()

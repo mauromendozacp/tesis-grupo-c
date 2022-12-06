@@ -10,12 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa7dc7e939306ae45a4d10862c2103d9, type: 3}
-  m_Name: AudioEvent_Music
+  m_Name: AudioEvent_GameplayMusic
   m_EditorClassIdentifier: 
   audioType: 1
-  clip: {fileID: 8300000, guid: 3fc4a5baf3230f0469329333c8a23e9f, type: 3}
+  clip: {fileID: 8300000, guid: 5e57cb9f406051c489606e7d1879df8b, type: 3}
   useRandomClip: 0
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 5e57cb9f406051c489606e7d1879df8b, type: 3}
+  - {fileID: 8300000, guid: b505cce0df5425044b87abd28c4ce131, type: 3}
   volume: 1
   pitch: 1
   useRandomPitch: 0

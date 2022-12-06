@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class MainmenuUI : MonoBehaviour
 {
@@ -8,6 +7,19 @@ public class MainmenuUI : MonoBehaviour
     [SerializeField] private GameObject mainmenuPanel = null;
     [SerializeField] private GameObject optionsPanel = null;
     [SerializeField] private GameObject creditsPanel = null;
+
+    [Header("Audio")]
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioEvent music;
+    #endregion
+
+    #region UNITY_CALLS
+    private void Start()
+    {
+        AudioHandler.Get().Setup(audioMixer, audioSource, audioSource);
+        AudioHandler.Get().PlayAudio(music);
+    }
     #endregion
 
     #region PUBLIC_FIELDS

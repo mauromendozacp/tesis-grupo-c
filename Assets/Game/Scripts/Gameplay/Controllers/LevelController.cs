@@ -26,7 +26,6 @@ public class LevelController : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioEvent music;
-    [SerializeField] private AudioEvent testSfx;
     #endregion
 
     #region PRIVATE_FIELDS

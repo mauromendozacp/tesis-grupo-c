@@ -22,7 +22,22 @@ public class AudioEvent : ScriptableObject
     [SerializeField] private float maxPitch = 1.0f;
 
     public AUDIO_TYPE AudioType { get => audioType; }
-    public AudioClip Clip { get => useRandomClip ? clips[Random.Range(0, clips.Length)] : clip; }
+    public AudioClip Clip { get => clip; }
     public float Volume { get => volume; }
     public float Pitch { get => useRandomPitch ? Random.Range(minPitch, maxPitch) : pitch; }
+
+    public AudioClip GetClip(int index)
+    {
+        if (useRandomClip)
+        {
+            return clips[Random.Range(0, clips.Length)];
+        }
+
+        if (index >= 0 && index < clips.Length)
+        {
+            return clips[index];
+        }
+
+        return clip;
+    }
 }
