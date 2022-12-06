@@ -1168,7 +1168,6 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 6e97715566b5f9a4b8ac0ee4a1dca169, type: 2}
   audioSource: {fileID: 963194230}
   music: {fileID: 11400000, guid: 78393db33ec330b47a4de18d238877d8, type: 2}
-  testSfx: {fileID: 11400000, guid: 2bcb6e870ea35d0429662b9c48138283, type: 2}
 --- !u!4 &1854585535
 Transform:
   m_ObjectHideFlags: 0
@@ -3914,7 +3913,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &7585425304082328166
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private bool death = false;
 
     //DEBUG
-    private bool unlimitedTurns = false;
+    private bool unlimitedTurns = true;
     #endregion
 
     #region CONSTANT_FIELDS
