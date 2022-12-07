@@ -7,6 +7,8 @@ public class MainmenuUI : MonoBehaviour
     [SerializeField] private GameObject mainmenuPanel = null;
     [SerializeField] private GameObject optionsPanel = null;
     [SerializeField] private GameObject creditsPanel = null;
+    [SerializeField] private GameObject audioPanel = null;
+    [SerializeField] private GameObject controlsPanel = null;
 
     [Header("Audio")]
     [SerializeField] private AudioMixer audioMixer;
@@ -39,12 +41,26 @@ public class MainmenuUI : MonoBehaviour
     {
         optionsPanel.SetActive(true);
         mainmenuPanel.SetActive(false);
+        audioPanel.SetActive(false);
+        controlsPanel.SetActive(false);
     }
 
     public void OpenCreditsPanel()
     {
         creditsPanel.SetActive(true);
         mainmenuPanel.SetActive(false);
+    }
+
+    public void OpenAudioPanel()
+    {
+        audioPanel.SetActive(true);
+        optionsPanel.SetActive(false);
+    }
+
+    public void OpenControlsPanel()
+    {
+        controlsPanel.SetActive(true);
+        optionsPanel.SetActive(false);
     }
 
     public void ExitGame()
