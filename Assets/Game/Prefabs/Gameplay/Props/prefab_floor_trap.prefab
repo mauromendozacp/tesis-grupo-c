@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e1f7bad835fa0c4eaf99defaa364230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeTrapDelay: 1.5
-  fallPlayerDelay: 2
+  activeTrapDelay: 0.5
+  fallPlayerDelay: 1
   fallSpeed: 5
   model: {fileID: 969209304599369537}
   falleableMask:

@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private const string deadKey = "dead";
     private const string jumpKey = "jump";
     private const string openKey = "open";
+    private const string fallKey = "fall";
     #endregion
 
     #region PROPERTIES
@@ -146,6 +147,11 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger(openKey);
         inputEnabled = false;
+    }
+
+    public void FallAnimation()
+    {
+        animator.SetTrigger(fallKey);
     }
     #endregion
 

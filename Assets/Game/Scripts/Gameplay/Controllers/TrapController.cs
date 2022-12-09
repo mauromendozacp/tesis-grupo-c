@@ -48,6 +48,9 @@ public class TrapController : PropController
         onActive?.Invoke();
         StartCoroutine(DisappearTrapDelay(() =>
         {
+            PlayerController player = obj.GetComponent<PlayerController>();
+            player?.FallAnimation();
+
             StartCoroutine(FallPlayerEndDelay(obj));
         }));
     }
