@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+
 using UnityEngine;
 
 public enum MOVEMENT
@@ -27,6 +28,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animator = null;
     [SerializeField] private LayerMask noMovementMask = default;
     [SerializeField] private LayerMask noJumpeableMask = default;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioEvent audioSteps = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -216,6 +221,7 @@ public class PlayerController : MonoBehaviour
 
         inMovement = true;
         data.CurrentIndex = auxIndex;
+        AudioHandler.Get().PlaySound(audioSteps, sfxSource);
 
         if (!unlimitedTurns)
         {

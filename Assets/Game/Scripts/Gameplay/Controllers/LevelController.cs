@@ -23,9 +23,11 @@ public class LevelController : MonoBehaviour
     [SerializeField] private LevelData[] levels = null;
 
     [Header("Audio")]
-    [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioEvent music;
+    [SerializeField] private AudioMixer audioMixer = null;
+    [SerializeField] private AudioSource musicSource = null;
+    [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioEvent music = null;
+    [SerializeField] private AudioEvent sfx = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -68,7 +70,7 @@ public class LevelController : MonoBehaviour
             onEndDeadAnimation = DeathPlayer
         };
 
-        AudioHandler.Get().Setup(audioMixer, audioSource, audioSource);
+        AudioHandler.Get().Setup(audioMixer, musicSource, sfxSource);
         AudioHandler.Get().PlayAudio(music);
     }
 
@@ -284,6 +286,7 @@ public class LevelController : MonoBehaviour
         levelIndex++;
         if (levelIndex >= levels.Length)
         {
+            AudioHandler.Get().PlayAudio(sfx, 0);
             guiActions.onOpenWinPanel?.Invoke();
         }
         else

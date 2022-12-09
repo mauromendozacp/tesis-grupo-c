@@ -6,6 +6,10 @@ public class MovableController : PropController, IMovable
 {
     #region EXPOSED_FIELDS
     [SerializeField] private float speed = 0f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioEvent audioMove = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -79,8 +83,10 @@ public class MovableController : PropController, IMovable
 
 
         inMovement = true;
-        StartCoroutine(MoveLerp(transform.position + pos));
         gridIndex = auxIndex;
+        StartCoroutine(MoveLerp(transform.position + pos));
+        AudioHandler.Get().PlaySound(audioMove, sfxSource);
+
         return true;
     }
 
