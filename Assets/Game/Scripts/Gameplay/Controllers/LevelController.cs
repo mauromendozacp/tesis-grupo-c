@@ -14,7 +14,12 @@ public class LevelController : MonoBehaviour
     [SerializeField] private Transform environmentHolder = null;
     [SerializeField] private Transform levelPersistentHolder = null;
     [SerializeField] private float unit = 0f;
+
+    [Header("Intro")]
     [SerializeField] private Image tutorialImg = null;
+    [SerializeField] private Image comicIntroImg = null;
+    [SerializeField] private float comicDelay = 0f;
+    [SerializeField] private float tutorialDelay = 0f;
 
     [Header("Data")]
     [SerializeField] private GameObject playerPrefab = null;
@@ -83,7 +88,7 @@ public class LevelController : MonoBehaviour
 
             if (levelIndex == 0)
             {
-                StartCoroutine(ShowTutorial(onFinish: LoadLevel));
+                StartCoroutine(ShowIntro(onFinish: LoadLevel));
             }
             else
             {
@@ -295,11 +300,16 @@ public class LevelController : MonoBehaviour
         }
     }
 
-    private IEnumerator ShowTutorial(Action onFinish)
+    private IEnumerator ShowIntro(Action onFinish)
     {
+        comicIntroImg.enabled = true;
+
+        yield return new WaitForSeconds(comicDelay);
+
+        comicIntroImg.enabled = false;
         tutorialImg.enabled = true;
         
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(tutorialDelay);
         
         tutorialImg.enabled = false;
         
