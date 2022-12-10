@@ -20,6 +20,7 @@ public class TransitionHandler : MonoBehaviour
     public void StartLevelTransition(Action fadeInFinished, Action fadeOutFinished)
     {
         cutOffAnimation.gameObject.SetActive(true);
+        backgroundImage.gameObject.SetActive(true);
         StartCoroutine(FadeImage(true, backgroundImage));
         StartCoroutine(PlayAnimation(fadeInAnimation, animationFinished: () =>
         {
@@ -29,6 +30,7 @@ public class TransitionHandler : MonoBehaviour
             {
                 fadeOutFinished?.Invoke();
                 cutOffAnimation.gameObject.SetActive(false);
+                backgroundImage.gameObject.SetActive(false);
             }));
         }));
     }
@@ -54,7 +56,6 @@ public class TransitionHandler : MonoBehaviour
                 img.color = new Color(0, 0, 0, i);
                 yield return null;
             }
-          
         }
         else
         {
@@ -63,7 +64,6 @@ public class TransitionHandler : MonoBehaviour
                 img.color = new Color(0, 0, 0, i);
                 yield return null;
             }
-          
         }
     }
     #endregion
