@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     private void PlayerDeath()
     {
-        CameraFollowStatus(false);
+        //CameraFollowStatus(false);
         levelController.PlayerController.PlayerDeath();
     }
 

@@ -2,12 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60124203-ac9f-4079-a786-c997ee050ac8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Art/Animations/cutoff.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Art/Animations/cutoff.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.tesis-grupo-c/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tesis-grupo-c/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Data/Level_2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Data/Level_2.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Data/Level_Test.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Data/Level_Test.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/olds/Level 1.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/olds/Level 1.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game/Scenes/Gameplay.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scenes/Gameplay.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Scenes/Level Editor.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scenes/Level Editor.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/LevelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/LevelController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/TransitionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/TransitionHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/TrapController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/TrapController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Models/EntityModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Models/EntityModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/HDRPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/HDRPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +20,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e24da9c972e4f5888d47a5ad4e28202144800/73/47a5d5af/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/69/bf581e4d/Action.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Data/TrapData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/UI/CutoutMaskUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Image.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -34,6 +42,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.50045997&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -56,10 +65,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21644">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="21644" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -76,6 +85,7 @@
       <option name="presentableId" value="Default" />
       <updated>1662933095278</updated>
       <workItem from="1662933101180" duration="4819000" />
+      <workItem from="1670797427716" duration="1502000" />
     </task>
     <servers />
   </component>
@@ -85,6 +95,17 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

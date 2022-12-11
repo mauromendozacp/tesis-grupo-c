@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class TrapController : PropController
 {
@@ -10,6 +10,7 @@ public class TrapController : PropController
     [SerializeField] private float fallSpeed = 0f;
     [SerializeField] private GameObject model = null;
     [SerializeField] private LayerMask falleableMask = default;
+    [SerializeField] private TrapData trapData = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -18,7 +19,7 @@ public class TrapController : PropController
 
     #region ACTIONS
     private Action onActive = null;
-    private Action onRestart = null;
+    private Action<TrapData> onRestart = null;
     #endregion
 
     #region UNITY_CALLS
@@ -35,11 +36,12 @@ public class TrapController : PropController
     #endregion
 
     #region PUBLIC_METHODS
-    public void Init(Action onActive, Action onRestart, Vector3 spawnPos)
+    public void Init(Action onActive, Action<TrapData> onRestart, Vector3 spawnPos, TrapData trapData)
     {
         this.onActive = onActive;
         this.onRestart = onRestart;
-
+        this.trapData = trapData;
+        
         SetSpawnIndex(spawnPos);
     }
 
@@ -88,7 +90,7 @@ public class TrapController : PropController
             obj.transform.position = obj.transform.position + new Vector3(0, -fallSpeed, 0) * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        onRestart?.Invoke();
+        onRestart?.Invoke(trapData);
 
         yield return null;
     }

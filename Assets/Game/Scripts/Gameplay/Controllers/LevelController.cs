@@ -97,6 +97,15 @@ public class LevelController : MonoBehaviour
         }
     }
 
+    public void StartGrid(GridIndex playerSpawn, RotationModel playerDir)
+    {
+        levelData = levels[levelIndex];
+        levelData.LoadLevel();
+        levelData.LevelModel.PlayerModel.Index = playerSpawn;
+        levelData.LevelModel.PlayerModel.Rotation = playerDir;
+        LoadLevel();
+    }
+
     public void RestartGame()
     {
         levelIndex = 0;
@@ -179,7 +188,7 @@ public class LevelController : MonoBehaviour
                         break;
                     case ENTITY_TYPE.TRAP:
                         props.Add(go);
-                        go.GetComponent<TrapController>().Init(onPlayerDeath, PlayerDeath, pos);
+                        go.GetComponent<TrapController>().Init(onPlayerDeath, PlayerFallTrap, pos, entityModel.TrapData);
                         break;
                     case ENTITY_TYPE.JUMPABLE:
                         props.Add(go);
@@ -277,6 +286,15 @@ public class LevelController : MonoBehaviour
     private void PlayerDeath()
     {
         playerController.EndDeadAnimation();
+    }
+
+    private void PlayerFallTrap(TrapData trapData)
+    {
+        levelIndex = trapData.levelToLoad - 1;
+        GridIndex gridIndex = new GridIndex((int)trapData.spawnPos.y, (int)trapData.spawnPos.x);
+        RotationModel rotationModel = new RotationModel(trapData.spawnDir);
+
+        StartGrid(gridIndex, rotationModel);
     }
 
     private void PlayerInputStatus(bool status)
