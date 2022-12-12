@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="60124203-ac9f-4079-a786-c997ee050ac8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.tesis-grupo-c/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.tesis-grupo-c/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA1.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA1.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA2.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA2.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA3.json" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Levels/Jsons/PLANTA3.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/LevelController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/LevelController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Scripts/Gameplay/Controllers/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Prefabs/Gameplay/Props/prefab_trash_2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Prefabs/Gameplay/Props/prefab_trash_2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game/Prefabs/Gameplay/Props/prefab_trash_3.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Game/Prefabs/Gameplay/Props/prefab_trash_3.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +78,7 @@
       <updated>1662933095278</updated>
       <workItem from="1662933101180" duration="4819000" />
       <workItem from="1670797427716" duration="1502000" />
-      <workItem from="1670876549504" duration="8772000" />
+      <workItem from="1670876549504" duration="9427000" />
     </task>
     <servers />
   </component>
