@@ -7862,6 +7862,22 @@
           "offset": {
             "x": 1.0,
             "z": 14.0
+          },
+          "doorData": {
+            "levelToLoad": 1,
+            "triggerIndex": {
+              "i": 1,
+              "j": 15
+            },
+            "spawnPos": {
+              "x": 18.0,
+              "y": 6.0
+            },
+            "spawnDir": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
           }
         },
         {
@@ -8270,6 +8286,22 @@
           "offset": {
             "x": 10.0,
             "z": 13.0
+          },
+          "doorData": {
+            "levelToLoad": 1,
+            "triggerIndex": {
+              "i": 9,
+              "j": 13
+            },
+            "spawnPos": {
+              "x": 18.0,
+              "y": 6.0
+            },
+            "spawnDir": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
           }
         },
         {
@@ -9834,6 +9866,22 @@
           "offset": {
             "x": 18.0,
             "z": 6.0
+          },
+          "doorData": {
+            "levelToLoad": 1,
+            "triggerIndex": {
+              "i": 18,
+              "j": 6
+            },
+            "spawnPos": {
+              "x": 18.0,
+              "y": 7.0
+            },
+            "spawnDir": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
           }
         },
         {

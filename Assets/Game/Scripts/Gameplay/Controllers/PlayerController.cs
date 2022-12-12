@@ -18,6 +18,7 @@ public class PCActions
     public Func<GridIndex, bool> onCheckGridIndex = null;
     public Action onCameraFollow = null;
     public Action<bool> onEndDeadAnimation = null;
+    public Action<GridIndex> onTryOpenDoor = null;
 }
 
 public class PlayerController : MonoBehaviour
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!inputEnabled) return;
 
+        TryOpenDoor();
         Move();
         Jump();
     }
@@ -294,6 +296,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void TryOpenDoor()
+    {
+        if (inMovement) return;
+
+        if (!Input.GetKeyDown(KeyCode.E)) return;
+
+        pcActions.onTryOpenDoor?.Invoke(data.CurrentIndex);
+    }
+    
     private MOVEMENT TryGetMovement()
     {
         MOVEMENT movement = default;

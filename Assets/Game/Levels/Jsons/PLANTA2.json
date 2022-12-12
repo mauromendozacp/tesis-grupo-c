@@ -6995,6 +6995,22 @@
           "offset": {
             "x": 9.0,
             "z": 19.0
+          },
+          "doorData": {
+            "levelToLoad": 1,
+            "triggerIndex": {
+              "i": 9,
+              "j": 18
+            },
+            "spawnPos": {
+              "x": 18.0,
+              "y": 6.0
+            },
+            "spawnDir": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
           }
         },
         {
@@ -9854,40 +9870,6 @@
           }
         },
         {
-          "id": "table_1",
-          "type": 1,
-          "index": {
-            "i": 3,
-            "j": 5
-          },
-          "rotation": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
-          },
-          "offset": {
-            "x": 3.0,
-            "z": 5.0
-          }
-        },
-        {
-          "id": "table_1",
-          "type": 1,
-          "index": {
-            "i": 4,
-            "j": 5
-          },
-          "rotation": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0
-          },
-          "offset": {
-            "x": 4.0,
-            "z": 5.0
-          }
-        },
-        {
           "id": "wall_4",
           "type": 1,
           "index": {
@@ -10650,6 +10632,22 @@
           "offset": {
             "x": 7.0,
             "z": 1.0
+          },
+          "doorData": {
+            "levelToLoad": 1,
+            "triggerIndex": {
+              "i": 6,
+              "j": 1
+            },
+            "spawnPos": {
+              "x": 6.0,
+              "y": 1.0
+            },
+            "spawnDir": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            }
           }
         },
         {

@@ -73,7 +73,8 @@ public class LevelController : MonoBehaviour
             onChechIndexPlayer = CheckIndexPlayer,
             onCheckGridIndex = CheckIndex,
             onCameraFollow = onCameraFollow,
-            onEndDeadAnimation = DeathPlayer
+            onEndDeadAnimation = DeathPlayer,
+            onTryOpenDoor = TryOpenDoor
         };
 
         AudioHandler.Get().Setup(audioMixer, musicSource, sfxSource);
@@ -249,30 +250,36 @@ public class LevelController : MonoBehaviour
             onSpawnWinConfetti?.Invoke();
             playerController.Win();
             door?.Open();
-            
+
+            levelIndex = levels.Length;
             NextLevel();
             Debug.Log("Win");
 
             return;
         }
 
+        
+        
+        if (playerController.CheckTurns()) return;
+
+        playerController.PlayDeadAnimation();
+        Debug.Log("Lose");
+    }
+
+    private void TryOpenDoor(GridIndex index)
+    {
         for (int i = 0; i < doors.Count; i++)
         {
             if (doors[i].GetDoorData().triggerIndex == index)
             {
                 levelIndex = doors[i].GetDoorData().levelToLoad - 1;
-                GridIndex gridIndex = new GridIndex((int)doors[i].GetDoorData().spawnPos.y, (int)doors[i].GetDoorData().spawnPos.x);
+                GridIndex gridIndex = new GridIndex((int)doors[i].GetDoorData().spawnPos.x, (int)doors[i].GetDoorData().spawnPos.y);
                 RotationModel rotationModel = new RotationModel(doors[i].GetDoorData().spawnDir);
 
                 StartGrid(gridIndex, rotationModel);
                 return;
             }
         }
-        
-        if (playerController.CheckTurns()) return;
-
-        playerController.PlayDeadAnimation();
-        Debug.Log("Lose");
     }
 
     private bool CheckIndex(GridIndex index)
