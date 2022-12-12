@@ -43,6 +43,7 @@ public class LevelController : MonoBehaviour
 
     private GridIndex winIndex = default;
     private List<GameObject> props = null;
+    private List<DoorController> doors = null;
     private DoorController door = null;
     #endregion
 
@@ -150,6 +151,7 @@ public class LevelController : MonoBehaviour
         SpawnWinZone();
 
         props = new List<GameObject>();
+        doors = new List<DoorController>();
         winIndex = new GridIndex(levelModel.WinIndex.i, levelModel.WinIndex.j);
 
         for (int i = 0; i < levelModel.Layers.Length; i++)
@@ -198,10 +200,20 @@ public class LevelController : MonoBehaviour
                         break;
                 }
 
-                DoorController d = go.GetComponent<DoorController>();
-                if (d != null && Utils.IsIndexAdjacent(winIndex, entityModel.Index))
+                if (entityModel.Id == "door_stairs")
                 {
-                    door = d;
+                    DoorController doorStairs = go.GetComponent<DoorController>();
+                    doorStairs.Init(entityModel.DoorData);
+                    doors.Add(doorStairs);
+                }
+
+                if (entityModel.Id == "door_exit")
+                {
+                    DoorController d = go.GetComponent<DoorController>();
+                    if (d != null && Utils.IsIndexAdjacent(winIndex, entityModel.Index))
+                    {
+                        door = d;
+                    }
                 }
             }
         }
@@ -210,6 +222,7 @@ public class LevelController : MonoBehaviour
     private void SpawnWinZone()
     {
         winIndex = new GridIndex(levelData.LevelModel.WinIndex.i, levelData.LevelModel.WinIndex.j);
+        if (winIndex.i == 0 && winIndex.j == 0) return;
         Vector3 pos = new Vector3(winIndex.i, 0, winIndex.j) * unit;
 
         GameObject go = Instantiate(winPrefab, pos, Quaternion.identity, environmentHolder);
@@ -243,8 +256,19 @@ public class LevelController : MonoBehaviour
             return;
         }
 
-        //if (playerUnlimitedTurns) return;
+        for (int i = 0; i < doors.Count; i++)
+        {
+            if (doors[i].GetDoorData().triggerIndex == index)
+            {
+                levelIndex = doors[i].GetDoorData().levelToLoad - 1;
+                GridIndex gridIndex = new GridIndex((int)doors[i].GetDoorData().spawnPos.y, (int)doors[i].GetDoorData().spawnPos.x);
+                RotationModel rotationModel = new RotationModel(doors[i].GetDoorData().spawnDir);
 
+                StartGrid(gridIndex, rotationModel);
+                return;
+            }
+        }
+        
         if (playerController.CheckTurns()) return;
 
         playerController.PlayDeadAnimation();
@@ -291,7 +315,7 @@ public class LevelController : MonoBehaviour
     private void PlayerFallTrap(TrapData trapData)
     {
         levelIndex = trapData.levelToLoad - 1;
-        GridIndex gridIndex = new GridIndex((int)trapData.spawnPos.y, (int)trapData.spawnPos.x);
+        GridIndex gridIndex = new GridIndex((int)trapData.spawnPos.x, (int)trapData.spawnPos.y);
         RotationModel rotationModel = new RotationModel(trapData.spawnDir);
 
         StartGrid(gridIndex, rotationModel);

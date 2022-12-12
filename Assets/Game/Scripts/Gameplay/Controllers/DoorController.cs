@@ -10,6 +10,8 @@ public class DoorController : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource sfxSource = null;
     [SerializeField] private AudioEvent audioOpen = null;
+
+    private DoorData doorData = null;
     #endregion
 
     #region CONSTANTS_FIELDS
@@ -21,6 +23,16 @@ public class DoorController : MonoBehaviour
     {
         animator.SetTrigger(openKey);
         AudioHandler.Get().PlaySound(audioOpen, sfxSource);
+    }
+
+    public void Init(DoorData doorData)
+    {
+        this.doorData = doorData;
+    }
+    
+    public DoorData GetDoorData()
+    {
+        return doorData;
     }
     #endregion
 }

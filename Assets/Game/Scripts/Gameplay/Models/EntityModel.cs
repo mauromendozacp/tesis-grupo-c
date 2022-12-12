@@ -21,6 +21,7 @@ public class EntityModel
     [SerializeField] private RotationModel rotation = default;
     [SerializeField] private OffsetModel offset = null;
     [SerializeField] private TrapData trapData = null;
+    [SerializeField] private DoorData doorData = null;
     #endregion
 
     #region PROPERTIES
@@ -30,5 +31,6 @@ public class EntityModel
     public RotationModel Rotation { get => rotation; set => rotation = value; }
     public OffsetModel Offset { get => offset; set => offset = value; }
     public TrapData TrapData { get => trapData; }
+    public DoorData DoorData { get => doorData; }
     #endregion
 }

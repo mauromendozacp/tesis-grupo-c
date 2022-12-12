@@ -1241,9 +1241,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02a15bd7b40322b4d98428744862a4a8, type: 2}
   - {fileID: 11400000, guid: a3e0f7d754a705847a063881671c3b72, type: 2}
   - {fileID: 11400000, guid: c37cc1864715014418a9e6a0c4ea904d, type: 2}
+  - {fileID: 11400000, guid: 0a43e48d37122c74abcbea0140d23c9f, type: 2}
+  - {fileID: 11400000, guid: a0e71dd70fc3c7c479d5afcba34b8e6b, type: 2}
+  - {fileID: 11400000, guid: 0620202807cc8fc4d8e0a2a5c8bdbcb6, type: 2}
+  - {fileID: 11400000, guid: 304f9fc3869f8b74db28f044142181ee, type: 2}
+  - {fileID: 11400000, guid: 0a7ce0fb4307f564bb58700ec6f8a59b, type: 2}
   levels:
   - {fileID: 11400000, guid: 28cafcbd17db1bf4aae5f582af651bf2, type: 2}
   - {fileID: 11400000, guid: 8a5075a3479a50446bb4fd3e2852b5ca, type: 2}
+  - {fileID: 11400000, guid: e99938fd3709fc94881e453c9470212d, type: 2}
   audioMixer: {fileID: 24100000, guid: 6e97715566b5f9a4b8ac0ee4a1dca169, type: 2}
   musicSource: {fileID: 963194230}
   sfxSource: {fileID: 1854585536}
