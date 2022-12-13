@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeTrapDelay: 0.5
-  fallPlayerDelay: 1
+  fallPlayerDelay: 0.5
   fallSpeed: 5
   model: {fileID: 969209304599369537}
   falleableMask:
