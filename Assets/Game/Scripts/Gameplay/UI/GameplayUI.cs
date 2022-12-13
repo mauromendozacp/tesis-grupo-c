@@ -26,6 +26,17 @@ public class GameplayUI : MonoBehaviour
     public GUIActions GUIActions { get => guiActions; }
     #endregion
 
+
+    #region UNITY_CALLS
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            BackToMenu();
+        }
+    }
+    #endregion
+    
     #region PUBLIC_METHODS
     public void Init()
     {
