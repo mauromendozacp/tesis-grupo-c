@@ -306,7 +306,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 896
   sfxSource: {fileID: 7137906469606587779}
-  audioSteps: {fileID: 11400000, guid: d4dafcb99359f3f4aa1886ed42380c59, type: 2}
+  stepsAudio: {fileID: 11400000, guid: d4dafcb99359f3f4aa1886ed42380c59, type: 2}
+  jumpAudio: {fileID: 11400000, guid: 95a7fc7746808984d9a74dd0ab04f91c, type: 2}
 --- !u!114 &-1486509982964705852
 MonoBehaviour:
   m_ObjectHideFlags: 0

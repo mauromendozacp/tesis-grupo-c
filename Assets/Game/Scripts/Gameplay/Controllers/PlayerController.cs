@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private AudioSource sfxSource = null;
-    [SerializeField] private AudioEvent audioSteps = null;
+    [SerializeField] private AudioEvent stepsAudio = null;
+    [SerializeField] private AudioEvent jumpAudio = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -229,7 +230,7 @@ public class PlayerController : MonoBehaviour
 
         inMovement = true;
         data.CurrentIndex = auxIndex;
-        AudioHandler.Get().PlaySound(audioSteps, sfxSource);
+        AudioHandler.Get().PlaySound(stepsAudio, sfxSource);
 
         if (!unlimitedTurns)
         {
@@ -285,6 +286,7 @@ public class PlayerController : MonoBehaviour
 
             inMovement = true;
             data.CurrentIndex = auxIndex;
+            AudioHandler.Get().PlaySound(jumpAudio, sfxSource);
 
             if (!unlimitedTurns)
             {

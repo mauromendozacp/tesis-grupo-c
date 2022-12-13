@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GUIActions
 {
@@ -16,6 +15,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] private GameObject pausePanel = null;
     [SerializeField] private GameObject gameoverPanel = null;
     [SerializeField] private GameObject winPanel = null;
+    [SerializeField] private AudioEvent clickAudio = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -36,6 +36,7 @@ public class GameplayUI : MonoBehaviour
 
     public void PauseToggleStatus(bool status)
     {
+        ClickButton();
         pausePanel.SetActive(status);
         Time.timeScale = status ? 0f : 1f;
     }
@@ -52,6 +53,7 @@ public class GameplayUI : MonoBehaviour
 
     public void Retry()
     {
+        ClickButton();
         guiActions.onRestart?.Invoke();
         gameoverPanel.SetActive(false);
         winPanel.SetActive(false);
@@ -60,8 +62,16 @@ public class GameplayUI : MonoBehaviour
 
     public void BackToMenu()
     {
+        ClickButton();
         Time.timeScale = 1f;
         SceneController.Get().ChangeScene(SceneGame.MainMenu);
+    }
+    #endregion
+
+    #region PRIVATE_METHODS
+    private void ClickButton()
+    {
+        AudioHandler.Get().PlayAudio(clickAudio, 1);
     }
     #endregion
 }

@@ -11,6 +11,10 @@ public class TrapController : PropController
     [SerializeField] private GameObject model = null;
     [SerializeField] private LayerMask falleableMask = default;
     [SerializeField] private TrapData trapData = null;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource sfxSource = null;
+    [SerializeField] private AudioEvent trapAudio = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -75,6 +79,8 @@ public class TrapController : PropController
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+
+        AudioHandler.Get().PlaySound(trapAudio, sfxSource);
         model.SetActive(false);
         onSuccess?.Invoke();
 
